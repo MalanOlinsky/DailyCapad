@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avior — Daily Report Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--navy:#0d1b2a;--teal:#2ec4b6;--teal-dim:rgba(46,196,182,0.15);--amber:#f4a261;--red:#e76f51;--green:#52b788;--white:#f0f4f8;--muted:#7a92a8;--card:rgba(255,255,255,0.03);--card-b:rgba(255,255,255,0.07);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,196,182,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:2rem 2rem 4rem;}
+
+header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--teal-dim);}
+.logo-area{display:flex;align-items:center;gap:14px;}
+.logo-mark{width:40px;height:40px;background:var(--teal);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 80%,80% 100%,20% 100%,0% 80%,0% 20%);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--navy);flex-shrink:0;}
+.brand-name{font-size:18px;font-weight:600;letter-spacing:.08em;}
+.brand-sub{font-size:11px;font-weight:300;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;}
+.header-right{text-align:right;}
+.report-title{font-size:22px;font-weight:600;color:var(--teal);letter-spacing:-.02em;}
+.report-sub{font-size:12px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace;}
+
+.date-row{display:flex;align-items:center;gap:12px;margin-bottom:1.8rem;flex-wrap:wrap;}
+.date-row label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.date-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.dpill{padding:5px 11px;font-size:11px;font-family:'DM Mono',monospace;background:var(--card);border:1px solid var(--card-b);border-radius:20px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.dpill:hover{border-color:var(--teal-dim);color:var(--white);}
+.dpill.active{background:rgba(46,196,182,0.15);border-color:var(--teal);color:var(--teal);}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:1.8rem;}
+.kpi{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1rem 1.2rem;position:relative;overflow:hidden;animation:fadeUp .4s ease both;}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.c-teal::after{background:var(--teal);}
+.kpi.c-green::after{background:var(--green);}
+.kpi.c-amber::after{background:var(--amber);}
+.kpi.c-red::after{background:var(--red);}
+.kpi-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.kpi-value{font-family:'DM Mono',monospace;font-size:19px;font-weight:400;color:var(--white);}
+.kpi-delta{font-size:11px;margin-top:5px;}
+.kpi-delta.up{color:var(--green);}
+.kpi-delta.down{color:var(--red);}
+.kpi-delta.flat{color:var(--muted);}
+
+.tabs{display:flex;gap:0;margin-bottom:1.8rem;border-bottom:1px solid var(--card-b);}
+.tab{padding:9px 18px;font-size:13px;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.tab:hover{color:var(--white);}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.chart-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;margin-bottom:1.4rem;}
+.chart-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;}
+.chart-wrap{position:relative;width:100%;height:250px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.4rem;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:1.4rem;}
+.two-col .chart-wrap,.three-col .chart-wrap{height:210px;}
+
+.table-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;margin-bottom:1.4rem;overflow-x:auto;}
+.table-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+table{width:100%;border-collapse:collapse;min-width:700px;}
+th{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:7px 10px;border-bottom:1px solid var(--teal-dim);}
+th:first-child{text-align:left;}
+td{padding:8px 10px;font-size:12px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;color:var(--white);}
+td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);}
+tr.total-row td{border-top:1px solid var(--teal-dim);border-bottom:none;padding-top:10px;color:var(--teal);font-weight:500;}
+tr.total-row td:first-child{color:var(--teal);}
+tr:last-child td{border-bottom:none;}
+.pos{color:var(--green)!important;}
+.neg{color:var(--red)!important;}
+.hi{color:var(--amber)!important;}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;font-weight:500;}
+.badge.ok{background:rgba(82,183,136,.15);color:var(--green);}
+.badge.warn{background:rgba(244,162,97,.15);color:var(--amber);}
+.badge.alert{background:rgba(231,111,81,.15);color:var(--red);}
+
+.progress-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.progress-row:last-child{margin-bottom:0;}
+.prog-label{font-size:12px;color:var(--muted);min-width:180px;}
+.prog-track{flex:1;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.prog-val{font-family:'DM Mono',monospace;font-size:11px;min-width:100px;text-align:right;}
+
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--teal-dim);display:flex;justify-content:space-between;}
+footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.kpi:nth-child(1){animation-delay:.04s;}.kpi:nth-child(2){animation-delay:.08s;}.kpi:nth-child(3){animation-delay:.12s;}.kpi:nth-child(4){animation-delay:.16s;}.kpi:nth-child(5){animation-delay:.20s;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="logo-area">
+    <div class="logo-mark">AV</div>
+    <div>
+      <div class="brand-name">AVIOR</div>
+      <div class="brand-sub">Capital Markets</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="report-title">Daily Report Dashboard</div>
+    <div class="report-sub" id="report-sub">2 March 2026 — 24 March 2026 &nbsp;|&nbsp; 16 trading days</div>
+  </div>
+</header>
+
+<div class="date-row">
+  <label>Viewing:</label>
+  <div class="date-pills" id="datePills"></div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi c-teal">
+    <div class="kpi-label">Today's Revenue</div>
+    <div class="kpi-value" id="k-rev">—</div>
+    <div class="kpi-delta" id="kd-rev">—</div>
+  </div>
+  <div class="kpi c-teal">
+    <div class="kpi-label">MTD Revenue</div>
+    <div class="kpi-value" id="k-mtd">—</div>
+    <div class="kpi-delta" id="kd-mtd">—</div>
+  </div>
+  <div class="kpi c-green">
+    <div class="kpi-label">Net Profit</div>
+    <div class="kpi-value" id="k-net">—</div>
+    <div class="kpi-delta" id="kd-net">—</div>
+  </div>
+  <div class="kpi c-amber">
+    <div class="kpi-label">Cash &amp; Working Capital</div>
+    <div class="kpi-value" id="k-cwc">—</div>
+    <div class="kpi-delta" id="kd-cwc">—</div>
+  </div>
+  <div class="kpi c-teal">
+    <div class="kpi-label">CAPAD Surplus</div>
+    <div class="kpi-value" id="k-surplus">—</div>
+    <div class="kpi-delta" id="kd-surplus">—</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('overview',this)">Overview</button>
+  <button class="tab" onclick="showTab('revenue',this)">Revenue</button>
+  <button class="tab" onclick="showTab('pnl',this)">P&amp;L</button>
+  <button class="tab" onclick="showTab('cwc',this)">Cash &amp; Working Capital</button>
+  <button class="tab" onclick="showTab('capad',this)">CAPAD</button>
+  <button class="tab" onclick="showTab('custody',this)">Custody</button>
+  <button class="tab" onclick="showTab('table',this)">Full Table</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Daily revenue — 16 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-rev-trend"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Net profit — 16 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-net-trend"></canvas></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Cash &amp; working capital — group total</h3>
+      <div class="chart-wrap"><canvas id="c-cwc-trend"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>MTD revenue vs projected vs prior month</h3>
+      <div class="chart-wrap"><canvas id="c-mtd-vs"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Revenue breakdown by region — selected date</h3>
+    <div class="chart-wrap" style="height:180px;"><canvas id="c-rev-region"></canvas></div>
+  </div>
+</div>
+
+<!-- REVENUE -->
+<div class="panel" id="panel-revenue">
+  <div class="chart-card">
+    <h3>Total group revenue — today vs MTD daily average</h3>
+    <div class="chart-wrap"><canvas id="c-rev-full"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>SA revenue trend</h3>
+      <div class="chart-wrap"><canvas id="c-sa-rev"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>UK revenue trend</h3>
+      <div class="chart-wrap"><canvas id="c-uk-rev"></canvas></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>YTD revenue progression</h3>
+      <div class="chart-wrap"><canvas id="c-ytd"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>MTD projected vs prior month</h3>
+      <div class="chart-wrap"><canvas id="c-proj"></canvas></div>
+    </div>
+  </div>
+  <div class="table-card">
+    <h3>Revenue detail — selected date</h3>
+    <table id="rev-table"></table>
+  </div>
+</div>
+
+<!-- P&L -->
+<div class="panel" id="panel-pnl">
+  <div class="chart-card">
+    <h3>Net profit — 16 day trend by desk</h3>
+    <div class="chart-wrap" style="height:280px;"><canvas id="c-pnl-desk"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Realised P&amp;L components</h3>
+      <div class="chart-wrap"><canvas id="c-realised"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Unrealised P&amp;L components</h3>
+      <div class="chart-wrap"><canvas id="c-unrealised"></canvas></div>
+    </div>
+  </div>
+  <div class="table-card">
+    <h3>P&amp;L summary — all dates</h3>
+    <table id="pnl-table"></table>
+  </div>
+</div>
+
+<!-- CWC -->
+<div class="panel" id="panel-cwc">
+  <div class="chart-card">
+    <h3>Cash &amp; working capital — group total trend</h3>
+    <div class="chart-wrap"><canvas id="c-cwc-full"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>By region — selected date</h3>
+      <div class="chart-wrap"><canvas id="c-cwc-region"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>SA working capital trend</h3>
+      <div class="chart-wrap"><canvas id="c-cwc-sa"></canvas></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>UK working capital trend</h3>
+      <div class="chart-wrap"><canvas id="c-cwc-uk"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>US working capital trend</h3>
+      <div class="chart-wrap"><canvas id="c-cwc-us"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Regional breakdown — selected date</h3>
+    <div id="cwc-bars" style="padding-top:4px;"></div>
+  </div>
+</div>
+
+<!-- CAPAD -->
+<div class="panel" id="panel-capad">
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:1.4rem;">
+    <div class="kpi c-green" style="animation:none;">
+      <div class="kpi-label">Adj. Liquid Capital</div>
+      <div class="kpi-value" id="ck-alc">—</div>
+      <div class="kpi-delta" id="ckd-alc">—</div>
+    </div>
+    <div class="kpi c-amber" style="animation:none;">
+      <div class="kpi-label">Total Risk Req.</div>
+      <div class="kpi-value" id="ck-trr">—</div>
+      <div class="kpi-delta" id="ckd-trr">—</div>
+    </div>
+    <div class="kpi c-teal" style="animation:none;">
+      <div class="kpi-label">Surplus</div>
+      <div class="kpi-value" id="ck-surplus">—</div>
+      <div class="kpi-delta" id="ckd-surplus">—</div>
+    </div>
+    <div class="kpi c-teal" style="animation:none;">
+      <div class="kpi-label">Trading Limit</div>
+      <div class="kpi-value" id="ck-tl">—</div>
+      <div class="kpi-delta" id="ckd-tl">—</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>ALC vs Total Risk Requirement</h3>
+      <div class="chart-wrap"><canvas id="c-cap-alc-trr"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>CAPAD surplus — 16 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-cap-surplus"></canvas></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Trading limit trend</h3>
+      <div class="chart-wrap"><canvas id="c-cap-tl"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Coverage ratio (ALC / TRR)</h3>
+      <div class="chart-wrap"><canvas id="c-cap-cover"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTODY -->
+<div class="panel" id="panel-custody">
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>JSE Trustees balance trend</h3>
+      <div class="chart-wrap"><canvas id="c-jse"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Total custody — 16 day</h3>
+      <div class="chart-wrap"><canvas id="c-custody-total"></canvas></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>African custody — cash</h3>
+      <div class="chart-wrap"><canvas id="c-africa-cash"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>African custody — stock</h3>
+      <div class="chart-wrap"><canvas id="c-africa-stock"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL TABLE -->
+<div class="panel" id="panel-table">
+  <div class="table-card">
+    <h3>All metrics — all 16 trading days</h3>
+    <table id="full-table"></table>
+  </div>
+</div>
+
+<footer>
+  <span>AVIOR Capital Markets — Confidential &amp; Internal Use Only</span>
+  <span>Generated: <span id="gen-date"></span></span>
+</footer>
+</div>
+
+<script>
+const RAW = [
+  {date:"02 Mar",sort:"2026-03-02",rev_total_today:3556250.43,rev_total_mtd:1536001.01,rev_total_proj:19896598.81,rev_total_prior:11356049.77,rev_total_ytd:163258495.84,rev_sa_today:2495718.77,rev_uk_today:1060531.66,rev_us_today:0,realised_arb:-72246940,realised_prop:5639108,realised_facil:7997275,realised_total:-58610557,unrealised_arb:105752897,unrealised_prop:454359,unrealised_facil:-2631401,unrealised_total:103575855,net_arb:18330994,net_prop:5880609,net_facil:1129190,net_total:44965298,cwc_sa_total:15983019.44,cwc_deriv_total:8729981.65,cwc_holdings_total:6358122.97,cwc_uk_total:50310895.67,cwc_us_total:114182090.38,cwc_africa_cash:1364078,cwc_africa_stock:13908317.86,cwc_group_total:212020187.79,capad_cap_res:151816177,capad_alc:128226196,capad_trr:54901989,capad_surplus:73324207,capad_tl:3666210350,custody_jse:73397112.17,custody_total:3072663595.1,day_num:1,trading_days:20},
+  {date:"03 Mar",sort:"2026-03-03",rev_total_today:-5066.86,rev_total_mtd:1537154.62,rev_total_proj:18137518.41,rev_total_prior:11356049.77,rev_total_ytd:163601147.58,rev_sa_today:828008.71,rev_uk_today:-833075.57,rev_us_today:0,realised_arb:-76823337,realised_prop:5639108,realised_facil:7997275,realised_total:-63186954,unrealised_arb:109192176,unrealised_prop:791504,unrealised_facil:-2799220,unrealised_total:107184460,net_arb:17193876,net_prop:6217754,net_facil:961371,net_total:43997506,cwc_sa_total:16335633.46,cwc_deriv_total:10766708.38,cwc_holdings_total:6686145.6,cwc_uk_total:54763531.41,cwc_us_total:117231649.03,cwc_africa_cash:1373649.34,cwc_africa_stock:14371414.92,cwc_group_total:222227678.63,capad_cap_res:152575644,capad_alc:128735112,capad_trr:50670815,capad_surplus:78064297,capad_tl:3903214850,custody_jse:69323795,custody_total:3072663595.1,day_num:2,trading_days:20},
+  {date:"04 Mar",sort:"2026-03-04",rev_total_today:-1005038.97,rev_total_mtd:283450.1,rev_total_proj:13730931.08,rev_total_prior:11356049.77,rev_total_ytd:162418514.28,rev_sa_today:447443.39,rev_uk_today:-1452482.36,rev_us_today:0,realised_arb:-76823337,realised_prop:5639108,realised_facil:7997275,realised_total:-63186954,unrealised_arb:107464547,unrealised_prop:765574,unrealised_facil:-2870507,unrealised_total:105359614,net_arb:15466247,net_prop:6191824,net_facil:890084,net_total:42172660,cwc_sa_total:10343572.98,cwc_deriv_total:10976988.28,cwc_holdings_total:6679029.36,cwc_uk_total:50159748.45,cwc_us_total:115911623.98,cwc_africa_cash:1363953.09,cwc_africa_stock:14532708.61,cwc_group_total:217182153.14,capad_cap_res:152817179,capad_alc:128321559,capad_trr:45779856,capad_surplus:82541703,capad_tl:4127085150,custody_jse:73600153.25,custody_total:3072663595.1,day_num:3,trading_days:20},
+  {date:"05 Mar",sort:"2026-03-05",rev_total_today:3588381.63,rev_total_mtd:3616416.44,rev_total_proj:15232325.31,rev_total_prior:11356049.77,rev_total_ytd:166249322.1,rev_sa_today:805432.75,rev_uk_today:2782948.88,rev_us_today:0,realised_arb:-76823337,realised_prop:5639108,realised_facil:7997276,realised_total:-63186953,unrealised_arb:110111503,unrealised_prop:862419,unrealised_facil:-2812235,unrealised_total:108161687,net_arb:18113203,net_prop:6288669,net_facil:948357,net_total:44974734,cwc_sa_total:14462874.46,cwc_deriv_total:11290602.79,cwc_holdings_total:6677929.36,cwc_uk_total:59986070.07,cwc_us_total:118119443.67,cwc_africa_cash:1276928.53,cwc_africa_stock:14280036.41,cwc_group_total:232169844.53,capad_cap_res:153212507,capad_alc:129674150,capad_trr:45709792,capad_surplus:83964358,capad_tl:4198217900,custody_jse:72244406.88,custody_total:3072663595.1,day_num:4,trading_days:20},
+  {date:"06 Mar",sort:"2026-03-06",rev_total_today:278492.55,rev_total_mtd:3890522.72,rev_total_proj:15839674.22,rev_total_prior:11356049.77,rev_total_ytd:166452609.24,rev_sa_today:958876.09,rev_uk_today:-680383.54,rev_us_today:0,realised_arb:-76822321,realised_prop:5639108,realised_facil:7997276,realised_total:-63185937,unrealised_arb:108901681,unrealised_prop:1073844,unrealised_facil:-2639006,unrealised_total:107336519,net_arb:16904397,net_prop:6500094,net_facil:1121586,net_total:44150582,cwc_sa_total:21111561.16,cwc_deriv_total:14167822.77,cwc_holdings_total:6675922.96,cwc_uk_total:53555376.04,cwc_us_total:117443948.38,cwc_africa_cash:1273350.48,cwc_africa_stock:14708691.7,cwc_group_total:233785484.51,capad_cap_res:153343275,capad_alc:129558256,capad_trr:48615751,capad_surplus:80942505,capad_tl:4047125250,custody_jse:73047011.07,custody_total:3072663595.1,day_num:5,trading_days:20},
+  {date:"09 Mar",sort:"2026-03-09",rev_total_today:961004.91,rev_total_mtd:4805056.93,rev_total_proj:16252127.05,rev_total_prior:11356049.77,rev_total_ytd:165183875.65,rev_sa_today:775854.57,rev_uk_today:185150.34,rev_us_today:0,realised_arb:-76822321,realised_prop:5639108,realised_facil:7997276,realised_total:-63185937,unrealised_arb:106952958,unrealised_prop:1044083,unrealised_facil:-2708135,unrealised_total:105288906,net_arb:14955674,net_prop:6470333,net_facil:1052457,net_total:42102969,cwc_sa_total:28156541.13,cwc_deriv_total:10979953.8,cwc_holdings_total:6898472.89,cwc_uk_total:58768125.69,cwc_us_total:115472967.57,cwc_africa_cash:1372636.41,cwc_africa_stock:14472028.88,cwc_group_total:240429320.32,capad_cap_res:152983714,capad_alc:128596964,capad_trr:48086272,capad_surplus:80510692,capad_tl:4025534600,custody_jse:98679835.26,custody_total:3072663595.1,day_num:6,trading_days:20},
+  {date:"10 Mar",sort:"2026-03-10",rev_total_today:2673621.14,rev_total_mtd:7476720.84,rev_total_proj:18643860.3,rev_total_prior:11356049.77,rev_total_ytd:167858661.72,rev_sa_today:1046066.21,rev_uk_today:1627554.93,rev_us_today:0,realised_arb:-76822321,realised_prop:5639108,realised_facil:7997276,realised_total:-63185937,unrealised_arb:108432545,unrealised_prop:1250890,unrealised_facil:-2830053,unrealised_total:106853382,net_arb:16435261,net_prop:6677140,net_facil:930539,net_total:43667445,cwc_sa_total:33932844.38,cwc_deriv_total:11231628.55,cwc_holdings_total:6704807.21,cwc_uk_total:57900537.25,cwc_us_total:115318895.42,cwc_africa_cash:1380427.97,cwc_africa_stock:14637150.21,cwc_group_total:243790243.09,capad_cap_res:153705602,capad_alc:129752710,capad_trr:63687728,capad_surplus:66064982,capad_tl:3303249100,custody_jse:75597004.29,custody_total:3072663595.1,day_num:7,trading_days:20},
+  {date:"12 Mar",sort:"2026-03-12",rev_total_today:-318566.41,rev_total_mtd:9445096.98,rev_total_proj:21501625.02,rev_total_prior:11356049.77,rev_total_ytd:167608641.6,rev_sa_today:436428.13,rev_uk_today:-811982.94,rev_us_today:56988.4,realised_arb:-77988550,realised_prop:5639108,realised_facil:7997276,realised_total:-64352166,unrealised_arb:107754891,unrealised_prop:1077378,unrealised_facil:-2804796,unrealised_total:106027473,net_arb:14591378,net_prop:6503628,net_facil:955796,net_total:41675307,cwc_sa_total:3468078.84,cwc_deriv_total:11185060.74,cwc_holdings_total:6560232.35,cwc_uk_total:61055271.85,cwc_us_total:119028340.02,cwc_africa_cash:1399984.79,cwc_africa_stock:14659968.53,cwc_group_total:221746563.89,capad_cap_res:154447340,capad_alc:130419607,capad_trr:47718048,capad_surplus:82701559,capad_tl:4135077950,custody_jse:70206934.07,custody_total:3072663595.1,day_num:9,trading_days:20},
+  {date:"13 Mar",sort:"2026-03-13",rev_total_today:1460564.32,rev_total_mtd:10921816.06,rev_total_proj:21452574.5,rev_total_prior:11356049.77,rev_total_ytd:169204336.83,rev_sa_today:569535.21,rev_uk_today:608018.21,rev_us_today:283010.9,realised_arb:-77988550,realised_prop:5639108,realised_facil:7997276,realised_total:-64352166,unrealised_arb:108073513,unrealised_prop:1085391,unrealised_facil:-2713491,unrealised_total:106445413,net_arb:14910000,net_prop:6511641,net_facil:1047101,net_total:42093247,cwc_sa_total:26256499.12,cwc_deriv_total:11214199.72,cwc_holdings_total:6573826.58,cwc_uk_total:58146098.71,cwc_us_total:120126049.11,cwc_africa_cash:1677397.65,cwc_africa_stock:14975114.39,cwc_group_total:243843278.59,capad_cap_res:154865168,capad_alc:130376106,capad_trr:47917283,capad_surplus:82458823,capad_tl:4122941150,custody_jse:71432732.54,custody_total:3072663595.1,day_num:10,trading_days:20},
+  {date:"16 Mar",sort:"2026-03-16",rev_total_today:388192.54,rev_total_mtd:11276624.78,rev_total_proj:21496813,rev_total_prior:11356049.77,rev_total_ytd:169334952.38,rev_sa_today:1602019.96,rev_uk_today:-1213827.42,rev_us_today:0,realised_arb:-77809874,realised_prop:5639108,realised_facil:7997276,realised_total:-64173490,unrealised_arb:106598076,unrealised_prop:931608,unrealised_facil:-2868721,unrealised_total:104660963,net_arb:13613239,net_prop:6357858,net_facil:891871,net_total:40487473,cwc_sa_total:37081672.08,cwc_deriv_total:11552051,cwc_holdings_total:6561974.01,cwc_uk_total:62915213.09,cwc_us_total:118445079.26,cwc_africa_cash:1668146.67,cwc_africa_stock:14969574.6,cwc_group_total:250070232.7,capad_cap_res:155920854,capad_alc:131262908,capad_trr:55975020,capad_surplus:75287888,capad_tl:3764394400,custody_jse:70784787.35,custody_total:3072663595.1,day_num:11,trading_days:20},
+  {date:"17 Mar",sort:"2026-03-17",rev_total_today:1903481.85,rev_total_mtd:13178588.12,rev_total_proj:22430784.45,rev_total_prior:11356049.77,rev_total_ytd:171227122.45,rev_sa_today:1143157.98,rev_uk_today:760323.87,rev_us_today:0,realised_arb:-129367945,realised_prop:5639108,realised_facil:7997276,realised_total:-115731561,unrealised_arb:158778707,unrealised_prop:809999,unrealised_facil:-2854854,unrealised_total:156733852,net_arb:14235799,net_prop:6236249,net_facil:905738,net_total:41002291,cwc_sa_total:38762595.62,cwc_deriv_total:12903067.98,cwc_holdings_total:6518210.05,cwc_uk_total:56912397.99,cwc_us_total:118334931.68,cwc_africa_cash:1672355.47,cwc_africa_stock:14675586.66,cwc_group_total:255972014.44,capad_cap_res:156319411,capad_alc:132240630,capad_trr:49042664,capad_surplus:83197966,capad_tl:4159898300,custody_jse:70920353.36,custody_total:3072663595.1,day_num:12,trading_days:20},
+  {date:"18 Mar",sort:"2026-03-18",rev_total_today:928639.27,rev_total_mtd:14150970.1,rev_total_proj:22605199.55,rev_total_prior:11356049.77,rev_total_ytd:172464165.68,rev_sa_today:1901388.02,rev_uk_today:-972748.75,rev_us_today:0,realised_arb:-122148635,realised_prop:5639108,realised_facil:7997276,realised_total:-108512251,unrealised_arb:150486138,unrealised_prop:958930,unrealised_facil:-2783898,unrealised_total:148661170,net_arb:13162540,net_prop:6385180,net_facil:976694,net_total:40148919,cwc_sa_total:19329053.38,cwc_deriv_total:13291663.47,cwc_holdings_total:6515055.07,cwc_uk_total:57496833.67,cwc_us_total:132463011.29,cwc_africa_cash:1690398.29,cwc_africa_stock:15030402.81,cwc_group_total:269790540.84,capad_cap_res:156923085,capad_alc:132550430,capad_trr:48974823,capad_surplus:83575607,capad_tl:4178780350,custody_jse:57871837.05,custody_total:3072663595.1,day_num:13,trading_days:20},
+  {date:"19 Mar",sort:"2026-03-19",rev_total_today:1454986.04,rev_total_mtd:14567271.47,rev_total_proj:21582851.26,rev_total_prior:11356049.77,rev_total_ytd:173694660.32,rev_sa_today:334591.66,rev_uk_today:1120394.38,rev_us_today:0,realised_arb:-130504114,realised_prop:5639108,realised_facil:7997276,realised_total:-116867730,unrealised_arb:159848636,unrealised_prop:737944,unrealised_facil:-2816592,unrealised_total:157769988,net_arb:14169559,net_prop:6164194,net_facil:944000,net_total:40902258,cwc_sa_total:19327257.6,cwc_deriv_total:14490145.23,cwc_holdings_total:6394910.1,cwc_uk_total:52946434.94,cwc_us_total:118713313.05,cwc_africa_cash:1659157.84,cwc_africa_stock:15982543.08,cwc_group_total:246100125.32,capad_cap_res:157413352,capad_alc:132184331,capad_trr:47894060,capad_surplus:84290271,capad_tl:4214513550,custody_jse:59118998.98,custody_total:3072663595.1,day_num:14,trading_days:20},
+  {date:"20 Mar",sort:"2026-03-20",rev_total_today:-233670.59,rev_total_mtd:14370995.06,rev_total_proj:20079959.65,rev_total_prior:11356049.77,rev_total_ytd:173710598.53,rev_sa_today:601985.37,rev_uk_today:-835655.96,rev_us_today:0,realised_arb:-130502614,realised_prop:5639108,realised_facil:7997276,realised_total:-116866230,unrealised_arb:158999292,unrealised_prop:727518,unrealised_facil:-2911806,unrealised_total:156815004,net_arb:13321715,net_prop:6153768,net_facil:848786,net_total:39948774,cwc_sa_total:28283441.43,cwc_deriv_total:14076698.38,cwc_holdings_total:6658093.13,cwc_uk_total:49743793.56,cwc_us_total:119765841.64,cwc_africa_cash:1674731.79,cwc_africa_stock:14835773.49,cwc_group_total:249119005.43,capad_cap_res:157630511,capad_alc:134081987,capad_trr:45257841,capad_surplus:88824146,capad_tl:4441207300,custody_jse:58830074.51,custody_total:3072663595.1,day_num:15,trading_days:20},
+  {date:"23 Mar",sort:"2026-03-23",rev_total_today:716219.73,rev_total_mtd:15053388.01,rev_total_proj:19589730.19,rev_total_prior:11356049.77,rev_total_ytd:172802163.14,rev_sa_today:665788.57,rev_uk_today:50431.16,rev_us_today:0,realised_arb:-130502614,realised_prop:5639108,realised_facil:7997276,realised_total:-116866230,unrealised_arb:157573198,unrealised_prop:356578,unrealised_facil:-2850673,unrealised_total:155079103,net_arb:11895621,net_prop:5782828,net_facil:909919,net_total:38212873,cwc_sa_total:12576876.23,cwc_deriv_total:14557111.66,cwc_holdings_total:6657745.12,cwc_uk_total:47649733.68,cwc_us_total:119688861.02,cwc_africa_cash:1514473.65,cwc_africa_stock:15950441.77,cwc_group_total:243631784.29,capad_cap_res:158405772,capad_alc:135464653,capad_trr:45179783,capad_surplus:90284870,capad_tl:4514243500,custody_jse:62716299.55,custody_total:3072663595.1,day_num:16,trading_days:20},
+  {date:"24 Mar",sort:"2026-03-24",rev_total_today:4531080.32,rev_total_mtd:19613842.97,rev_total_proj:22873266.32,rev_total_prior:11356049.77,rev_total_ytd:177462224.31,rev_sa_today:370043.84,rev_uk_today:4161036.48,rev_us_today:0,realised_arb:-131817892,realised_prop:5639108,realised_facil:7997276,realised_total:-118181508,unrealised_arb:163029301,unrealised_prop:347821,unrealised_facil:-2813866,unrealised_total:160563256,net_arb:16036446,net_prop:5774071,net_facil:946726,net_total:42381748,cwc_sa_total:14572718.91,cwc_deriv_total:15139819.45,cwc_holdings_total:6653206.14,cwc_uk_total:54533363.38,cwc_us_total:120877352.95,cwc_africa_cash:1523889.3,cwc_africa_stock:14641831.4,cwc_group_total:236870367.88,capad_cap_res:158405772,capad_alc:135464653,capad_trr:45179783,capad_surplus:90284870,capad_tl:4514243500,custody_jse:53482197.2,custody_total:3072663595.1,day_num:17,trading_days:20}
+];
+
+const LABELS = RAW.map(d=>d.date);
+let selIdx = RAW.length-1;
+
+// Formatters
+const fM=(n,dp=1)=>{const a=Math.abs(n);const s=n<0?'-':'';if(a>=1e9)return s+'R '+(a/1e9).toFixed(dp)+'B';if(a>=1e6)return s+'R '+(a/1e6).toFixed(dp)+'M';if(a>=1e3)return s+'R '+(a/1e3).toFixed(0)+'K';return s+'R '+a.toFixed(0);}
+const fB=(n)=>{const a=Math.abs(n);const s=n<0?'-':'';return s+'R '+(a/1e9).toFixed(2)+'B';}
+const fPct=(a,b)=>((a/b)*100).toFixed(1)+'%';
+const delta=(c,p,invertGood=false)=>{const d=c-p;const up=invertGood?d<0:d>=0;return{txt:(d>=0?'▲ ':'▼ ')+fM(Math.abs(d))+' vs prev',cls:up?'up':'down'};}
+
+// Build date pills
+const pillsEl=document.getElementById('datePills');
+RAW.forEach((d,i)=>{
+  const b=document.createElement('button');
+  b.className='dpill'+(i===selIdx?' active':'');
+  b.textContent=d.date;
+  b.onclick=()=>{selIdx=i;pillsEl.querySelectorAll('.dpill').forEach((p,j)=>p.classList.toggle('active',j===i));updateAll();};
+  pillsEl.appendChild(b);
+});
+
+function updateKPIs(){
+  const c=RAW[selIdx],p=selIdx>0?RAW[selIdx-1]:null;
+  document.getElementById('k-rev').textContent=fM(c.rev_total_today);
+  document.getElementById('k-mtd').textContent=fM(c.rev_total_mtd);
+  document.getElementById('k-net').textContent=fM(c.net_total);
+  document.getElementById('k-cwc').textContent=fM(c.cwc_group_total);
+  document.getElementById('k-surplus').textContent=fM(c.capad_surplus);
+  if(p){
+    let d;
+    d=delta(c.rev_total_today,p.rev_total_today);setDelta('kd-rev',d);
+    d=delta(c.rev_total_mtd,p.rev_total_mtd);setDelta('kd-mtd',d);
+    d=delta(c.net_total,p.net_total);setDelta('kd-net',d);
+    d=delta(c.cwc_group_total,p.cwc_group_total);setDelta('kd-cwc',d);
+    d=delta(c.capad_surplus,p.capad_surplus);setDelta('kd-surplus',d);
+  } else {['kd-rev','kd-mtd','kd-net','kd-cwc','kd-surplus'].forEach(id=>{const el=document.getElementById(id);el.textContent='First day';el.className='kpi-delta flat';});}
+  // CAPAD sub-KPIs
+  document.getElementById('ck-alc').textContent=fM(c.capad_alc);
+  document.getElementById('ck-trr').textContent=fM(c.capad_trr);
+  document.getElementById('ck-surplus').textContent=fM(c.capad_surplus);
+  document.getElementById('ck-tl').textContent=fB(c.capad_tl);
+  if(p){
+    setDelta('ckd-alc',delta(c.capad_alc,p.capad_alc));
+    setDelta('ckd-trr',delta(c.capad_trr,p.capad_trr,true));
+    setDelta('ckd-surplus',delta(c.capad_surplus,p.capad_surplus));
+    setDelta('ckd-tl',delta(c.capad_tl,p.capad_tl));
+  }
+}
+
+function setDelta(id,d){const el=document.getElementById(id);if(el){el.textContent=d.txt;el.className='kpi-delta '+d.cls;}}
+
+function updateRevTable(){
+  const c=RAW[selIdx],p=selIdx>0?RAW[selIdx-1]:null;
+  const pL=p?p.date:'Prev';
+  let html=`<thead><tr><th>Region / Metric</th><th>${pL}</th><th>${c.date}</th><th>Change</th><th>MTD</th><th>YTD</th></tr></thead><tbody>`;
+  const rows=[
+    ['SA Revenue',p?.rev_sa_today,c.rev_sa_today,null,null],
+    ['UK Revenue',p?.rev_uk_today,c.rev_uk_today,null,null],
+    ['US Revenue',p?.rev_us_today,c.rev_us_today,null,null],
+    ['Total Group',p?.rev_total_today,c.rev_total_today,c.rev_total_mtd,c.rev_total_ytd],
+    ['Projected MTD',p?.rev_total_proj,c.rev_total_proj,null,null],
+    ['Prior Month',null,c.rev_total_prior,null,null],
+  ];
+  rows.forEach(([lbl,pv,cv,mtd,ytd],i)=>{
+    const isTotal=i===3;
+    const pvF=pv!=null?fM(pv):'—';
+    const cvF=cv!=null?fM(cv):'—';
+    const chgF=(pv!=null&&cv!=null)?'<span class="'+(cv-pv>=0?'pos':'neg')+'">'+(cv-pv>=0?'+':'')+fM(cv-pv)+'</span>':'—';
+    const rc=isTotal?'class="total-row"':'';
+    html+=`<tr ${rc}><td>${lbl}</td><td class="${pv!=null&&pv<0?'neg':''}">${pvF}</td><td class="${cv!=null&&cv<0?'neg':cv>1e6?'pos':''}">${cvF}</td><td>${chgF}</td><td>${mtd!=null?fM(mtd):'—'}</td><td>${ytd!=null?fM(ytd):'—'}</td></tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('rev-table').innerHTML=html;
+}
+
+function updatePnlTable(){
+  let html='<thead><tr><th>Date</th><th>Realised Arb</th><th>Realised Total</th><th>Unrealised Total</th><th>Net Arb</th><th>Net Prop</th><th>Net Facil</th><th>Net Total</th></tr></thead><tbody>';
+  RAW.forEach(d=>{
+    html+=`<tr><td>${d.date}</td><td class="${d.realised_arb<0?'neg':''}">${fM(d.realised_arb)}</td><td class="${d.realised_total<0?'neg':''}">${fM(d.realised_total)}</td><td class="${d.unrealised_total>=0?'pos':'neg'}">${fM(d.unrealised_total)}</td><td class="pos">${fM(d.net_arb)}</td><td class="pos">${fM(d.net_prop)}</td><td class="pos">${fM(d.net_facil)}</td><td class="pos">${fM(d.net_total)}</td></tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('pnl-table').innerHTML=html;
+}
+
+function updateCWCBars(){
+  const c=RAW[selIdx];
+  const items=[
+    {label:'SA',val:c.cwc_sa_total,color:'#2ec4b6'},
+    {label:'Derivatives',val:c.cwc_deriv_total,color:'#52b788'},
+    {label:'Holdings',val:c.cwc_holdings_total,color:'#52b788'},
+    {label:'UK',val:c.cwc_uk_total,color:'#f4a261'},
+    {label:'US',val:c.cwc_us_total,color:'#378ADD'},
+    {label:'Africa Cash',val:c.cwc_africa_cash,color:'#BA7517'},
+    {label:'Africa Stock',val:c.cwc_africa_stock,color:'#BA7517'},
+  ];
+  const max=Math.max(...items.map(i=>Math.abs(i.val)));
+  let html='';
+  items.forEach(it=>{
+    const pct=(Math.abs(it.val)/max*100).toFixed(1);
+    html+=`<div class="progress-row"><div class="prog-label">${it.label}</div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${it.color};"></div></div><div class="prog-val" style="color:${it.color}">${fM(it.val)}</div></div>`;
+  });
+  document.getElementById('cwc-bars').innerHTML=html;
+}
+
+function updateFullTable(){
+  let html='<thead><tr><th>Date</th><th>Revenue Today</th><th>MTD Revenue</th><th>Net Profit</th><th>CWC Group</th><th>CAPAD ALC</th><th>CAPAD Surplus</th><th>Trading Limit</th><th>Status</th></tr></thead><tbody>';
+  RAW.forEach(d=>{
+    const cover=(d.capad_alc/d.capad_trr*100).toFixed(0);
+    const status=d.capad_trr>55e6?'<span class="badge alert">Risk spike</span>':d.capad_surplus<75e6?'<span class="badge warn">Monitor</span>':'<span class="badge ok">Compliant</span>';
+    html+=`<tr><td>${d.date}</td><td class="${d.rev_total_today<0?'neg':'pos'}">${fM(d.rev_total_today)}</td><td>${fM(d.rev_total_mtd)}</td><td class="pos">${fM(d.net_total)}</td><td>${fM(d.cwc_group_total)}</td><td class="pos">${fM(d.capad_alc)}</td><td class="${d.capad_surplus<80e6?'hi':'pos'}">${fM(d.capad_surplus)}</td><td>${fB(d.capad_tl)}</td><td>${status}</td></tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('full-table').innerHTML=html;
+}
+
+// Charts
+const CI={};
+const grid='rgba(255,255,255,0.05)',tick='#7a92a8';
+const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:tick,font:{size:10}}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10}}}}};
+const mOpts=(cb)=>({...baseOpts,scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:cb}}}});
+const yM=mOpts(v=>fM(v,0));
+const yB=mOpts(v=>'R'+(v/1e9).toFixed(2)+'B');
+const yPct=mOpts(v=>v+'%');
+
+function mk(id,cfg){if(CI[id])CI[id].destroy();const el=document.getElementById(id);if(!el)return;CI[id]=new Chart(el.getContext('2d'),cfg);}
+function line(data,color,fill=false){return{data,borderColor:color,backgroundColor:fill?color.replace(')',',0.08)').replace('rgb','rgba'):undefined,fill,tension:.4,pointRadius:3,pointBackgroundColor:color,borderWidth:2};}
+function bar(data,colors){return{data,backgroundColor:Array.isArray(colors)?colors:data.map(v=>v>=0?colors:colors==='#2ec4b6'?'#e76f51':'#e76f51'),borderRadius:3,borderSkipped:false};}
+
+function buildCharts(){
+  const leg=(pos='bottom')=>({display:true,labels:{color:tick,font:{size:11},boxWidth:10,padding:10},position:pos});
+
+  // Overview
+  mk('c-rev-trend',{type:'bar',data:{labels:LABELS,datasets:[{...bar(RAW.map(d=>d.rev_total_today),RAW.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.7)':'rgba(231,111,81,0.7)')),borderRadius:3}]},options:yM});
+  mk('c-net-trend',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.net_total),'#52b788',true)}]},options:yM});
+  mk('c-cwc-trend',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.cwc_group_total),'#f4a261',true)}]},options:yM});
+  mk('c-mtd-vs',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'MTD Actual',data:RAW.map(d=>d.rev_total_mtd),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:3,borderSkipped:false},
+    {label:'Projected',data:RAW.map(d=>d.rev_total_proj),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false},
+    {label:'Prior month',data:RAW.map(d=>d.rev_total_prior),backgroundColor:'rgba(122,146,168,0.4)',borderRadius:3,borderSkipped:false}
+  ]},options:{...yM,plugins:{legend:leg('bottom')}}});
+
+  // Revenue
+  mk('c-rev-full',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'Today',data:RAW.map(d=>d.rev_total_today),backgroundColor:RAW.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.8)':'rgba(231,111,81,0.8)'),borderRadius:3,borderSkipped:false},
+    {label:'MTD daily avg',data:RAW.map(d=>d.rev_total_mtd/d.day_num),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-sa-rev',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_sa_today),'#2ec4b6',true)}]},options:yM});
+  mk('c-uk-rev',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_uk_today),'#f4a261',false)}]},options:yM});
+  mk('c-ytd',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_total_ytd),'#52b788',true)}]},options:yM});
+  mk('c-proj',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Projected',data:RAW.map(d=>d.rev_total_proj),borderColor:'#f4a261',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Prior month',data:RAW.map(d=>d.rev_total_prior),borderColor:'rgba(122,146,168,0.6)',tension:.1,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+
+  // P&L
+  mk('c-pnl-desk',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Net Arbitrage',data:RAW.map(d=>d.net_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Net Proprietary',data:RAW.map(d=>d.net_prop),borderColor:'#52b788',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Net Facilitation',data:RAW.map(d=>d.net_facil),borderColor:'#f4a261',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Net Total',data:RAW.map(d=>d.net_total),borderColor:'#ffffff',tension:.4,pointRadius:3,borderWidth:2.5,fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-realised',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Arbitrage',data:RAW.map(d=>d.realised_arb),borderColor:'#e76f51',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Proprietary',data:RAW.map(d=>d.realised_prop),borderColor:'#52b788',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Total',data:RAW.map(d=>d.realised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-unrealised',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Arbitrage',data:RAW.map(d=>d.unrealised_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Total',data:RAW.map(d=>d.unrealised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+
+  // CWC
+  mk('c-cwc-full',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.cwc_group_total),'#f4a261',true)}]},options:yM});
+  mk('c-cwc-sa',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.cwc_sa_total),'#2ec4b6',true)}]},options:yM});
+  mk('c-cwc-uk',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.cwc_uk_total),'#f4a261',true)}]},options:yM});
+  mk('c-cwc-us',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.cwc_us_total),'#378ADD',true)}]},options:yM});
+
+  // CAPAD
+  mk('c-cap-alc-trr',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'ALC',data:RAW.map(d=>d.capad_alc),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:3,borderSkipped:false},
+    {label:'TRR',data:RAW.map(d=>d.capad_trr),backgroundColor:'rgba(231,111,81,0.7)',borderRadius:3,borderSkipped:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-cap-surplus',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.capad_surplus),'#52b788',true)}]},options:yM});
+  mk('c-cap-tl',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.capad_tl),'#2ec4b6',true)}]},options:yB});
+  mk('c-cap-cover',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>parseFloat((d.capad_alc/d.capad_trr*100).toFixed(1))),'#f4a261',true)}]},options:yPct});
+
+  // Custody
+  mk('c-jse',{type:'bar',data:{labels:LABELS,datasets:[{...bar(RAW.map(d=>d.custody_jse),'#2ec4b6')}]},options:yM});
+  mk('c-custody-total',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.custody_total),'#52b788',true)}]},options:yB});
+  mk('c-africa-cash',{type:'bar',data:{labels:LABELS,datasets:[{...bar(RAW.map(d=>d.cwc_africa_cash),'#BA7517')}]},options:yM});
+  mk('c-africa-stock',{type:'bar',data:{labels:LABELS,datasets:[{...bar(RAW.map(d=>d.cwc_africa_stock),'#BA7517')}]},options:yM});
+
+  updateRevRegion();
+  updateCWCRegion();
+}
+
+function updateRevRegion(){
+  const c=RAW[selIdx];
+  mk('c-rev-region',{type:'bar',data:{labels:['SA','UK','US'],datasets:[{data:[c.rev_sa_today,c.rev_uk_today,c.rev_us_today],backgroundColor:['rgba(46,196,182,0.7)','rgba(244,162,97,0.7)','rgba(55,138,221,0.7)'],borderRadius:4,borderSkipped:false}]},options:{...yM,indexAxis:'y',plugins:{legend:{display:false}}}});
+}
+
+function updateCWCRegion(){
+  const c=RAW[selIdx];
+  mk('c-cwc-region',{type:'doughnut',data:{labels:['SA','Derivatives','Holdings','UK','US','Africa'],datasets:[{data:[c.cwc_sa_total,c.cwc_deriv_total,c.cwc_holdings_total,c.cwc_uk_total,c.cwc_us_total,c.cwc_africa_cash+c.cwc_africa_stock],backgroundColor:['#2ec4b6','#52b788','#52b788','#f4a261','#378ADD','#BA7517'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tick,font:{size:11},boxWidth:10,padding:8},position:'bottom'}},cutout:'60%'}});
+}
+
+function updateAll(){
+  updateKPIs();
+  updateRevTable();
+  updatePnlTable();
+  updateCWCBars();
+  updateFullTable();
+  updateRevRegion();
+  updateCWCRegion();
+}
+
+function showTab(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-ZA');
+buildCharts();
+updateAll();
+</script>
+</body>
+</html>
