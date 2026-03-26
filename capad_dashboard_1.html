@@ -34,4 +34,545 @@ header{display:flex;align-items:flex-start;justify-content:space-between;margin-
 .brand-sub{font-size:11px;font-weight:300;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;}
 .header-right{text-align:right;}
 .report-title{font-size:22px;font-weight:600;color:var(--teal);letter-spacing:-.02em;}
+.report-sub{font-size:12px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace;}
 
+/* Date selector */
+.date-row{display:flex;align-items:center;gap:12px;margin-bottom:1.8rem;flex-wrap:wrap;}
+.date-row label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.date-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.dpill{padding:6px 12px;font-size:11px;font-family:'DM Mono',monospace;background:var(--card);border:1px solid var(--card-b);border-radius:20px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.dpill:hover{border-color:var(--teal-dim);color:var(--white);}
+.dpill.active{background:rgba(46,196,182,0.15);border-color:var(--teal);color:var(--teal);}
+
+/* KPIs */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:1.8rem;}
+.kpi{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.2rem 1.4rem;position:relative;overflow:hidden;animation:fadeUp .4s ease both;}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.c-teal::after{background:var(--teal);}
+.kpi.c-amber::after{background:var(--amber);}
+.kpi.c-red::after{background:var(--red);}
+.kpi.c-green::after{background:var(--green);}
+.kpi-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.kpi-value{font-family:'DM Mono',monospace;font-size:21px;font-weight:400;color:var(--white);}
+.kpi-delta{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:4px;}
+.kpi-delta.up{color:var(--green);}
+.kpi-delta.down{color:var(--red);}
+.kpi-delta.flat{color:var(--muted);}
+
+/* Tabs */
+.tabs{display:flex;gap:0;margin-bottom:1.8rem;border-bottom:1px solid var(--card-b);}
+.tab{padding:10px 20px;font-size:13px;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.tab:hover{color:var(--white);}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* Panels */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* Chart cards */
+.chart-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;margin-bottom:1.4rem;}
+.chart-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;}
+.chart-wrap{position:relative;width:100%;height:260px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.4rem;}
+.two-col .chart-wrap{height:220px;}
+.three-col{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:1.4rem;}
+.three-col .chart-wrap{height:200px;}
+
+/* Table */
+.table-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;margin-bottom:1.4rem;overflow-x:auto;}
+.table-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+th{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:7px 10px;border-bottom:1px solid var(--teal-dim);}
+th:first-child{text-align:left;}
+td{padding:9px 10px;font-size:12px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;color:var(--white);}
+td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);}
+tr.total-row td{border-top:1px solid var(--teal-dim);border-bottom:none;padding-top:11px;color:var(--teal);font-weight:500;}
+tr.total-row td:first-child{color:var(--teal);}
+tr:last-child td{border-bottom:none;}
+.pos{color:var(--green)!important;}
+.neg{color:var(--red)!important;}
+.hi{color:var(--amber)!important;}
+
+/* Gauge */
+.gauge-row{display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:1.4rem;}
+.gauge-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;display:flex;flex-direction:column;align-items:center;}
+.gauge-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;align-self:flex-start;}
+.gauge-num{font-family:'DM Mono',monospace;font-size:28px;color:var(--green);margin-top:8px;}
+.gauge-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* Bars */
+.bars-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.4rem;}
+.bars-card h3{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.bar-row:last-child{margin-bottom:0;}
+.bar-name{font-size:12px;color:var(--muted);min-width:220px;}
+.bar-track{flex:1;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;}
+.bar-val{font-family:'DM Mono',monospace;font-size:11px;min-width:110px;text-align:right;}
+
+/* Sparkline cells */
+.spark-cell canvas{display:block;}
+
+/* Alert badges */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:3px;font-weight:500;}
+.badge.ok{background:rgba(82,183,136,.15);color:var(--green);}
+.badge.warn{background:rgba(244,162,97,.15);color:var(--amber);}
+.badge.alert{background:rgba(231,111,81,.15);color:var(--red);}
+
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--teal-dim);display:flex;justify-content:space-between;}
+footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.kpi:nth-child(1){animation-delay:.05s;} .kpi:nth-child(2){animation-delay:.1s;} .kpi:nth-child(3){animation-delay:.15s;} .kpi:nth-child(4){animation-delay:.2s;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="logo-area">
+    <div class="logo-mark">AV</div>
+    <div>
+      <div class="brand-name">AVIOR</div>
+      <div class="brand-sub">Capital Markets</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="report-title">Daily CAPAD Dashboard</div>
+    <div class="report-sub">4 March 2026 — 25 March 2026 &nbsp;|&nbsp; 16 trading days</div>
+  </div>
+</header>
+
+<!-- Date selector -->
+<div class="date-row">
+  <label>View date:</label>
+  <div class="date-pills" id="datePills"></div>
+</div>
+
+<!-- KPI strip -->
+<div class="kpi-grid">
+  <div class="kpi c-green">
+    <div class="kpi-label">Adj. Liquid Capital</div>
+    <div class="kpi-value" id="k-alc">—</div>
+    <div class="kpi-delta" id="kd-alc">—</div>
+  </div>
+  <div class="kpi c-amber">
+    <div class="kpi-label">Total Risk Requirement</div>
+    <div class="kpi-value" id="k-trr">—</div>
+    <div class="kpi-delta" id="kd-trr">—</div>
+  </div>
+  <div class="kpi c-teal">
+    <div class="kpi-label">Surplus / Deficit</div>
+    <div class="kpi-value" id="k-surplus">—</div>
+    <div class="kpi-delta" id="kd-surplus">—</div>
+  </div>
+  <div class="kpi c-teal">
+    <div class="kpi-label">Trading Limit</div>
+    <div class="kpi-value" id="k-tl">—</div>
+    <div class="kpi-delta" id="kd-tl">—</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('overview')">Overview</button>
+  <button class="tab" onclick="showTab('capital')">Capital Resources</button>
+  <button class="tab" onclick="showTab('risk')">Risk Requirements</button>
+  <button class="tab" onclick="showTab('pnl')">P&amp;L</button>
+  <button class="tab" onclick="showTab('table')">Full Data Table</button>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div class="panel active" id="panel-overview">
+  <div class="gauge-row">
+    <div class="gauge-card">
+      <h3>Coverage Ratio</h3>
+      <svg viewBox="0 0 180 100" width="180" height="100">
+        <defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#e76f51"/>
+          <stop offset="40%" style="stop-color:#f4a261"/>
+          <stop offset="70%" style="stop-color:#52b788"/>
+          <stop offset="100%" style="stop-color:#2ec4b6"/>
+        </linearGradient></defs>
+        <path d="M16 90 A74 74 0 0 1 164 90" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="12" stroke-linecap="round"/>
+        <path d="M16 90 A74 74 0 0 1 164 90" fill="none" stroke="url(#gg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="232" id="gaugeArc"/>
+        <line x1="90" y1="90" x2="90" y2="22" stroke="#2ec4b6" stroke-width="2.5" stroke-linecap="round" style="transform-origin:90px 90px;" id="gaugeNeedle"/>
+        <circle cx="90" cy="90" r="5" fill="#2ec4b6"/>
+      </svg>
+      <div class="gauge-num" id="gaugeNum">—</div>
+      <div class="gauge-sub">ALC / TRR</div>
+    </div>
+    <div class="bars-card">
+      <h3>Risk Requirement Breakdown — Selected Date</h3>
+      <div class="bar-row">
+        <div class="bar-name">Base Requirement</div>
+        <div class="bar-track"><div class="bar-fill" id="br-base" style="background:#2ec4b6;"></div></div>
+        <div class="bar-val" id="bv-base" style="color:#2ec4b6;">—</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">Position Risk (Listed Equities)</div>
+        <div class="bar-track"><div class="bar-fill" id="br-pos" style="background:#f4a261;"></div></div>
+        <div class="bar-val" id="bv-pos" style="color:#f4a261;">—</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">CP Risk Non-controlled Clients</div>
+        <div class="bar-track"><div class="bar-fill" id="br-nc" style="background:#f4a261;"></div></div>
+        <div class="bar-val" id="bv-nc" style="color:#f4a261;">—</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">CP Risk Unsecured Loans</div>
+        <div class="bar-track"><div class="bar-fill" id="br-loans" style="background:#e76f51;"></div></div>
+        <div class="bar-val" id="bv-loans" style="color:#e76f51;">—</div>
+      </div>
+      <div class="bar-row" style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(46,196,182,0.15);">
+        <div class="bar-name" style="color:var(--white);font-weight:500;">Total Risk Requirement</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:rgba(46,196,182,0.25);"></div></div>
+        <div class="bar-val" id="bv-trr" style="color:var(--white);">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Adjusted Liquid Capital — 15 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-alc"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Surplus / Deficit — 15 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-surplus"></canvas></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Trading Limit — 15 day trend</h3>
+      <div class="chart-wrap"><canvas id="c-tl"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>ALC vs Total Risk Requirement</h3>
+      <div class="chart-wrap"><canvas id="c-alc-vs-trr"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAPITAL RESOURCES TAB -->
+<div class="panel" id="panel-capital">
+  <div class="chart-card">
+    <h3>Total Capital Resources — 15 day trend</h3>
+    <div class="chart-wrap"><canvas id="c-totalcap"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Capital Deductions</h3>
+      <div class="chart-wrap"><canvas id="c-deductions"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Adjusted Liquid Capital Composition — Selected Date</h3>
+      <div class="chart-wrap"><canvas id="c-alc-comp"></canvas></div>
+    </div>
+  </div>
+  <div class="table-card">
+    <h3>Capital Resources Detail — Selected Date</h3>
+    <table id="cap-table"></table>
+  </div>
+</div>
+
+<!-- RISK TAB -->
+<div class="panel" id="panel-risk">
+  <div class="chart-card">
+    <h3>Total Risk Requirement — 15 day trend</h3>
+    <div class="chart-wrap"><canvas id="c-trr-trend"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Position Risk (Listed Equities) trend</h3>
+      <div class="chart-wrap"><canvas id="c-posrisk"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>CP Risk Non-controlled Clients trend</h3>
+      <div class="chart-wrap"><canvas id="c-crnc"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Risk Component Stacked — All 15 Days</h3>
+    <div class="chart-wrap" style="height:280px;"><canvas id="c-stacked"></canvas></div>
+  </div>
+</div>
+
+<!-- PNL TAB -->
+<div class="panel" id="panel-pnl">
+  <div class="chart-card">
+    <h3>Income, Expense &amp; Unaudited Profit — 15 day trend</h3>
+    <div class="chart-wrap" style="height:300px;"><canvas id="c-pnl"></canvas></div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Profit margin % (Profit / Income)</h3>
+      <div class="chart-wrap"><canvas id="c-margin"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Daily profit change (MoM)</h3>
+      <div class="chart-wrap"><canvas id="c-profitdelta"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL TABLE TAB -->
+<div class="panel" id="panel-table">
+  <div class="table-card">
+    <h3>All metrics — all 15 trading days</h3>
+    <table id="full-table"></table>
+  </div>
+</div>
+
+<footer>
+  <span>AVIOR Capital Markets — Confidential &amp; Regulatory Use Only</span>
+  <span>Generated: <span id="gen-date"></span></span>
+</footer>
+</div>
+
+<script>
+const RAW = [
+  {date:"04 Mar",alc:128321559,trr:45779856,surplus:82541703,tl:4127085150,total_cap:152817179,impaired:-16495598,illiquid:-2196209,unrealised:-5803813,base_req:8913270,pos_risk:4582127,cr_nonctrl:4669406,cr_loans:27615053,income:100464267,expense:78939052,profit:21525215},
+  {date:"05 Mar",alc:129674150,trr:45709792,surplus:83964358,tl:4198217900,total_cap:153212507,impaired:-16495598,illiquid:-1397302,unrealised:-5645457,base_req:8913270,pos_risk:4360342,cr_nonctrl:4786627,cr_loans:27649553,income:100859595,expense:78939052,profit:21920543},
+  {date:"06 Mar",alc:129558256,trr:48615751,surplus:80942505,tl:4047125250,total_cap:153343275,impaired:-16495598,illiquid:-1397302,unrealised:-5892119,base_req:8913270,pos_risk:4750499,cr_nonctrl:7302429,cr_loans:27649553,income:101494295,expense:79442984,profit:22051311},
+  {date:"09 Mar",alc:128596964,trr:48086272,surplus:80510692,tl:4025534600,total_cap:152983714,impaired:-16495598,illiquid:-1890885,unrealised:-6000267,base_req:8913270,pos_risk:4671069,cr_nonctrl:6852380,cr_loans:27649553,income:102021013,expense:80329263,profit:21691750},
+  {date:"10 Mar",alc:129752710,trr:63687728,surplus:66064982,tl:3303249100,total_cap:153705602,impaired:-16495598,illiquid:-1397302,unrealised:-6059992,base_req:8913270,pos_risk:15773939,cr_nonctrl:9423326,cr_loans:27649553,income:102943604,expense:80529966,profit:22413638},
+  {date:"11 Mar",alc:130154868,trr:45585626,surplus:84569242,tl:4228462100,total_cap:154097489,impaired:-16495598,illiquid:-1397302,unrealised:-6049721,base_req:8913270,pos_risk:4834744,cr_nonctrl:4188059,cr_loans:27649553,income:103335491,expense:80529966,profit:22805525},
+  {date:"12 Mar",alc:130419607,trr:47718048,surplus:82701559,tl:4135077950,total_cap:154447340,impaired:-16495598,illiquid:-1397302,unrealised:-6134833,base_req:8913270,pos_risk:4961415,cr_nonctrl:6193810,cr_loans:27649553,income:103685342,expense:80529966,profit:23155376},
+  {date:"13 Mar",alc:130376106,trr:47917283,surplus:82458823,tl:4122941150,total_cap:154865168,impaired:-16495598,illiquid:-1397302,unrealised:-6596162,base_req:8913270,pos_risk:7093987,cr_nonctrl:4260473,cr_loans:27649553,income:104108170,expense:80534966,profit:23573204},
+  {date:"16 Mar",alc:131262908,trr:55975020,surplus:75287888,tl:3764394400,total_cap:155920854,impaired:-16495598,illiquid:-1566186,unrealised:-6596162,base_req:8913270,pos_risk:6857712,cr_nonctrl:12554485,cr_loans:27649553,income:105163856,expense:80534966,profit:24628890},
+  {date:"17 Mar",alc:132240630,trr:49042664,surplus:83197966,tl:4159898300,total_cap:156319411,impaired:-16495598,illiquid:-1418107,unrealised:-6165076,base_req:8913270,pos_risk:4782249,cr_nonctrl:7697592,cr_loans:27649553,income:105681458,expense:80654011,profit:25027447},
+  {date:"18 Mar",alc:132550430,trr:48974823,surplus:83575607,tl:4178780350,total_cap:156923085,impaired:-16495598,illiquid:-1397302,unrealised:-6479755,base_req:8913270,pos_risk:4557832,cr_nonctrl:7854168,cr_loans:27649553,income:106285132,expense:80654011,profit:25631121},
+  {date:"19 Mar",alc:132184331,trr:47894060,surplus:84290271,tl:4214513550,total_cap:157413352,impaired:-16495598,illiquid:-1397302,unrealised:-7336121,base_req:8913270,pos_risk:4563678,cr_nonctrl:6767559,cr_loans:27649553,income:106802750,expense:80681362,profit:26121388},
+  {date:"20 Mar",alc:134081987,trr:45257841,surplus:88824146,tl:4441207300,total_cap:157630511,impaired:-16495598,illiquid:-2670586,unrealised:-4382340,base_req:8913270,pos_risk:6910011,cr_nonctrl:1785007,cr_loans:27649553,income:107019909,expense:80681362,profit:26338547},
+  {date:"23 Mar",alc:135464653,trr:45179783,surplus:90284870,tl:4514243500,total_cap:158405772,impaired:-16495598,illiquid:-1397302,unrealised:-5048219,base_req:8913270,pos_risk:4437887,cr_nonctrl:4179073,cr_loans:27649553,income:107796121,expense:80682313,profit:27113808},
+  {date:"24 Mar",alc:134110187,trr:45532537,surplus:88577650,tl:4428882500,total_cap:156374247,impaired:-16495598,illiquid:-1482812,unrealised:-4285650,base_req:8913270,pos_risk:4720122,cr_nonctrl:3249592,cr_loans:28649553,income:108031109,expense:82948826,profit:25082283},
+  {date:"25 Mar",alc:134173349,trr:44012782,surplus:90160567,tl:4508028350,total_cap:158424747,impaired:-16495598,illiquid:-1482812,unrealised:-6272988,base_req:8913270,pos_risk:4838835,cr_nonctrl:1606415,cr_loans:28654262,income:113209689,expense:86076906,profit:27132783}
+];
+
+const LABELS = RAW.map(d=>d.date);
+let selectedIdx = RAW.length - 1;
+
+// ---- Formatters ----
+function fmtM(n){return 'R '+(n/1e6).toFixed(1)+'M';}
+function fmtB(n){return n>=1e9?'R '+(n/1e9).toFixed(2)+'B':'R '+(n/1e6).toFixed(0)+'M';}
+function fmtShort(n){if(Math.abs(n)>=1e9) return (n/1e9).toFixed(2)+'B'; if(Math.abs(n)>=1e6) return (n/1e6).toFixed(1)+'M'; return n.toLocaleString();}
+function pct(a,b){return ((a/b)*100).toFixed(1)+'%';}
+function delta(cur,prev){const d=cur-prev;const s=d>=0?'▲ ':'▼ ';const cls=d>=0?'up':'down';return {s:s+fmtM(Math.abs(d)),cls};}
+
+// ---- Date pills ----
+const pillsEl = document.getElementById('datePills');
+RAW.forEach((d,i)=>{
+  const b=document.createElement('button');
+  b.className='dpill'+(i===selectedIdx?' active':'');
+  b.textContent=d.date;
+  b.onclick=()=>{selectedIdx=i;updateAll();pillsEl.querySelectorAll('.dpill').forEach((p,j)=>p.classList.toggle('active',j===i));};
+  pillsEl.appendChild(b);
+});
+
+// ---- KPIs ----
+function updateKPIs(){
+  const c=RAW[selectedIdx], p=selectedIdx>0?RAW[selectedIdx-1]:null;
+  document.getElementById('k-alc').textContent=fmtM(c.alc);
+  document.getElementById('k-trr').textContent=fmtM(c.trr);
+  document.getElementById('k-surplus').textContent=fmtM(c.surplus);
+  document.getElementById('k-tl').textContent=fmtB(c.tl);
+  if(p){
+    let d;
+    d=delta(c.alc,p.alc); document.getElementById('kd-alc').textContent=d.s+' vs prev'; document.getElementById('kd-alc').className='kpi-delta '+d.cls;
+    d=delta(c.trr,p.trr); document.getElementById('kd-trr').textContent=d.s+' vs prev'; document.getElementById('kd-trr').className='kpi-delta '+(c.trr>p.trr?'down':'up');
+    d=delta(c.surplus,p.surplus); document.getElementById('kd-surplus').textContent=d.s+' vs prev'; document.getElementById('kd-surplus').className='kpi-delta '+d.cls;
+    d=delta(c.tl,p.tl); document.getElementById('kd-tl').textContent=d.s+' vs prev'; document.getElementById('kd-tl').className='kpi-delta '+d.cls;
+  } else {
+    ['kd-alc','kd-trr','kd-surplus','kd-tl'].forEach(id=>{document.getElementById(id).textContent='First day';document.getElementById(id).className='kpi-delta flat';});
+  }
+}
+
+// ---- Gauge ----
+function updateGauge(){
+  const c=RAW[selectedIdx];
+  const ratio=c.alc/c.trr;
+  const pctVal=(ratio*100).toFixed(1)+'%';
+  document.getElementById('gaugeNum').textContent=pctVal;
+  const fill=Math.min((ratio-1)/2,1);
+  const offset=232-(fill*232);
+  document.getElementById('gaugeArc').setAttribute('stroke-dashoffset',Math.max(offset,5));
+  const angle=-90+(fill*180);
+  document.getElementById('gaugeNeedle').style.transform=`rotate(${angle}deg)`;
+}
+
+// ---- Risk bars ----
+function updateBars(){
+  const c=RAW[selectedIdx];
+  const trr=c.trr;
+  const set=(id,val)=>{
+    document.getElementById('br-'+id).style.width=(val/trr*100)+'%';
+    document.getElementById('bv-'+id).textContent='R '+val.toLocaleString();
+  };
+  set('base',c.base_req); set('pos',c.pos_risk); set('nc',c.cr_nonctrl); set('loans',c.cr_loans);
+  document.getElementById('bv-trr').textContent='R '+trr.toLocaleString();
+}
+
+// ---- Capital table ----
+function updateCapTable(){
+  const c=RAW[selectedIdx];
+  const p=selectedIdx>0?RAW[selectedIdx-1]:null;
+  const rows=[
+    ['Shareholders Funds',3169526,3169526],
+    ['Retained Income / Sub-components','—','—'],
+    ['Unaudited Profit or Loss',p?p.profit:null,c.profit],
+    ['Subordinated Loans',128122438,128122438],
+    ['Total Capital Resources',p?p.total_cap:null,c.total_cap,'total'],
+    ['Less: Impaired Capital',p?p.impaired:null,c.impaired],
+    ['Less: Illiquid Assets',p?p.illiquid:null,c.illiquid],
+    ['Less: Unrealised P/L',p?p.unrealised:null,c.unrealised],
+    ['Adjusted Liquid Capital',p?p.alc:null,c.alc,'total alc'],
+  ];
+  const pLabel=p?p.date:'Prev';
+  const cLabel=c.date;
+  let html=`<thead><tr><th>Component</th><th>${pLabel}</th><th>${cLabel}</th><th>Change</th></tr></thead><tbody>`;
+  rows.forEach(([label,pv,cv,cls])=>{
+    const isTot=cls&&cls.includes('total');
+    const isAlc=cls&&cls.includes('alc');
+    const pvFmt=pv===null||pv==='—'?'—':'R '+Number(pv).toLocaleString();
+    const cvFmt=cv==='—'?'—':'R '+Number(cv).toLocaleString();
+    let chg='—',chgCls='';
+    if(pv!==null&&pv!=='—'&&cv!=='—'){const d=cv-pv;chg=(d>=0?'+':'')+fmtShort(d);chgCls=d>0?'pos':d<0?'neg':'';}
+    const rc=isTot?'class="total-row"':'';
+    html+=`<tr ${rc}><td>${label}</td><td>${pvFmt}</td><td class="${isAlc?'pos':''}">${cvFmt}</td><td class="${chgCls}">${chg}</td></tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('cap-table').innerHTML=html;
+}
+
+// ---- Full table ----
+function buildFullTable(){
+  let html='<thead><tr><th>Date</th><th>ALC</th><th>TRR</th><th>Surplus</th><th>Cover%</th><th>Trading Limit</th><th>Income</th><th>Profit</th><th>Status</th></tr></thead><tbody>';
+  RAW.forEach(d=>{
+    const cov=(d.alc/d.trr*100).toFixed(0);
+    const status=d.trr>60e6?'<span class="badge alert">High Risk</span>':d.surplus<75e6?'<span class="badge warn">Monitor</span>':'<span class="badge ok">Compliant</span>';
+    html+=`<tr>
+      <td>${d.date}</td>
+      <td>R ${(d.alc/1e6).toFixed(1)}M</td>
+      <td class="${d.trr>55e6?'neg':d.trr>50e6?'hi':''}">R ${(d.trr/1e6).toFixed(1)}M</td>
+      <td class="${d.surplus<75e6?'neg':'pos'}">R ${(d.surplus/1e6).toFixed(1)}M</td>
+      <td class="${cov<150?'neg':cov>250?'pos':''}">${cov}%</td>
+      <td>R ${(d.tl/1e9).toFixed(2)}B</td>
+      <td>R ${(d.income/1e6).toFixed(1)}M</td>
+      <td class="${d.profit>25e6?'pos':''}">R ${(d.profit/1e6).toFixed(1)}M</td>
+      <td>${status}</td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('full-table').innerHTML=html;
+}
+
+// ---- Charts ----
+const chartInstances={};
+function mkChart(id,cfg){
+  if(chartInstances[id]) chartInstances[id].destroy();
+  chartInstances[id]=new Chart(document.getElementById(id).getContext('2d'),cfg);
+}
+
+const gridColor='rgba(255,255,255,0.05)';
+const tickColor='#7a92a8';
+const baseScales={x:{grid:{display:false},ticks:{color:tickColor,font:{size:10}}},y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:10}}}};
+function yFmtM(){return{...baseScales,y:{...baseScales.y,ticks:{...baseScales.y.ticks,callback:v=>'R'+(v/1e6).toFixed(0)+'M'}}};}
+function yFmtB(){return{...baseScales,y:{...baseScales.y,ticks:{...baseScales.y.ticks,callback:v=>'R'+(v/1e9).toFixed(2)+'B'}}};}
+
+function buildCharts(){
+  const leg={display:false};
+
+  // ALC trend
+  mkChart('c-alc',{type:'line',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.alc),borderColor:'#52b788',backgroundColor:'rgba(82,183,136,0.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#52b788',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // Surplus trend
+  mkChart('c-surplus',{type:'line',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.surplus),borderColor:'#2ec4b6',backgroundColor:'rgba(46,196,182,0.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#2ec4b6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // Trading limit
+  mkChart('c-tl',{type:'line',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.tl),borderColor:'#f4a261',backgroundColor:'rgba(244,162,97,0.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#f4a261',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtB()}});
+
+  // ALC vs TRR
+  mkChart('c-alc-vs-trr',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'ALC',data:RAW.map(d=>d.alc),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:3,borderSkipped:false},
+    {label:'TRR',data:RAW.map(d=>d.trr),backgroundColor:'rgba(231,111,81,0.7)',borderRadius:3,borderSkipped:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},scales:yFmtM()}});
+
+  // Total capital
+  mkChart('c-totalcap',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Total Capital Resources',data:RAW.map(d=>d.total_cap),borderColor:'#2ec4b6',tension:.4,pointRadius:3,pointBackgroundColor:'#2ec4b6',borderWidth:2,backgroundColor:'rgba(46,196,182,0.06)',fill:true},
+    {label:'Adjusted Liquid Capital',data:RAW.map(d=>d.alc),borderColor:'#52b788',tension:.4,pointRadius:3,pointBackgroundColor:'#52b788',borderWidth:2,backgroundColor:'rgba(82,183,136,0.06)',fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},scales:yFmtM()}});
+
+  // Deductions
+  mkChart('c-deductions',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Unrealised P/L',data:RAW.map(d=>Math.abs(d.unrealised)),borderColor:'#e76f51',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Illiquid Assets',data:RAW.map(d=>Math.abs(d.illiquid)),borderColor:'#f4a261',tension:.4,pointRadius:3,borderWidth:2,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},scales:yFmtM()}});
+
+  // TRR trend
+  mkChart('c-trr-trend',{type:'line',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.trr),borderColor:'#e76f51',backgroundColor:'rgba(231,111,81,0.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:RAW.map(d=>d.trr>55e6?'#e76f51':'#f4a261'),borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // Position risk
+  mkChart('c-posrisk',{type:'bar',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.pos_risk),backgroundColor:RAW.map(d=>d.pos_risk>10e6?'#e76f51':'rgba(244,162,97,0.7)'),borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // CR non-controlled
+  mkChart('c-crnc',{type:'bar',data:{labels:LABELS,datasets:[{data:RAW.map(d=>d.cr_nonctrl),backgroundColor:RAW.map(d=>d.cr_nonctrl>10e6?'#e76f51':'rgba(244,162,97,0.7)'),borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // Stacked risk
+  mkChart('c-stacked',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'Base Req',data:RAW.map(d=>d.base_req),backgroundColor:'rgba(46,196,182,0.8)',borderSkipped:false},
+    {label:'Position Risk',data:RAW.map(d=>d.pos_risk),backgroundColor:'rgba(244,162,97,0.8)',borderSkipped:false},
+    {label:'CR Non-ctrl',data:RAW.map(d=>d.cr_nonctrl),backgroundColor:'rgba(231,111,81,0.8)',borderSkipped:false},
+    {label:'CR Unsec Loans',data:RAW.map(d=>d.cr_loans),backgroundColor:'rgba(122,146,168,0.6)',borderSkipped:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},scales:{...yFmtM(),x:{...baseScales.x,stacked:true},y:{...yFmtM().y,stacked:true}}}});
+
+  // P&L
+  mkChart('c-pnl',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Income',data:RAW.map(d=>d.income),borderColor:'#2ec4b6',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Expense',data:RAW.map(d=>d.expense),borderColor:'#e76f51',tension:.4,pointRadius:3,borderWidth:2,fill:false},
+    {label:'Profit',data:RAW.map(d=>d.profit),borderColor:'#52b788',tension:.4,pointRadius:3,borderWidth:2,backgroundColor:'rgba(82,183,136,0.08)',fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},scales:yFmtM()}});
+
+  // Margin
+  mkChart('c-margin',{type:'line',data:{labels:LABELS,datasets:[{data:RAW.map(d=>+(d.profit/d.income*100).toFixed(1)),borderColor:'#52b788',backgroundColor:'rgba(82,183,136,0.1)',fill:true,tension:.4,pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:{x:baseScales.x,y:{...baseScales.y,ticks:{color:tickColor,font:{size:10},callback:v=>v+'%'}}}}});
+
+  // Profit delta
+  const profitDeltas=RAW.map((d,i)=>i===0?0:+(d.profit-RAW[i-1].profit));
+  mkChart('c-profitdelta',{type:'bar',data:{labels:LABELS,datasets:[{data:profitDeltas,backgroundColor:profitDeltas.map(v=>v>=0?'rgba(82,183,136,0.7)':'rgba(231,111,81,0.7)'),borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:leg},scales:yFmtM()}});
+
+  // ALC composition (doughnut)
+  updateAlcComp();
+}
+
+function updateAlcComp(){
+  const c=RAW[selectedIdx];
+  mkChart('c-alc-comp',{type:'doughnut',data:{
+    labels:['Total Cap Resources','Less Impaired','Less Illiquid','Less Unrealised'],
+    datasets:[{data:[c.total_cap,Math.abs(c.impaired),Math.abs(c.illiquid),Math.abs(c.unrealised)],backgroundColor:['#2ec4b6','#e76f51','#f4a261','rgba(122,146,168,0.7)'],borderWidth:0,hoverOffset:4}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},cutout:'60%'}});
+}
+
+function updateAll(){
+  updateKPIs();
+  updateGauge();
+  updateBars();
+  updateCapTable();
+  updateAlcComp();
+}
+
+function showTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Init
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-ZA');
+buildFullTable();
+buildCharts();
+updateAll();
+</script>
+</body>
+</html>
