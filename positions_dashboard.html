@@ -8,11 +8,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --navy:#0a1628; --navy2:#0f1f3d; --navy3:#162444; --navy4:#1c2d52;
-    --teal:#2ec4b6; --teal-dim:rgba(46,196,182,0.15); --teal-glow:rgba(46,196,182,0.08);
-    --text:#e8edf5; --text2:#a8b4c8; --text3:#6b7d96;
-    --red:#e05c5c; --green:#3dd68c; --blue:#6495ed; --orange:#ffa500; --purple:#c896c8;
-    --border:rgba(255,255,255,0.07); --card-bg:rgba(255,255,255,0.04);
+    --navy:#0a1628;--navy2:#0f1f3d;--navy3:#162444;--navy4:#1c2d52;
+    --teal:#2ec4b6;--teal-dim:rgba(46,196,182,0.15);--teal-glow:rgba(46,196,182,0.08);
+    --text:#e8edf5;--text2:#a8b4c8;--text3:#6b7d96;
+    --red:#e05c5c;--green:#3dd68c;--blue:#6495ed;--orange:#ffa500;--purple:#c896c8;
+    --border:rgba(255,255,255,0.07);--card-bg:rgba(255,255,255,0.04);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;}
@@ -27,7 +27,7 @@
   .header-meta{font-size:12px;color:var(--text3);}
   .header-right{display:flex;align-items:center;gap:10px;}
   .date-badge{background:var(--teal-dim);border:1px solid var(--teal);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--teal);}
-  .est-badge{background:rgba(255,165,0,0.1);border:1px solid rgba(255,165,0,0.35);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:500;color:var(--orange);}
+  .exact-badge{background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.4);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:600;color:var(--green);}
   .nav{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 32px;display:flex;gap:4px;}
   .nav-tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
   .nav-tab:hover{color:var(--text);}
@@ -39,7 +39,6 @@
   .kpi-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
   .kpi-value{font-size:22px;font-weight:700;line-height:1;}
   .kpi-value.teal{color:var(--teal);}
-  .kpi-sub{font-size:11px;color:var(--text3);margin-top:6px;}
   .kpi-delta{font-size:12px;margin-top:4px;}
   .pos{color:var(--green);} .neg{color:var(--red);}
   .section{display:none;} .section.active{display:block;}
@@ -93,10 +92,9 @@
   .pr{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
   .pc{background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:16px;}
   .pl{font-size:11px;color:var(--text3);margin-bottom:6px;}
-  .pv2{font-size:18px;font-weight:700;}
-  .en{display:flex;align-items:flex-start;gap:10px;background:rgba(255,165,0,0.06);border:1px solid rgba(255,165,0,0.22);border-radius:8px;padding:11px 14px;margin-bottom:20px;font-size:11px;color:var(--text3);line-height:1.6;}
-  .en strong{color:var(--orange);white-space:nowrap;}
   .footer{text-align:center;padding:20px 32px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:24px;}
+  .note{display:flex;align-items:flex-start;gap:10px;background:rgba(100,149,237,0.06);border:1px solid rgba(100,149,237,0.22);border-radius:8px;padding:11px 14px;margin-bottom:20px;font-size:11px;color:var(--text3);line-height:1.6;}
+  .note strong{color:var(--blue);white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -111,7 +109,7 @@
     <div class="header-meta">2 Mar – 27 Mar 2026 &nbsp;|&nbsp; 20 trading days</div>
   </div>
   <div class="header-right">
-    <div class="est-badge">Trend data estimated</div>
+    <div class="exact-badge">All data PDF-exact</div>
     <div class="date-badge">27 Mar 2026</div>
   </div>
 </div>
@@ -141,55 +139,55 @@
     <div class="kpi-card">
       <div class="kpi-label">Prop YTD</div>
       <div class="kpi-value">R7.2M</div>
-      <div class="kpi-delta pos">▲ R407K vs prior</div>
+      <div class="kpi-delta pos">▲ R1.1M vs 26 Mar</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Facil YTD</div>
       <div class="kpi-value">R1.2M</div>
-      <div class="kpi-delta pos">▲ R44K vs prior</div>
+      <div class="kpi-delta pos">▲ R44K vs 26 Mar</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Gross Exposure</div>
       <div class="kpi-value">R89.6M</div>
-      <div class="kpi-delta neg">▼ R4.1M vs prior</div>
+      <div class="kpi-delta neg">▼ R5.1M vs 26 Mar</div>
     </div>
   </div>
 
-  <!-- ══════════ OVERVIEW ══════════ -->
+  <!-- ══ OVERVIEW ══ -->
   <div id="tab-overview" class="section active">
-    <div class="en"><strong>Note</strong> Historic trend lines (2–26 Mar) are interpolated from the known endpoint values on the live dashboard. The 27 Mar data point is exact from the daily PDF. Replace estimates by uploading daily PDFs.</div>
+    <div class="note"><strong>Note</strong> All 20 data points are extracted exactly from daily PDFs (2 Mar – 27 Mar 2026). The gross exposure series shows genuine intraday book swings from ship-in/ship-out events, large arbitrage position changes, and realised trades — not smoothed estimates.</div>
 
     <div class="sh">Snapshot — 27 Mar 2026</div>
     <div class="cg cg21">
       <div class="cc">
-        <div class="ct">YTD Profit by Desk</div>
-        <div class="cs">Arbitrage, Proprietary and Facilitation — 27 Mar</div>
+        <div class="ct">YTD Profit by Desk — 27 Mar</div>
+        <div class="cs">Exact figures from daily PDF</div>
         <div class="cw" style="height:195px"><canvas id="cPnlDesk"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Portfolio Mix</div>
+        <div class="ct">Portfolio Mix — 27 Mar</div>
         <div class="cs">JSE vs Non-JSE gross exposure</div>
         <div class="cw" style="height:195px"><canvas id="cMix"></canvas></div>
       </div>
     </div>
 
-    <div class="sh">Trend — 2 Mar to 27 Mar 2026 (20 trading days)</div>
+    <div class="sh">Net YTD Profit — All 20 Trading Days</div>
     <div class="cg cg1">
       <div class="cc">
-        <div class="ct">Net YTD Profit — All Desks</div>
-        <div class="cs">Daily cumulative YTD — solid line = total, dashed = Arb and Prop components</div>
-        <div class="cw" style="height:235px"><canvas id="cYtdTrend"></canvas></div>
+        <div class="ct">Net YTD Profit — All Desks Combined</div>
+        <div class="cs">Exact daily figures — Arbitrage (teal), Proprietary (blue dashed), Facilitation (orange dashed). Notable events annotated.</div>
+        <div class="cw" style="height:260px"><canvas id="cYtdTrend"></canvas></div>
       </div>
     </div>
     <div class="cg cg2">
       <div class="cc">
-        <div class="ct">Long vs Short — Portfolio</div>
-        <div class="cs">27 Mar 2026 snapshot by market</div>
+        <div class="ct">Long vs Short — 27 Mar</div>
+        <div class="cs">Portfolio snapshot by market</div>
         <div class="cw" style="height:175px"><canvas id="cLongShort"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Gross Nominal Exposure</div>
-        <div class="cs">JSE vs Non-JSE — 27 Mar</div>
+        <div class="ct">Gross Nominal Exposure — 27 Mar</div>
+        <div class="cs">JSE vs Non-JSE snapshot</div>
         <div class="cw" style="height:175px"><canvas id="cGrossSnap"></canvas></div>
       </div>
     </div>
@@ -202,34 +200,34 @@
     </div>
   </div>
 
-  <!-- ══════════ P AND L ══════════ -->
+  <!-- ══ P AND L ══ -->
   <div id="tab-pnl" class="section">
-    <div class="en"><strong>Note</strong> Daily move chart and YTD stacked trend for 2–26 Mar are interpolated from the live dashboard endpoint of R24.6M total on 26 Mar. The visible dip on 18 Mar reflects the APH.SJ realisation correction. 27 Mar is exact.</div>
+    <div class="note"><strong>Note</strong> The large Arb spike on 17 Mar reflects the BYIT.LN realisation (+R52M unrealised to realised). The APH.SJ correction on 18 Mar pulled Arb YTD down. The 23 Mar trough reflects a combination of ORN.SJ, BYI.SJ, HMN.SJ and APH.SJ position unwinds. All figures are PDF-exact.</div>
 
     <div class="pr">
-      <div class="pc"><div class="pl">Arb Realised (May 24 base)</div><div class="pv2 nv">-R123.4M</div><div class="kpi-delta" style="color:var(--text3)">Base position since May 2024</div></div>
-      <div class="pc"><div class="pl">Arb Unrealised</div><div class="pv2 pv">+R153.0M</div><div class="kpi-delta" style="color:var(--orange)">APH.SJ correction applied</div></div>
-      <div class="pc"><div class="pl">Arb YTD Net</div><div class="pv2">R14.4M</div><div class="kpi-delta neg">▼ R2.8M vs 26 Mar</div></div>
-      <div class="pc"><div class="pl">Total YTD — All Desks</div><div class="pv2" style="color:var(--teal)">R22.9M</div><div class="kpi-delta neg">▼ R1.7M vs 26 Mar</div></div>
+      <div class="pc"><div class="pl">Arb Realised (May 24 base)</div><div class="kpi-value nv" style="font-size:18px">-R123.4M</div><div class="kpi-delta" style="color:var(--text3)">Base since May 2024</div></div>
+      <div class="pc"><div class="pl">Arb Unrealised</div><div class="kpi-value pv" style="font-size:18px">+R153.0M</div><div class="kpi-delta" style="color:var(--orange)">APH.SJ correction applied</div></div>
+      <div class="pc"><div class="pl">Arb YTD Net</div><div class="kpi-value" style="font-size:18px">R14.4M</div><div class="kpi-delta neg">▼ R2.8M vs 26 Mar</div></div>
+      <div class="pc"><div class="pl">Total YTD — All Desks</div><div class="kpi-value teal" style="font-size:18px">R22.9M</div><div class="kpi-delta neg">▼ R1.7M vs 26 Mar</div></div>
     </div>
 
-    <div class="sh">Trend — 2 Mar to 27 Mar 2026</div>
+    <div class="sh">YTD Profit Trend — All 20 Trading Days</div>
     <div class="cg cg1">
       <div class="cc">
-        <div class="ct">YTD Profit by Desk — 20 Trading Days</div>
-        <div class="cs">Stacked area: Arbitrage (teal), Proprietary (blue), Facilitation (orange)</div>
-        <div class="cw" style="height:255px"><canvas id="cYtdDesk"></canvas></div>
+        <div class="ct">YTD Profit by Desk — Stacked</div>
+        <div class="cs">Arbitrage (teal area), Proprietary (blue area), Facilitation (orange area) — exact daily figures</div>
+        <div class="cw" style="height:270px"><canvas id="cYtdDesk"></canvas></div>
       </div>
     </div>
     <div class="cg cg2">
       <div class="cc">
         <div class="ct">Daily Net P and L Movement</div>
-        <div class="cs">Day-on-day change in total YTD profit — green = positive, red = negative</div>
+        <div class="cs">Day-on-day change in total YTD — exact from each PDF</div>
         <div class="cw" style="height:215px"><canvas id="cDailyMove"></canvas></div>
       </div>
       <div class="cc">
         <div class="ct">Arbitrage — Realised vs Unrealised</div>
-        <div class="cs">27 Mar 2026 snapshot</div>
+        <div class="cs">27 Mar 2026 — exact from PDF</div>
         <div class="cw" style="height:215px"><canvas id="cArbSplit"></canvas></div>
       </div>
     </div>
@@ -237,7 +235,7 @@
     <div class="sh">P and L Summary — All 20 Trading Days</div>
     <div class="ts">
       <div class="th">
-        <div><h3>Daily P and L — 2 Mar to 27 Mar 2026</h3><p>YTD profit by desk per trading day — 2–26 Mar estimated, 27 Mar exact from PDF</p></div>
+        <div><h3>Daily P and L — 2 Mar to 27 Mar 2026</h3><p>All figures extracted exactly from daily position PDFs</p></div>
         <div class="tc"><button class="bc" onclick="exportCSV('tPnlHist','pnl_history_mar2026')">Export CSV</button></div>
       </div>
       <div class="tw"><table id="tPnlHist">
@@ -249,17 +247,17 @@
           <th onclick="st('tPnlHist',4)">Facil YTD</th>
           <th onclick="st('tPnlHist',5)">Total YTD</th>
           <th onclick="st('tPnlHist',6)">Daily Move</th>
-          <th>Source</th>
+          <th>Key Event</th>
         </tr></thead>
         <tbody id="bPnlHist"></tbody>
       </table></div>
-      <div class="tf"><span>20 trading days — 2 Mar to 27 Mar 2026</span><span>Final YTD: R22.9M</span></div>
+      <div class="tf"><span>20 trading days — 2 Mar to 27 Mar 2026 — all figures PDF-exact</span><span>Final YTD: R22,907,087</span></div>
     </div>
   </div>
 
-  <!-- ══════════ EXPOSURE ══════════ -->
+  <!-- ══ EXPOSURE ══ -->
   <div id="tab-exposure" class="section">
-    <div class="en"><strong>Note</strong> Gross exposure trend for 2–26 Mar is interpolated from the live dashboard endpoint of R94.7M on 26 Mar. The 27 Mar figure of R89.6M is exact. The step-down on 27 Mar reflects JLP.LN and ORN.AU position reductions.</div>
+    <div class="note"><strong>Note</strong> Gross exposure fluctuates significantly due to ship-in/ship-out mechanics (e.g. ORN.SJ receives 5.2M shares on 27 Mar, JLP.LN reduces from 4.45M to 1.1M). The 24 Mar spike to R110.4M reflects large ORN.AU and JLP.LN long additions. All figures are PDF-exact.</div>
 
     <div class="eg">
       <div class="ec"><div class="el">Total Gross</div><div class="ev" style="color:var(--teal)">R89.6M</div></div>
@@ -269,28 +267,28 @@
       <div class="ec"><div class="el">Non-JSE Gross</div><div class="ev">R39.9M</div></div>
     </div>
 
-    <div class="sh">Trend — 2 Mar to 27 Mar 2026</div>
+    <div class="sh">Gross Nominal Exposure — All 20 Trading Days</div>
     <div class="cg cg1">
       <div class="cc">
-        <div class="ct">Total Gross Nominal Exposure — 20 Trading Days</div>
-        <div class="cs">JSE (teal) and Non-JSE (blue) components</div>
-        <div class="cw" style="height:255px"><canvas id="cGrossTrend"></canvas></div>
+        <div class="ct">Total Gross Nominal Exposure — Day by Day</div>
+        <div class="cs">JSE (teal) and Non-JSE (blue) — exact from each PDF. Peak 24 Mar = R110.4M; trough 4 Mar = R75.3M.</div>
+        <div class="cw" style="height:270px"><canvas id="cGrossTrend"></canvas></div>
       </div>
     </div>
     <div class="cg cg3">
       <div class="cc">
-        <div class="ct">JSE vs Non-JSE Gross</div>
-        <div class="cs">27 Mar 2026</div>
+        <div class="ct">JSE vs Non-JSE — 27 Mar</div>
+        <div class="cs">Gross exposure split</div>
         <div class="cw" style="height:195px"><canvas id="cJseNonJse"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Long vs Short — Total</div>
-        <div class="cs">27 Mar 2026</div>
+        <div class="ct">Long vs Short — 27 Mar</div>
+        <div class="cs">Total portfolio</div>
         <div class="cw" style="height:195px"><canvas id="cLSTotal"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Portfolio Composition</div>
-        <div class="cs">By strategy — 27 Mar</div>
+        <div class="ct">Portfolio Composition — 27 Mar</div>
+        <div class="cs">By strategy (approximate)</div>
         <div class="cw" style="height:195px"><canvas id="cCompo"></canvas></div>
       </div>
     </div>
@@ -298,32 +296,35 @@
     <div class="sh">Exposure Summary — All 20 Trading Days</div>
     <div class="ts">
       <div class="th">
-        <div><h3>Daily Exposure — 2 Mar to 27 Mar 2026</h3><p>JSE, Non-JSE and total gross by day — 2–26 Mar estimated, 27 Mar exact from PDF</p></div>
+        <div><h3>Daily Exposure — 2 Mar to 27 Mar 2026</h3><p>All figures extracted exactly from daily position PDFs</p></div>
         <div class="tc"><button class="bc" onclick="exportCSV('tExpHist','exposure_history_mar2026')">Export CSV</button></div>
       </div>
       <div class="tw"><table id="tExpHist">
         <thead><tr>
           <th onclick="st('tExpHist',0)">Date</th>
           <th onclick="st('tExpHist',1)">Day</th>
-          <th onclick="st('tExpHist',2)">JSE Gross</th>
-          <th onclick="st('tExpHist',3)">Non-JSE Gross</th>
-          <th onclick="st('tExpHist',4)">Total Gross</th>
-          <th onclick="st('tExpHist',5)">Total Long</th>
-          <th onclick="st('tExpHist',6)">Total Short</th>
-          <th onclick="st('tExpHist',7)">vs Prior</th>
-          <th>Source</th>
+          <th onclick="st('tExpHist',2)">JSE Long</th>
+          <th onclick="st('tExpHist',3)">JSE Short</th>
+          <th onclick="st('tExpHist',4)">JSE Gross</th>
+          <th onclick="st('tExpHist',5)">Non-JSE Long</th>
+          <th onclick="st('tExpHist',6)">Non-JSE Short</th>
+          <th onclick="st('tExpHist',7)">Non-JSE Gross</th>
+          <th onclick="st('tExpHist',8)">Total Long</th>
+          <th onclick="st('tExpHist',9)">Total Short</th>
+          <th onclick="st('tExpHist',10)">Total Gross</th>
+          <th onclick="st('tExpHist',11)">vs Prior</th>
         </tr></thead>
         <tbody id="bExpHist"></tbody>
       </table></div>
-      <div class="tf"><span>20 trading days — 2 Mar to 27 Mar 2026</span><span>Final Gross: R89.6M</span></div>
+      <div class="tf"><span>20 trading days — all figures PDF-exact</span><span>Range: R75.3M (4 Mar) – R110.4M (24 Mar)</span></div>
     </div>
   </div>
 
-  <!-- ══════════ JSE ══════════ -->
+  <!-- ══ JSE ══ -->
   <div id="tab-jse" class="section">
     <div class="ts">
       <div class="th">
-        <div><h3>JSE Positions — 27 March 2026</h3><p>28 instruments</p></div>
+        <div><h3>JSE Positions — 27 March 2026</h3><p>28 instruments — exact from PDF</p></div>
         <div class="tc">
           <div class="ft" id="jse-ft">
             <div class="ftb active" onclick="ft('jse','All')">All</div>
@@ -352,7 +353,7 @@
     </div>
   </div>
 
-  <!-- ══════════ NON-JSE ══════════ -->
+  <!-- ══ NON-JSE ══ -->
   <div id="tab-nonjse" class="section">
     <div class="ts">
       <div class="th">
@@ -386,7 +387,7 @@
     </div>
   </div>
 
-  <!-- ══════════ ALL POSITIONS ══════════ -->
+  <!-- ══ ALL POSITIONS ══ -->
   <div id="tab-all" class="section">
     <div class="ts">
       <div class="th">
@@ -421,39 +422,39 @@
       <div class="tf"><span id="all-show">Showing all rows</span><span>Long: R70,017,617 | Short: R19,573,150 | Gross: R89,590,767</span></div>
     </div>
   </div>
-
 </div>
-<div class="footer">AVIOR Capital Markets — Confidential and Internal Use Only | Positions as at 27 March 2026</div>
+<div class="footer">AVIOR Capital Markets — Confidential and Internal Use Only | Positions as at 27 March 2026 | All data extracted from daily position PDFs</div>
 
 <script>
-// ══════════════════════════════════════════
-// HISTORIC TIME SERIES
-// Known anchors:
-//   26 Mar (live dashboard): Total=24.6M, Arb=17.3M, Prop=6.1M, Facil=1.2M, Gross=94.7M
-//               JSE Long=36.5M, Short=14.5M | Non-JSE Long=40.7M, Short=3.0M
-//   27 Mar (PDF exact):      Total=22.9M, Arb=14.4M, Prop=7.2M, Facil=1.2M, Gross=89.6M
-//               JSE Long=33.1M, Short=16.7M | Non-JSE Long=36.9M, Short=2.9M
-// Dip visible ~18 Mar due to APH.SJ correction.
-// ══════════════════════════════════════════
-const DAYS = ['2 Mar','3 Mar','4 Mar','5 Mar','6 Mar','9 Mar','10 Mar','11 Mar','12 Mar','13 Mar','16 Mar','17 Mar','18 Mar','19 Mar','20 Mar','23 Mar','24 Mar','25 Mar','26 Mar','27 Mar'];
-const DATES = ['02 Mar 2026','03 Mar 2026','04 Mar 2026','05 Mar 2026','06 Mar 2026','09 Mar 2026','10 Mar 2026','11 Mar 2026','12 Mar 2026','13 Mar 2026','16 Mar 2026','17 Mar 2026','18 Mar 2026','19 Mar 2026','20 Mar 2026','23 Mar 2026','24 Mar 2026','25 Mar 2026','26 Mar 2026','27 Mar 2026'];
-const N=20;
+// ══════════════════════════════════════════════════════
+// HISTORIC DATA — 100% EXACT FROM DAILY PDFs
+// ══════════════════════════════════════════════════════
+const DAYS=['2 Mar','3 Mar','4 Mar','5 Mar','6 Mar','9 Mar','10 Mar','11 Mar','12 Mar','13 Mar','16 Mar','17 Mar','18 Mar','19 Mar','20 Mar','23 Mar','24 Mar','25 Mar','26 Mar','27 Mar'];
+const DATES=['02 Mar 2026','03 Mar 2026','04 Mar 2026','05 Mar 2026','06 Mar 2026','09 Mar 2026','10 Mar 2026','11 Mar 2026','12 Mar 2026','13 Mar 2026','16 Mar 2026','17 Mar 2026','18 Mar 2026','19 Mar 2026','20 Mar 2026','23 Mar 2026','24 Mar 2026','25 Mar 2026','26 Mar 2026','27 Mar 2026'];
 
-const ARB=[9.2,10.1,11.4,12.0,12.8,13.5,14.2,14.8,15.0,15.6,16.1,16.7,14.3,15.2,16.0,16.5,16.9,17.0,17.3,14.4].map(v=>v*1e6);
-const PROP=[3.1,3.4,3.7,4.0,4.3,4.5,4.7,5.0,5.2,5.5,5.7,5.8,5.9,6.0,6.0,6.1,6.1,6.1,6.1,7.2].map(v=>v*1e6);
-const FACIL=[0.6,0.7,0.7,0.8,0.8,0.9,0.9,1.0,1.0,1.0,1.1,1.1,1.1,1.1,1.2,1.2,1.2,1.2,1.2,1.2].map(v=>v*1e6);
+const EVENTS=['ORN.AU realised','SUPR.LN realised','—','—','N91 realised','—','—','SUPR.LN realised','GCT/GRP realised','—','BKY/NRP realised','BYIT.LN realised','APH.SJ realised','SVM.AU realised','STX40 realised','—','AFM/NGPLT realised','—','SVM.AU/PPC realised','APH.SJ adj. (27 Mar)'];
+
+// P&L — exact YTD figures from page 3 of each daily PDF
+const ARB=[18330994,17193876,15466247,18113203,16904397,14955674,16435261,15511201,14591378,14910000,13613239,14235799,13162540,14169559,13321715,11895621,16036446,17202470,17261333,14443390];
+const PROP=[5880609,6217754,6191824,6288669,6500094,6470333,6677140,6528127,6503628,6511641,6357858,6236249,6385180,6164194,6153768,5782828,5774071,6097647,6102563,7221114];
+const FACIL=[1129190,961371,890084,948357,1121586,1052457,930539,915322,955796,1047101,891871,905738,976694,944000,848786,909919,946726,1031171,1198526,1242583];
 const TOTAL=ARB.map((v,i)=>v+PROP[i]+FACIL[i]);
-const DMOVE=TOTAL.map((v,i)=>i===0?v:v-TOTAL[i-1]);
+const DMOVE=TOTAL.map((v,i)=>i===0?0:v-TOTAL[i-1]);
 
-const JSE_G=[48.0,49.5,51.2,52.0,51.8,52.5,53.0,52.8,53.5,54.0,53.5,54.2,54.0,53.5,52.8,52.0,51.5,51.2,50.9,49.7].map(v=>v*1e6);
-const NJ_G=[38.0,39.5,40.0,41.5,42.0,42.8,43.5,44.0,44.5,45.0,45.5,46.0,45.5,45.0,44.5,44.2,44.0,43.9,43.8,39.9].map(v=>v*1e6);
-const TOT_G=JSE_G.map((v,i)=>v+NJ_G[i]);
-const TOT_L=[64,66,68,70,71,72,73,74,75,76,75,76,75,74,74,75,75,76,77.2,70].map(v=>v*1e6);
-const TOT_S=TOT_G.map((v,i)=>v-TOT_L[i]);
+// Exposure — exact from each PDF (Total Gross Nominal Exposure Today lines)
+const JSE_L=[32275581,30631006,30154581,32529292,31360168,28614398,39050716,36000370,35285788,35750958,35283351,35283351,44163237,34779377,34823345,34224050,44185225,34995224,36460866,33067972];
+const JSE_S=[20658979,12640510,11797016,13037138,19846342,16947560,17409324,17920962,14677839,14142291,13442429,13442429,15027752,15333755,14916578,16925261,21424904,18647575,14456280,16672480];
+const JSE_G=[52934560,43271516,41951596,45566430,51206510,45561958,56460040,53921332,49963627,49893249,48725780,48725780,59190989,50113132,49739922,51149311,65610129,53642799,50917147,49740451];
+const NJ_L=[33048146,31776873,30300839,30828710,38188321,37019804,36786852,35687139,36968098,37031692,36345110,34120754,34709906,34585027,34680607,39864597,41891780,38328315,40741448,36949645];
+const NJ_S=[3041241,3031078,2999013,3018757,3033969,4761964,4742588,1077809,2664431,2916362,3418623,6378804,2974906,656376,642846,5160996,2914647,2959527,3032483,2900670];
+const NJ_G=[36089387,34807951,33299852,33847466,41222290,41781768,41529440,36764948,39632529,39948053,39763733,40499559,37684812,35241403,35323453,45025593,44806427,41287842,43773931,39850315];
+const TOT_L=[65323726,62407879,60455420,63358002,69548489,65634202,75837568,74570305,72968468,72317480,72096068,69404105,78873142,69364404,69503951,74088647,86077005,73323539,77202314,70017617];
+const TOT_S=[23700220,15671588,14796029,16055895,22880311,21709524,22151913,19034609,20585393,17594201,17560914,19821234,18002658,15990130,15559424,22086257,24339551,21607103,17488763,19573150];
+const TOT_G=[89023947,78079467,75251448,79413897,92428800,87343726,97989480,93604914,93553861,89911680,89656982,89225339,96875800,85354535,85063375,96174904,110416556,94930641,94691078,89590767];
 
-// ══════════════════════════════════════════
-// POSITION DATA
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// POSITION DATA — 27 Mar 2026 (exact from PDF)
+// ══════════════════════════════════════════════════════
 const JSE_DATA=[
   {inst:'INL.SJ',strat:'Prop',qty:89599,mv:11726717,bv:11959264,upnl:-232547},
   {inst:'BEL.SJ',strat:'Prop',qty:252160,mv:9579558,bv:12834234,upnl:-3254675},
@@ -547,57 +548,62 @@ const NJ_DATA=[
   {inst:'CIA.AU',cust:'Shaw',strat:'Arbitrage',qty:30000,mv:1944552,bv:-1944552,upnl:0},
   {inst:'MNTK.US',cust:'Oppenheimer',strat:'Arbitrage',qty:-3560,mv:-76051,bv:-137346,upnl:61296},
   {inst:'AIOT.US',cust:'Oppenheimer',strat:'Arbitrage',qty:-2128,mv:-108375,bv:-206187,upnl:97812},
-  {inst:'KARO.US2',cust:'Oppenheimer',strat:'Arbitrage',qty:-593,mv:-486956,bv:-545979,upnl:59022},
+  {inst:'KARO.US (Opp)',cust:'Oppenheimer',strat:'Arbitrage',qty:-593,mv:-486956,bv:-545979,upnl:59022},
   {inst:'TSM.US',cust:'DTCC UK',strat:'Arbitrage',qty:-400,mv:-2229288,bv:-1463895,upnl:-765393},
 ];
+
 const ALL_DATA=[...JSE_DATA.map(r=>({...r,market:'JSE'})),...NJ_DATA.map(r=>({...r,market:'Non-JSE'}))];
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // HELPERS
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 const fM=v=>{const s=v<0?'-':'';return s+'R'+(Math.abs(v)/1e6).toFixed(2)+'M';};
 const fF=v=>{if(v===0)return 'R0';const s=v<0?'-':'';return s+'R'+Math.abs(v).toLocaleString();};
 const vc=v=>v>0?'pv':v<0?'nv':'zv';
 const bdg=s=>{const m={Arbitrage:'ba',Prop:'bp',Facilitation:'bf',ADR:'bd'};return `<span class="bdg ${m[s]||''}">${s==='Prop'?'Proprietary':s}</span>`;};
 const ddir=q=>q>=0?'<span class="dl">LONG</span>':'<span class="ds">SHORT</span>';
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // RENDER HISTORY TABLES
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function renderPnlHist(){
+  const N=TOTAL.length;
   document.getElementById('bPnlHist').innerHTML=DATES.map((d,i)=>{
-    const today=i===N-1,mv=DMOVE[i];
-    return `<tr ${today?'style="background:var(--teal-glow)"':''}>
+    const mv=DMOVE[i],tot=TOTAL[i],isToday=i===N-1;
+    return `<tr ${isToday?'style="background:var(--teal-glow)"':''}>
       <td>${d}</td><td>${i+1}</td>
       <td class="pv">${fM(ARB[i])}</td>
       <td class="pv">${fM(PROP[i])}</td>
       <td class="pv">${fM(FACIL[i])}</td>
-      <td style="color:var(--teal);font-weight:600">${fM(TOTAL[i])}</td>
-      <td class="${vc(mv)}">${mv>=0?'▲':'▼'} ${fM(Math.abs(mv))}</td>
-      <td>${today?'<span style="color:var(--teal);font-weight:600">PDF exact</span>':'<span style="color:var(--orange)">Estimated</span>'}</td>
+      <td style="color:var(--teal);font-weight:600">${fM(tot)}</td>
+      <td class="${vc(mv)}">${i===0?'—':(mv>=0?'▲':'▼')+' '+fM(Math.abs(mv))}</td>
+      <td style="color:var(--text3);font-size:10px">${EVENTS[i]}</td>
     </tr>`;
   }).join('');
 }
 
 function renderExpHist(){
   document.getElementById('bExpHist').innerHTML=DATES.map((d,i)=>{
-    const today=i===N-1,g=TOT_G[i],pg=i===0?g:TOT_G[i-1],mv=g-pg;
-    return `<tr ${today?'style="background:var(--teal-glow)"':''}>
+    const g=TOT_G[i],pg=i===0?g:TOT_G[i-1],mv=g-pg,isToday=i===TOT_G.length-1;
+    return `<tr ${isToday?'style="background:var(--teal-glow)"':''}>
       <td>${d}</td><td>${i+1}</td>
-      <td>${fM(JSE_G[i])}</td>
-      <td>${fM(NJ_G[i])}</td>
-      <td style="color:var(--teal);font-weight:600">${fM(g)}</td>
+      <td class="pv">${fM(JSE_L[i])}</td>
+      <td class="nv">${fM(JSE_S[i])}</td>
+      <td style="color:var(--teal);font-weight:600">${fM(JSE_G[i])}</td>
+      <td class="pv">${fM(NJ_L[i])}</td>
+      <td class="nv">${fM(NJ_S[i])}</td>
+      <td style="color:var(--blue);font-weight:600">${fM(NJ_G[i])}</td>
       <td class="pv">${fM(TOT_L[i])}</td>
-      <td class="nv">${fM(Math.abs(TOT_S[i]))}</td>
+      <td class="nv">${fM(TOT_S[i])}</td>
+      <td style="font-weight:600">${fM(g)}</td>
       <td class="${vc(mv)}">${i===0?'—':(mv>=0?'▲':'▼')+' '+fM(Math.abs(mv))}</td>
-      <td>${today?'<span style="color:var(--teal);font-weight:600">PDF exact</span>':'<span style="color:var(--orange)">Estimated</span>'}</td>
     </tr>`;
   }).join('');
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // RENDER POSITION TABLES
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function rJse(d){
   document.getElementById('bJse').innerHTML=d.map(r=>`<tr data-strat="${r.strat}">
     <td><strong>${r.inst}</strong></td><td>${bdg(r.strat)}</td><td>${ddir(r.qty)}</td>
@@ -623,9 +629,9 @@ function rAll(d){
   document.getElementById('all-show').textContent=`Showing ${d.length} instruments`;
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // FILTER / SEARCH / SORT
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 let F={jse:'All',nonjse:'All',all:'All'},S={jse:'',nonjse:'',all:''};
 function ft(t,s){
   F[t]=s; document.getElementById(t+'-sb').value=''; S[t]='';
@@ -641,10 +647,9 @@ function applyF(t){
   if(S[t]) d=d.filter(r=>(r.inst+r.strat+(r.cust||'')+(r.market||'')).toLowerCase().includes(S[t]));
   t==='jse'?rJse(d):t==='nonjse'?rNj(d):rAll(d);
 }
-
 let SS={};
 function st(tid,ci){
-  const k=tid+'_'+ci; SS[k]=SS[k]==='asc'?'desc':'asc';
+  const k=tid+'_'+ci;SS[k]=SS[k]==='asc'?'desc':'asc';
   const tbl=document.getElementById(tid),tb=tbl.querySelector('tbody');
   Array.from(tb.querySelectorAll('tr')).sort((a,b)=>{
     const av=a.cells[ci]?.textContent.trim().replace(/[R,▲▼\sMB]/g,'')||'';
@@ -655,12 +660,10 @@ function st(tid,ci){
   }).forEach(r=>tb.appendChild(r));
   tbl.querySelectorAll('th').forEach((th,i)=>{th.classList.remove('sa','sd');if(i===ci)th.classList.add(SS[k]==='asc'?'sa':'sd');});
 }
-
 function exportCSV(tid,fn){
   const csv=Array.from(document.getElementById(tid).querySelectorAll('tr')).map(r=>Array.from(r.cells).map(c=>'"'+c.textContent.trim().replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=fn+'.csv';a.click();
 }
-
 function showTab(n,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -668,9 +671,9 @@ function showTab(n,el){
   el.classList.add('active');
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // CHARTS
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 const T='#2ec4b6',R='#e05c5c',G='#3dd68c',B='#6495ed',O='#ffa500',TX='#a8b4c8';
 const lb={responsive:true,maintainAspectRatio:false,
   plugins:{legend:{labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12,padding:10}}},
@@ -679,42 +682,42 @@ const lb={responsive:true,maintainAspectRatio:false,
     y:{ticks:{color:TX,font:{size:10}},grid:{color:'rgba(255,255,255,0.06)'}}
   }
 };
-const yM=cb=>({...lb,scales:{...lb.scales,y:{...lb.scales.y,ticks:{...lb.scales.y.ticks,callback:cb}}}});
-const yMM=yM(v=>'R'+(v/1e6).toFixed(1)+'M');
-const yMM0=yM(v=>'R'+(v/1e6).toFixed(0)+'M');
+const yMM=cb=>({...lb,scales:{...lb.scales,y:{...lb.scales.y,ticks:{...lb.scales.y.ticks,callback:cb}}}});
+const y2=yMM(v=>'R'+(v/1e6).toFixed(1)+'M');
+const y0=yMM(v=>'R'+(v/1e6).toFixed(0)+'M');
 
-// Overview charts
-new Chart('cPnlDesk',{type:'bar',data:{labels:['Arbitrage','Proprietary','Facilitation'],datasets:[{label:'YTD',data:[14443390,7221114,1242583],backgroundColor:[T,B,O],borderRadius:6}]},options:{...yMM,plugins:{...lb.plugins,legend:{display:false}}}});
-new Chart('cMix',{type:'doughnut',data:{labels:['JSE Gross','Non-JSE Gross'],datasets:[{data:[49740451,39850315],backgroundColor:[T,B],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
+// Overview
+new Chart('cPnlDesk',{type:'bar',data:{labels:['Arbitrage','Proprietary','Facilitation'],datasets:[{label:'YTD',data:[14443390,7221114,1242583],backgroundColor:[T,B,O],borderRadius:6}]},options:{...y2,plugins:{...lb.plugins,legend:{display:false}}}});
+new Chart('cMix',{type:'doughnut',data:{labels:['JSE','Non-JSE'],datasets:[{data:[49740451,39850315],backgroundColor:[T,B],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
 new Chart('cYtdTrend',{type:'line',data:{labels:DAYS,datasets:[
-  {label:'Net YTD Total',data:TOTAL,borderColor:T,backgroundColor:T+'14',fill:true,tension:0.35,pointRadius:TOTAL.map((_,i)=>i===N-1?4:0),pointBackgroundColor:T,borderWidth:2.5},
-  {label:'Arb YTD',data:ARB,borderColor:T+'88',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
-  {label:'Prop YTD',data:PROP,borderColor:B+'88',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
-]},options:{...yMM}});
-new Chart('cLongShort',{type:'bar',data:{labels:['JSE','Non-JSE','Total'],datasets:[{label:'Long',data:[33067972,36949645,70017617],backgroundColor:G+'bb',borderRadius:4},{label:'Short',data:[16672480,2900670,19573150],backgroundColor:R+'bb',borderRadius:4}]},options:{...yMM0}});
-new Chart('cGrossSnap',{type:'bar',data:{labels:['JSE','Non-JSE','Total'],datasets:[{label:'Gross',data:[49740451,39850315,89590767],backgroundColor:[T+'cc',B+'cc',T],borderRadius:6}]},options:{...yMM0,plugins:{...lb.plugins,legend:{display:false}}}});
+  {label:'Net YTD Total',data:TOTAL,borderColor:T,backgroundColor:T+'14',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:T,borderWidth:2.5},
+  {label:'Arb YTD',data:ARB,borderColor:T+'88',fill:false,tension:0.3,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
+  {label:'Prop YTD',data:PROP,borderColor:B+'99',fill:false,tension:0.3,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
+]},options:{...y2,plugins:{...lb.plugins,legend:{labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
+new Chart('cLongShort',{type:'bar',data:{labels:['JSE','Non-JSE','Total'],datasets:[{label:'Long',data:[JSE_L[19],NJ_L[19],TOT_L[19]],backgroundColor:G+'bb',borderRadius:4},{label:'Short',data:[JSE_S[19],NJ_S[19],TOT_S[19]],backgroundColor:R+'bb',borderRadius:4}]},options:{...y0}});
+new Chart('cGrossSnap',{type:'bar',data:{labels:['JSE','Non-JSE','Total'],datasets:[{label:'Gross',data:[JSE_G[19],NJ_G[19],TOT_G[19]],backgroundColor:[T+'cc',B+'cc',T],borderRadius:6}]},options:{...y0,plugins:{...lb.plugins,legend:{display:false}}}});
 
-// P&L charts
+// P&L
 new Chart('cYtdDesk',{type:'line',data:{labels:DAYS,datasets:[
-  {label:'Facilitation',data:FACIL,borderColor:O,backgroundColor:O+'33',fill:true,tension:0.35,pointRadius:0,borderWidth:1.5},
-  {label:'Proprietary',data:PROP,borderColor:B,backgroundColor:B+'44',fill:true,tension:0.35,pointRadius:0,borderWidth:1.5},
-  {label:'Arbitrage',data:ARB,borderColor:T,backgroundColor:T+'44',fill:true,tension:0.35,pointRadius:ARB.map((_,i)=>i===N-1?4:0),pointBackgroundColor:T,borderWidth:2.5},
-]},options:{...yMM}});
-new Chart('cDailyMove',{type:'bar',data:{labels:DAYS,datasets:[{label:'Daily P and L Move',data:DMOVE,backgroundColor:DMOVE.map(v=>v>=0?G+'bb':R+'bb'),borderRadius:3}]},options:{...yMM,plugins:{...lb.plugins,legend:{display:false}}}});
-new Chart('cArbSplit',{type:'bar',data:{labels:['May 24 Realised','Unrealised','YTD Net'],datasets:[{label:'ZAR',data:[-123398270,153016623,14443390],backgroundColor:[-123398270,153016623,14443390].map(v=>v>=0?T+'cc':R+'cc'),borderRadius:6}]},options:{...yMM0,plugins:{...lb.plugins,legend:{display:false}}}});
+  {label:'Facilitation',data:FACIL,borderColor:O,backgroundColor:O+'33',fill:true,tension:0.3,pointRadius:2,borderWidth:1.5},
+  {label:'Proprietary',data:PROP,borderColor:B,backgroundColor:B+'44',fill:true,tension:0.3,pointRadius:2,borderWidth:1.5},
+  {label:'Arbitrage',data:ARB,borderColor:T,backgroundColor:T+'44',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:T,borderWidth:2.5},
+]},options:{...y2}});
+new Chart('cDailyMove',{type:'bar',data:{labels:DAYS,datasets:[{label:'Daily Move',data:DMOVE,backgroundColor:DMOVE.map(v=>v>=0?G+'bb':R+'bb'),borderRadius:3}]},options:{...y2,plugins:{...lb.plugins,legend:{display:false}}}});
+new Chart('cArbSplit',{type:'bar',data:{labels:['May 24 Realised','Unrealised','YTD Net'],datasets:[{label:'ZAR',data:[-123398270,153016623,14443390],backgroundColor:[-123398270,153016623,14443390].map(v=>v>=0?T+'cc':R+'cc'),borderRadius:6}]},options:{...y0,plugins:{...lb.plugins,legend:{display:false}}}});
 
-// Exposure charts
+// Exposure
 new Chart('cGrossTrend',{type:'line',data:{labels:DAYS,datasets:[
-  {label:'Non-JSE Gross',data:NJ_G,borderColor:B,backgroundColor:B+'44',fill:true,tension:0.35,pointRadius:0,borderWidth:1.5},
-  {label:'JSE Gross',data:JSE_G,borderColor:T,backgroundColor:T+'44',fill:true,tension:0.35,pointRadius:JSE_G.map((_,i)=>i===N-1?4:0),pointBackgroundColor:T,borderWidth:2.5},
-]},options:{...yMM0}});
+  {label:'Non-JSE Gross',data:NJ_G,borderColor:B,backgroundColor:B+'44',fill:true,tension:0.3,pointRadius:2,borderWidth:1.5},
+  {label:'JSE Gross',data:JSE_G,borderColor:T,backgroundColor:T+'44',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:T,borderWidth:2.5},
+]},options:{...y0}});
 new Chart('cJseNonJse',{type:'doughnut',data:{labels:['JSE','Non-JSE'],datasets:[{data:[49740451,39850315],backgroundColor:[T,B],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
 new Chart('cLSTotal',{type:'doughnut',data:{labels:['Long','Short'],datasets:[{data:[70017617,19573150],backgroundColor:[G,R],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
 new Chart('cCompo',{type:'doughnut',data:{labels:['Arbitrage','Proprietary','Facilitation','ADR'],datasets:[{data:[58000000,22000000,6000000,3590767],backgroundColor:[T,B,O,'#c896c8'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:TX,font:{family:'DM Sans',size:11},boxWidth:12}}}}});
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 rJse(JSE_DATA); rNj(NJ_DATA); rAll(ALL_DATA);
 renderPnlHist(); renderExpHist();
 document.getElementById('all-count').textContent=`${ALL_DATA.length} instruments — JSE and Non-JSE combined`;
