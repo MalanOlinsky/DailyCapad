@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Avior — Daily Report Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500 and family=DM+Sans:wght@300;400;500;600 and display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root{--navy:#0d1b2a;--teal:#2ec4b6;--teal-dim:rgba(46,196,182,0.15);--amber:#f4a261;--red:#e76f51;--green:#52b788;--white:#f0f4f8;--muted:#7a92a8;--card:rgba(255,255,255,0.03);--card-b:rgba(255,255,255,0.07);}
@@ -127,7 +127,7 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
     <div class="kpi-delta" id="kd-net">—</div>
   </div>
   <div class="kpi c-amber">
-    <div class="kpi-label">Cash &amp; Working Capital</div>
+    <div class="kpi-label">Cash and Working Capital</div>
     <div class="kpi-value" id="k-cwc">—</div>
     <div class="kpi-delta" id="kd-cwc">—</div>
   </div>
@@ -141,8 +141,8 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 <div class="tabs">
   <button class="tab active" onclick="showTab('overview',this)">Overview</button>
   <button class="tab" onclick="showTab('revenue',this)">Revenue</button>
-  <button class="tab" onclick="showTab('pnl',this)">P&amp;L</button>
-  <button class="tab" onclick="showTab('cwc',this)">Cash &amp; Working Capital</button>
+  <button class="tab" onclick="showTab('pnl',this)">P and L</button>
+  <button class="tab" onclick="showTab('cwc',this)">Cash and Working Capital</button>
   <button class="tab" onclick="showTab('capad',this)">CAPAD</button>
   <button class="tab" onclick="showTab('custody',this)">Custody</button>
   <button class="tab" onclick="showTab('table',this)">Full Table</button>
@@ -162,7 +162,7 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
   </div>
   <div class="two-col">
     <div class="chart-card">
-      <h3>Cash &amp; working capital — group total</h3>
+      <h3>Cash and working capital — group total</h3>
       <div class="chart-wrap"><canvas id="c-cwc-trend"></canvas></div>
     </div>
     <div class="chart-card">
@@ -208,7 +208,7 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
   </div>
 </div>
 
-<!-- P&L -->
+<!-- P and L -->
 <div class="panel" id="panel-pnl">
   <div class="chart-card">
     <h3>Net profit — 16 day trend by desk</h3>
@@ -216,16 +216,16 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
   </div>
   <div class="two-col">
     <div class="chart-card">
-      <h3>Realised P&amp;L components</h3>
+      <h3>Realised P and L components</h3>
       <div class="chart-wrap"><canvas id="c-realised"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Unrealised P&amp;L components</h3>
+      <h3>Unrealised P and L components</h3>
       <div class="chart-wrap"><canvas id="c-unrealised"></canvas></div>
     </div>
   </div>
   <div class="table-card">
-    <h3>P&amp;L summary — all dates</h3>
+    <h3>P and L summary — all dates</h3>
     <table id="pnl-table"></table>
   </div>
 </div>
@@ -233,7 +233,7 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 <!-- CWC -->
 <div class="panel" id="panel-cwc">
   <div class="chart-card">
-    <h3>Cash &amp; working capital — group total trend</h3>
+    <h3>Cash and working capital — group total trend</h3>
     <div class="chart-wrap"><canvas id="c-cwc-full"></canvas></div>
   </div>
   <div class="two-col">
@@ -341,13 +341,12 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 </div>
 
 <footer>
-  <span>AVIOR Capital Markets — Confidential &amp; Internal Use Only</span>
+  <span>AVIOR Capital Markets — Confidential and Internal Use Only</span>
   <span>Generated: <span id="gen-date"></span></span>
 </footer>
 </div>
 
-<script>
-const RAW = [
+<script>const RAW = [
   {date:"06 Jan",sort:"2026-01-06",rev_total_today:545255.73,rev_total_mtd:5886515.19,rev_total_proj:11269895.23,rev_total_prior:11502110.08,rev_total_ytd:125372887.20,rev_sa_today:712542.31,rev_uk_today:-167286.58,rev_us_today:0.00,realised_arb:-82170165,realised_prop:5011219,realised_facil:7997772,realised_total:-69161174,unrealised_arb:112483911,unrealised_prop:-456214,unrealised_facil:-2355129,unrealised_total:109672568,net_arb:15138783,net_prop:4342147,net_facil:1405959,net_total:40511394,cwc_sa_total:42243694.46,cwc_deriv_total:7602093.00,cwc_holdings_total:6474543.85,cwc_uk_total:0.00,cwc_us_total:209458.91,cwc_africa_cash:8369560.71,cwc_africa_stock:0.00,cwc_group_total:125434116.00,capad_cap_res:0,capad_alc:0,capad_trr:0,capad_surplus:51294759,capad_tl:3072663595,custody_jse:0.00,custody_total:0.0,day_num:2,trading_days:20},
   {date:"07 Jan",sort:"2026-01-07",rev_total_today:1907978.09,rev_total_mtd:7871951.94,rev_total_proj:12475784.90,rev_total_prior:11502110.08,rev_total_ytd:127329831.91,rev_sa_today:612337.52,rev_uk_today:1254198.07,rev_us_today:41442.50,realised_arb:-82170165,realised_prop:5011219,realised_facil:7997772,realised_total:-69161174,unrealised_arb:113262867,unrealised_prop:-120575,unrealised_facil:-2393589,unrealised_total:110748703,net_arb:15917739,net_prop:4677786,net_facil:1367499,net_total:41587529,cwc_sa_total:44222340.46,cwc_deriv_total:7552043.41,cwc_holdings_total:6228961.13,cwc_uk_total:0.00,cwc_us_total:209458.91,cwc_africa_cash:8622941.96,cwc_africa_stock:0.00,cwc_group_total:124278783.00,capad_cap_res:0,capad_alc:0,capad_trr:0,capad_surplus:47974033,capad_tl:3072663595,custody_jse:0.00,custody_total:0.0,day_num:3,trading_days:20},
   {date:"08 Jan",sort:"2026-01-08",rev_total_today:832977.04,rev_total_mtd:8464559.90,rev_total_proj:13730451.67,rev_total_prior:11502110.08,rev_total_ytd:128290300.82,rev_sa_today:217370.41,rev_uk_today:435729.00,rev_us_today:179877.63,realised_arb:-82170165,realised_prop:5011219,realised_facil:7997772,realised_total:-69161174,unrealised_arb:113218979,unrealised_prop:-132258,unrealised_facil:-2273012,unrealised_total:110813709,net_arb:15873851,net_prop:4666103,net_facil:1488076,net_total:41652535,cwc_sa_total:38837073.91,cwc_deriv_total:7552028.21,cwc_holdings_total:6448536.46,cwc_uk_total:0.00,cwc_us_total:211280.29,cwc_africa_cash:9388651.92,cwc_africa_stock:0.00,cwc_group_total:125142287.00,capad_cap_res:0,capad_alc:0,capad_trr:0,capad_surplus:51982806,capad_tl:3072663595,custody_jse:0.00,custody_total:0.0,day_num:4,trading_days:20},
@@ -400,52 +399,28 @@ const RAW = [
   {date:"19 Mar",sort:"2026-03-19",rev_total_today:1454986.04,rev_total_mtd:14567271.47,rev_total_proj:21582851.26,rev_total_prior:11356049.77,rev_total_ytd:173694660.32,rev_sa_today:334591.66,rev_uk_today:1120394.38,rev_us_today:0.00,realised_arb:-130504114,realised_prop:5639108,realised_facil:7997276,realised_total:-116867730,unrealised_arb:159848636,unrealised_prop:737944,unrealised_facil:-2816592,unrealised_total:157769988,net_arb:14169559,net_prop:6164194,net_facil:944000,net_total:40902258,cwc_sa_total:19327257.60,cwc_deriv_total:14490145.23,cwc_holdings_total:6394910.10,cwc_uk_total:52946434.94,cwc_us_total:118713313.05,cwc_africa_cash:1659157.84,cwc_africa_stock:15982543.08,cwc_group_total:246100125.32,capad_cap_res:157413352,capad_alc:132184331,capad_trr:47894060,capad_surplus:84290271,capad_tl:4214513550,custody_jse:59118998.98,custody_total:3072663595.1,day_num:14,trading_days:20},
   {date:"20 Mar",sort:"2026-03-20",rev_total_today:-233670.59,rev_total_mtd:14370995.06,rev_total_proj:20079959.65,rev_total_prior:11356049.77,rev_total_ytd:173710598.53,rev_sa_today:601985.37,rev_uk_today:-835655.96,rev_us_today:0.00,realised_arb:-130502614,realised_prop:5639108,realised_facil:7997276,realised_total:-116866230,unrealised_arb:158999292,unrealised_prop:727518,unrealised_facil:-2911806,unrealised_total:156815004,net_arb:13321715,net_prop:6153768,net_facil:848786,net_total:39948774,cwc_sa_total:28283441.43,cwc_deriv_total:14076698.38,cwc_holdings_total:6658093.13,cwc_uk_total:49743793.56,cwc_us_total:119765841.64,cwc_africa_cash:1674731.79,cwc_africa_stock:14835773.49,cwc_group_total:249119005.43,capad_cap_res:157630511,capad_alc:134081987,capad_trr:45257841,capad_surplus:88824146,capad_tl:4441207300,custody_jse:58830074.51,custody_total:3072663595.1,day_num:15,trading_days:20},
   {date:"23 Mar",sort:"2026-03-23",rev_total_today:716219.73,rev_total_mtd:15053388.01,rev_total_proj:19589730.19,rev_total_prior:11356049.77,rev_total_ytd:172802163.14,rev_sa_today:665788.57,rev_uk_today:50431.16,rev_us_today:0.00,realised_arb:-130502614,realised_prop:5639108,realised_facil:7997276,realised_total:-116866230,unrealised_arb:157573198,unrealised_prop:356578,unrealised_facil:-2850673,unrealised_total:155079103,net_arb:11895621,net_prop:5782828,net_facil:909919,net_total:38212873,cwc_sa_total:12576876.23,cwc_deriv_total:14557111.66,cwc_holdings_total:6657745.12,cwc_uk_total:47649733.68,cwc_us_total:119688861.02,cwc_africa_cash:1514473.65,cwc_africa_stock:15950441.77,cwc_group_total:243631784.29,capad_cap_res:158405772,capad_alc:135464653,capad_trr:45179783,capad_surplus:90284870,capad_tl:4514243500,custody_jse:62716299.55,custody_total:3072663595.1,day_num:16,trading_days:20},
-  {date:"24 Mar",sort:"2026-03-24",rev_total_today:4531080.32,rev_total_mtd:19613842.97,rev_total_proj:22873266.32,rev_total_prior:11356049.77,rev_total_ytd:177462224.31,rev_sa_today:370043.84,rev_uk_today:4161036.48,rev_us_today:0.00,realised_arb:-131817892,realised_prop:5639108,realised_facil:7997276,realised_total:-118181508,unrealised_arb:163029301,unrealised_prop:347821,unrealised_facil:-2813866,unrealised_total:160563256,net_arb:16036446,net_prop:5774071,net_facil:946726,net_total:42381748,cwc_sa_total:14572718.91,cwc_deriv_total:15139819.45,cwc_holdings_total:6653206.14,cwc_uk_total:54533363.38,cwc_us_total:120877352.95,cwc_africa_cash:1523889.30,cwc_africa_stock:14641831.40,cwc_group_total:236870367.88,capad_cap_res:158405772,capad_alc:135464653,capad_trr:45179783,capad_surplus:90284870,capad_tl:4514243500,custody_jse:53482197.20,custody_total:3072663595.1,day_num:17,trading_days:20}
+  {date:"24 Mar",sort:"2026-03-24",rev_total_today:4531080.32,rev_total_mtd:19613842.97,rev_total_proj:22873266.32,rev_total_prior:11356049.77,rev_total_ytd:177462224.31,rev_sa_today:370043.84,rev_uk_today:4161036.48,rev_us_today:0.00,realised_arb:-131817892,realised_prop:5639108,realised_facil:7997276,realised_total:-118181508,unrealised_arb:163029301,unrealised_prop:347821,unrealised_facil:-2813866,unrealised_total:160563256,net_arb:16036446,net_prop:5774071,net_facil:946726,net_total:42381748,cwc_sa_total:14572718.91,cwc_deriv_total:15139819.45,cwc_holdings_total:6653206.14,cwc_uk_total:54533363.38,cwc_us_total:120877352.95,cwc_africa_cash:1523889.30,cwc_africa_stock:14641831.40,cwc_group_total:236870367.88,capad_cap_res:158405772,capad_alc:135464653,capad_trr:45179783,capad_surplus:90284870,capad_tl:4514243500,custody_jse:53482197.20,custody_total:3072663595.1,day_num:17,trading_days:20},
+{date:"26 Mar",sort:"2026-03-26",rev_total_today:603950.57,rev_total_mtd:24162676.86,rev_total_proj:25279188.47,rev_total_prior:11356049.77,rev_total_ytd:182122750.11,rev_sa_today:432286.16,rev_uk_today:171664.41,rev_us_today:0.00,realised_arb:-131759029,realised_prop:5639108,realised_facil:7996551,realised_total:-118123370,unrealised_arb:164195325,unrealised_prop:676313,unrealised_facil:-2561341,unrealised_total:162310297,net_arb:17261333,net_prop:6102563,net_facil:1198526,net_total:44186927,cwc_sa_total:4200875.59,cwc_deriv_total:15378433.77,cwc_holdings_total:7162079.67,cwc_uk_total:54243126.13,cwc_us_total:121840034.25,cwc_africa_cash:1527110.05,cwc_africa_stock:15912329.13,cwc_group_total:219348199.89,capad_cap_res:158688299,capad_alc:134506778,capad_trr:47815424,capad_surplus:86691354,capad_tl:4334567700,custody_jse:53381025.72,custody_total:3072663595.1,day_num:19,trading_days:20}
 ];
-
 const LABELS = RAW.map(d=>d.date);
 
-// Filtered datasets — skip days with missing data
-function filtered(field, color, fill=false) {
-  const pts = RAW.filter(d => d[field] !== 0 && Math.abs(d[field]) > 1000);
-  return {
-    labels: pts.map(d => d.date),
-    data: pts.map(d => d[field]),
-    color, fill
-  };
-}
-function fline(field, color, fill=false) {
-  const pts = filtered(field, color, fill);
-  return {
-    datasets: [{
-      data: pts.data, borderColor: pts.color,
-      backgroundColor: fill ? pts.color.replace('rgb','rgba').replace(')',',0.08)') : undefined,
-      fill, tension: .4, pointRadius: 2, pointBackgroundColor: pts.color, borderWidth: 2
-    }],
-    labels: pts.labels
-  };
-}
-function fbar(field, colorFn) {
-  const pts = RAW.filter(d => d[field] !== 0 && Math.abs(d[field]) > 1000);
-  return {
-    datasets: [{
-      data: pts.map(d => d[field]),
-      backgroundColor: pts.map(d => colorFn(d[field])),
-      borderRadius: 3, borderSkipped: false
-    }],
-    labels: pts.map(d => d.date)
-  };
-}
+// Filter helpers — skip days with zero/missing values
+const rpnl = RAW.filter(d=>d.net_total>0);
+const rcwc = RAW.filter(d=>d.cwc_group_total>1000);
+const rcap = RAW.filter(d=>d.capad_alc>1e6 && d.capad_trr>1e6);
+const rcust = RAW.filter(d=>d.custody_total>1e6);
+const rafcash = RAW.filter(d=>d.cwc_africa_cash>1000);
+const rafstock = RAW.filter(d=>d.cwc_africa_stock>1000);
+const rjse = RAW.filter(d=>d.custody_jse>1000);
 
-let selIdx = RAW.length-1;
+let selIdx = RAW.length - 1;
 
 // Formatters
 const fM=(n,dp=1)=>{const a=Math.abs(n);const s=n<0?'-':'';if(a>=1e9)return s+'R '+(a/1e9).toFixed(dp)+'B';if(a>=1e6)return s+'R '+(a/1e6).toFixed(dp)+'M';if(a>=1e3)return s+'R '+(a/1e3).toFixed(0)+'K';return s+'R '+a.toFixed(0);}
 const fB=(n)=>{const a=Math.abs(n);const s=n<0?'-':'';return s+'R '+(a/1e9).toFixed(2)+'B';}
-const fPct=(a,b)=>((a/b)*100).toFixed(1)+'%';
 const delta=(c,p,invertGood=false)=>{const d=c-p;const up=invertGood?d<0:d>=0;return{txt:(d>=0?'▲ ':'▼ ')+fM(Math.abs(d))+' vs prev',cls:up?'up':'down'};}
 
-// Build date pills
+// Date pills
 const pillsEl=document.getElementById('datePills');
 RAW.forEach((d,i)=>{
   const b=document.createElement('button');
@@ -455,35 +430,38 @@ RAW.forEach((d,i)=>{
   pillsEl.appendChild(b);
 });
 
+function setDelta(id,d){const el=document.getElementById(id);if(el){el.textContent=d.txt;el.className='kpi-delta '+d.cls;}}
+
 function updateKPIs(){
   const c=RAW[selIdx],p=selIdx>0?RAW[selIdx-1]:null;
   document.getElementById('k-rev').textContent=fM(c.rev_total_today);
   document.getElementById('k-mtd').textContent=fM(c.rev_total_mtd);
   document.getElementById('k-net').textContent=fM(c.net_total);
-  document.getElementById('k-cwc').textContent=fM(c.cwc_group_total);
-  document.getElementById('k-surplus').textContent=fM(c.capad_surplus);
+  document.getElementById('k-cwc').textContent=c.cwc_group_total>1000?fM(c.cwc_group_total):'N/A';
+  document.getElementById('k-surplus').textContent=c.capad_surplus>0?fM(c.capad_surplus):'N/A';
   if(p){
-    let d;
-    d=delta(c.rev_total_today,p.rev_total_today);setDelta('kd-rev',d);
-    d=delta(c.rev_total_mtd,p.rev_total_mtd);setDelta('kd-mtd',d);
-    d=delta(c.net_total,p.net_total);setDelta('kd-net',d);
-    d=delta(c.cwc_group_total,p.cwc_group_total);setDelta('kd-cwc',d);
-    d=delta(c.capad_surplus,p.capad_surplus);setDelta('kd-surplus',d);
-  } else {['kd-rev','kd-mtd','kd-net','kd-cwc','kd-surplus'].forEach(id=>{const el=document.getElementById(id);el.textContent='First day';el.className='kpi-delta flat';});}
+    setDelta('kd-rev',delta(c.rev_total_today,p.rev_total_today));
+    setDelta('kd-mtd',delta(c.rev_total_mtd,p.rev_total_mtd));
+    setDelta('kd-net',delta(c.net_total,p.net_total));
+    const cwcEl=document.getElementById('kd-cwc');
+    if(c.cwc_group_total>1000&&p.cwc_group_total>1000){setDelta('kd-cwc',delta(c.cwc_group_total,p.cwc_group_total));}
+    else{cwcEl.textContent='Data unavailable';cwcEl.className='kpi-delta flat';}
+    setDelta('kd-surplus',delta(c.capad_surplus,p.capad_surplus));
+  } else {
+    ['kd-rev','kd-mtd','kd-net','kd-cwc','kd-surplus'].forEach(id=>{const el=document.getElementById(id);el.textContent='First day';el.className='kpi-delta flat';});
+  }
   // CAPAD sub-KPIs
-  document.getElementById('ck-alc').textContent=fM(c.capad_alc);
-  document.getElementById('ck-trr').textContent=fM(c.capad_trr);
-  document.getElementById('ck-surplus').textContent=fM(c.capad_surplus);
-  document.getElementById('ck-tl').textContent=fB(c.capad_tl);
+  document.getElementById('ck-alc').textContent=c.capad_alc>1e6?fM(c.capad_alc):'N/A';
+  document.getElementById('ck-trr').textContent=c.capad_trr>1e6?fM(c.capad_trr):'N/A';
+  document.getElementById('ck-surplus').textContent=c.capad_surplus>0?fM(c.capad_surplus):'N/A';
+  document.getElementById('ck-tl').textContent=c.capad_tl>1e6?fB(c.capad_tl):'N/A';
   if(p){
-    setDelta('ckd-alc',delta(c.capad_alc,p.capad_alc));
-    setDelta('ckd-trr',delta(c.capad_trr,p.capad_trr,true));
-    setDelta('ckd-surplus',delta(c.capad_surplus,p.capad_surplus));
-    setDelta('ckd-tl',delta(c.capad_tl,p.capad_tl));
+    if(c.capad_alc>1e6&&p.capad_alc>1e6){setDelta('ckd-alc',delta(c.capad_alc,p.capad_alc));}
+    if(c.capad_trr>1e6&&p.capad_trr>1e6){setDelta('ckd-trr',delta(c.capad_trr,p.capad_trr,true));}
+    if(c.capad_surplus>0&&p.capad_surplus>0){setDelta('ckd-surplus',delta(c.capad_surplus,p.capad_surplus));}
+    if(c.capad_tl>1e6&&p.capad_tl>1e6){setDelta('ckd-tl',delta(c.capad_tl,p.capad_tl));}
   }
 }
-
-function setDelta(id,d){const el=document.getElementById(id);if(el){el.textContent=d.txt;el.className='kpi-delta '+d.cls;}}
 
 function updateRevTable(){
   const c=RAW[selIdx],p=selIdx>0?RAW[selIdx-1]:null;
@@ -502,7 +480,7 @@ function updateRevTable(){
     const pvF=pv!=null?fM(pv):'—';
     const cvF=cv!=null?fM(cv):'—';
     const chgF=(pv!=null&&cv!=null)?'<span class="'+(cv-pv>=0?'pos':'neg')+'">'+(cv-pv>=0?'+':'')+fM(cv-pv)+'</span>':'—';
-    const rc=isTotal?'class="total-row"':'';
+    const rc=isTotal?'class="tr-total"':'';
     html+=`<tr ${rc}><td>${lbl}</td><td class="${pv!=null&&pv<0?'neg':''}">${pvF}</td><td class="${cv!=null&&cv<0?'neg':cv>1e6?'pos':''}">${cvF}</td><td>${chgF}</td><td>${mtd!=null?fM(mtd):'—'}</td><td>${ytd!=null?fM(ytd):'—'}</td></tr>`;
   });
   html+='</tbody>';
@@ -511,7 +489,7 @@ function updateRevTable(){
 
 function updatePnlTable(){
   let html='<thead><tr><th>Date</th><th>Realised Arb</th><th>Realised Total</th><th>Unrealised Total</th><th>Net Arb</th><th>Net Prop</th><th>Net Facil</th><th>Net Total</th></tr></thead><tbody>';
-  RAW.forEach(d=>{
+  RAW.filter(d=>d.net_total>0).forEach(d=>{
     html+=`<tr><td>${d.date}</td><td class="${d.realised_arb<0?'neg':''}">${fM(d.realised_arb)}</td><td class="${d.realised_total<0?'neg':''}">${fM(d.realised_total)}</td><td class="${d.unrealised_total>=0?'pos':'neg'}">${fM(d.unrealised_total)}</td><td class="pos">${fM(d.net_arb)}</td><td class="pos">${fM(d.net_prop)}</td><td class="pos">${fM(d.net_facil)}</td><td class="pos">${fM(d.net_total)}</td></tr>`;
   });
   html+='</tbody>';
@@ -519,34 +497,34 @@ function updatePnlTable(){
 }
 
 function updateCWCBars(){
-  let ci = selIdx;
-  while(ci >= 0 && RAW[ci].cwc_group_total < 1000) ci--;
-  if(ci < 0) ci = selIdx;
-  const c=RAW[ci];
+  const candidates=RAW.filter(d=>d.cwc_group_total>1000);
+  const c=candidates.length>0?candidates[Math.min(selIdx,candidates.length-1)]:RAW[selIdx];
+  const actual=candidates.find(d=>d.sort===RAW[selIdx].sort)||candidates[candidates.length-1];
   const items=[
-    {label:'SA',val:c.cwc_sa_total,color:'#2ec4b6'},
-    {label:'Derivatives',val:c.cwc_deriv_total,color:'#52b788'},
-    {label:'Holdings',val:c.cwc_holdings_total,color:'#52b788'},
-    {label:'UK',val:c.cwc_uk_total,color:'#f4a261'},
-    {label:'US',val:c.cwc_us_total,color:'#378ADD'},
-    {label:'Africa Cash',val:c.cwc_africa_cash,color:'#BA7517'},
-    {label:'Africa Stock',val:c.cwc_africa_stock,color:'#BA7517'},
+    {label:'SA',val:actual.cwc_sa_total,color:'#2ec4b6'},
+    {label:'Derivatives',val:actual.cwc_deriv_total,color:'#52b788'},
+    {label:'Holdings',val:actual.cwc_holdings_total,color:'#52b788'},
+    {label:'UK',val:actual.cwc_uk_total,color:'#f4a261'},
+    {label:'US',val:actual.cwc_us_total,color:'#378ADD'},
+    {label:'Africa Cash',val:actual.cwc_africa_cash,color:'#BA7517'},
+    {label:'Africa Stock',val:actual.cwc_africa_stock,color:'#BA7517'},
   ];
   const max=Math.max(...items.map(i=>Math.abs(i.val)));
-  let html='';
+  let h='';
   items.forEach(it=>{
-    const pct=(Math.abs(it.val)/max*100).toFixed(1);
-    html+=`<div class="progress-row"><div class="prog-label">${it.label}</div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${it.color};"></div></div><div class="prog-val" style="color:${it.color}">${fM(it.val)}</div></div>`;
+    const pct=max>0?(Math.abs(it.val)/max*100).toFixed(1):0;
+    h+=`<div class="prog-row"><div class="prog-name">${it.label}</div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${it.color};"></div></div><div class="prog-val" style="color:${it.color}">${fM(it.val)}</div></div>`;
   });
-  document.getElementById('cwc-bars').innerHTML=html;
+  document.getElementById('cwc-bars').innerHTML=h;
 }
 
 function updateFullTable(){
   let html='<thead><tr><th>Date</th><th>Revenue Today</th><th>MTD Revenue</th><th>Net Profit</th><th>CWC Group</th><th>CAPAD ALC</th><th>CAPAD Surplus</th><th>Trading Limit</th><th>Status</th></tr></thead><tbody>';
   RAW.forEach(d=>{
-    const cover=(d.capad_alc/d.capad_trr*100).toFixed(0);
-    const status=d.capad_trr>55e6?'<span class="badge alert">Risk spike</span>':d.capad_surplus<75e6?'<span class="badge warn">Monitor</span>':'<span class="badge ok">Compliant</span>';
-    html+=`<tr><td>${d.date}</td><td class="${d.rev_total_today<0?'neg':'pos'}">${fM(d.rev_total_today)}</td><td>${fM(d.rev_total_mtd)}</td><td class="pos">${fM(d.net_total)}</td><td>${fM(d.cwc_group_total)}</td><td class="pos">${fM(d.capad_alc)}</td><td class="${d.capad_surplus<80e6?'hi':'pos'}">${fM(d.capad_surplus)}</td><td>${fB(d.capad_tl)}</td><td>${status}</td></tr>`;
+    const noData=d.net_total===0;
+    const cov=d.capad_alc&&d.capad_trr&&d.capad_trr>1e6?(d.capad_alc/d.capad_trr*100).toFixed(0):'—';
+    const status=noData?'<span class="badge b-warn">No data</span>':d.capad_trr>55e6?'<span class="badge b-alert">Risk spike</span>':d.capad_surplus>0&&d.capad_surplus<75e6?'<span class="badge b-warn">Monitor</span>':'<span class="badge b-ok">Compliant</span>';
+    html+=`<tr><td>${d.date}</td><td class="${d.rev_total_today<0?'neg':d.rev_total_today>0?'pos':''}">${noData?'—':fM(d.rev_total_today)}</td><td>${noData?'—':fM(d.rev_total_mtd)}</td><td class="${noData?'':'pos'}">${noData?'—':fM(d.net_total)}</td><td>${d.cwc_group_total>1000?fM(d.cwc_group_total):'—'}</td><td class="${d.capad_alc>1e6?'pos':''}">${d.capad_alc>1e6?fM(d.capad_alc):'—'}</td><td class="${d.capad_surplus>0&&d.capad_surplus<80e6?'am':d.capad_surplus>0?'pos':''}">${d.capad_surplus>0?fM(d.capad_surplus):'—'}</td><td>${d.capad_tl>1e6?fB(d.capad_tl):'—'}</td><td>${status}</td></tr>`;
   });
   html+='</tbody>';
   document.getElementById('full-table').innerHTML=html;
@@ -555,85 +533,80 @@ function updateFullTable(){
 // Charts
 const CI={};
 const grid='rgba(255,255,255,0.05)',tick='#7a92a8';
-const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:tick,font:{size:10}}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10}}}}};
-const mOpts=(cb)=>({...baseOpts,scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:cb}}}});
-const yM=mOpts(v=>fM(v,0));
-const yB=mOpts(v=>'R'+(v/1e9).toFixed(2)+'B');
-const yPct=mOpts(v=>v+'%');
+const xScale={grid:{display:false},ticks:{color:tick,font:{size:9},maxRotation:0,minRotation:0,autoSkip:true,maxTicksLimit:14}};
+const yScale=(cb)=>({grid:{color:grid},ticks:{color:tick,font:{size:10},callback:cb}});
+const yM={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xScale,y:yScale(v=>'R'+(Math.abs(v)>=1e6?(v/1e6).toFixed(0)+'M':(v/1e3).toFixed(0)+'K'))}};
+const yB={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xScale,y:yScale(v=>'R'+(v/1e9).toFixed(2)+'B')}};
+const yPct={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xScale,y:yScale(v=>v+'%')}};
+const leg=(pos='bottom')=>({display:true,labels:{color:tick,font:{size:11},boxWidth:10,padding:10},position:pos});
 
 function mk(id,cfg){if(CI[id])CI[id].destroy();const el=document.getElementById(id);if(!el)return;CI[id]=new Chart(el.getContext('2d'),cfg);}
-function line(data,color,fill=false){return{data,borderColor:color,backgroundColor:fill?color.replace(')',',0.08)').replace('rgb','rgba'):undefined,fill,tension:.4,pointRadius:3,pointBackgroundColor:color,borderWidth:2};}
-function bar(data,colors){return{data,backgroundColor:Array.isArray(colors)?colors:data.map(v=>v>=0?colors:colors==='#2ec4b6'?'#e76f51':'#e76f51'),borderRadius:3,borderSkipped:false};}
+
+function lineDs(arr,field,color,fill=false){
+  return{data:arr.map(d=>d[field]),borderColor:color,backgroundColor:fill?color.replace('rgb','rgba').replace(')',',0.08)'):undefined,fill,tension:.4,pointRadius:2,pointBackgroundColor:color,borderWidth:2};
+}
 
 function buildCharts(){
-  const leg=(pos='bottom')=>({display:true,labels:{color:tick,font:{size:11},boxWidth:10,padding:10},position:pos});
-
   // Overview
-  mk('c-rev-trend',{type:'bar',data:{labels:LABELS,datasets:[{...bar(RAW.map(d=>d.rev_total_today),RAW.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.7)':'rgba(231,111,81,0.7)')),borderRadius:3}]},options:yM});
-  mk('c-net-trend',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.net_total),'#52b788',true)}]},options:yM});
-  mk('c-cwc-trend',{type:'line',data:fline('cwc_group_total','#f4a261',true),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-mtd-vs',{type:'bar',data:{labels:LABELS,datasets:[
-    {label:'MTD Actual',data:RAW.map(d=>d.rev_total_mtd),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:3,borderSkipped:false},
-    {label:'Projected',data:RAW.map(d=>d.rev_total_proj),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false},
-    {label:'Prior month',data:RAW.map(d=>d.rev_total_prior),backgroundColor:'rgba(122,146,168,0.4)',borderRadius:3,borderSkipped:false}
-  ]},options:{...yM,plugins:{legend:leg('bottom')}}});
-
-  // Revenue
-  mk('c-rev-full',{type:'bar',data:{labels:LABELS,datasets:[
-    {label:'Today',data:RAW.map(d=>d.rev_total_today),backgroundColor:RAW.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.8)':'rgba(231,111,81,0.8)'),borderRadius:3,borderSkipped:false},
-    {label:'MTD daily avg',data:RAW.map(d=>d.rev_total_mtd/d.day_num),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false}
-  ]},options:{...yM,plugins:{legend:leg()}}});
-  mk('c-sa-rev',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_sa_today),'#2ec4b6',true)}]},options:yM});
-  mk('c-uk-rev',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_uk_today),'#f4a261',false)}]},options:yM});
-  mk('c-ytd',{type:'line',data:{labels:LABELS,datasets:[{...line(RAW.map(d=>d.rev_total_ytd),'#52b788',true)}]},options:yM});
-  mk('c-proj',{type:'line',data:{labels:LABELS,datasets:[
-    {label:'Projected',data:RAW.map(d=>d.rev_total_proj),borderColor:'#f4a261',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Prior month',data:RAW.map(d=>d.rev_total_prior),borderColor:'rgba(122,146,168,0.6)',tension:.1,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  mk('c-rev-trend',{type:'bar',data:{labels:rpnl.map(d=>d.date),datasets:[{data:rpnl.map(d=>d.rev_total_today),backgroundColor:rpnl.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.7)':'rgba(231,111,81,0.7)'),borderRadius:3,borderSkipped:false}]},options:yM});
+  mk('c-net-trend',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[{...lineDs(rpnl,'net_total','#52b788',true)}]},options:yM});
+  mk('c-cwc-trend',{type:'line',data:{labels:rcwc.map(d=>d.date),datasets:[{...lineDs(rcwc,'cwc_group_total','#f4a261',true)}]},options:yM});
+  mk('c-mtd-vs',{type:'bar',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'MTD Actual',data:rpnl.map(d=>d.rev_total_mtd),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:3,borderSkipped:false},
+    {label:'Projected',data:rpnl.map(d=>d.rev_total_proj),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false},
+    {label:'Prior month',data:rpnl.map(d=>d.rev_total_prior),backgroundColor:'rgba(122,146,168,0.4)',borderRadius:3,borderSkipped:false}
   ]},options:{...yM,plugins:{legend:leg()}}});
 
-  // P&L
-  mk('c-pnl-desk',{type:'line',data:{labels:LABELS,datasets:[
-    {label:'Net Arbitrage',data:RAW.map(d=>d.net_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Net Proprietary',data:RAW.map(d=>d.net_prop),borderColor:'#52b788',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Net Facilitation',data:RAW.map(d=>d.net_facil),borderColor:'#f4a261',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Net Total',data:RAW.map(d=>d.net_total),borderColor:'#ffffff',tension:.4,pointRadius:3,borderWidth:2.5,fill:false}
+  // Revenue tab
+  mk('c-rev-full',{type:'bar',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'Today',data:rpnl.map(d=>d.rev_total_today),backgroundColor:rpnl.map(d=>d.rev_total_today>=0?'rgba(46,196,182,0.8)':'rgba(231,111,81,0.8)'),borderRadius:3,borderSkipped:false},
+    {label:'MTD daily avg',data:rpnl.map(d=>d.rev_total_mtd/d.day_num),backgroundColor:'rgba(244,162,97,0.5)',borderRadius:3,borderSkipped:false}
   ]},options:{...yM,plugins:{legend:leg()}}});
-  mk('c-realised',{type:'line',data:{labels:LABELS,datasets:[
-    {label:'Arbitrage',data:RAW.map(d=>d.realised_arb),borderColor:'#e76f51',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Proprietary',data:RAW.map(d=>d.realised_prop),borderColor:'#52b788',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Total',data:RAW.map(d=>d.realised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
-  ]},options:{...yM,plugins:{legend:leg()}}});
-  mk('c-unrealised',{type:'line',data:{labels:LABELS,datasets:[
-    {label:'Arbitrage',data:RAW.map(d=>d.unrealised_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:3,borderWidth:2,fill:false},
-    {label:'Total',data:RAW.map(d=>d.unrealised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  mk('c-sa-rev',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[{...lineDs(rpnl,'rev_sa_today','#2ec4b6',true)}]},options:yM});
+  mk('c-uk-rev',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[{...lineDs(rpnl,'rev_uk_today','#f4a261',false)}]},options:yM});
+  mk('c-ytd',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[{...lineDs(rpnl,'rev_total_ytd','#52b788',true)}]},options:yM});
+  mk('c-proj',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'Projected',data:rpnl.map(d=>d.rev_total_proj),borderColor:'#f4a261',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Prior month',data:rpnl.map(d=>d.rev_total_prior),borderColor:'rgba(122,146,168,0.6)',tension:.1,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
   ]},options:{...yM,plugins:{legend:leg()}}});
 
-  // CWC
-  mk('c-cwc-full',{type:'line',data:fline('cwc_group_total','#f4a261',true),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-cwc-sa',{type:'line',data:fline('cwc_sa_total','#2ec4b6',true),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-cwc-uk',{type:'line',data:fline('cwc_uk_total','#f4a261',true),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-cwc-us',{type:'line',data:fline('cwc_us_total','#378ADD',true),options:{...yM,plugins:{legend:{display:false}}}});
-
-  // CAPAD
-  (()=>{
-  const cp=RAW.filter(d=>d.capad_alc>1e6&&d.capad_trr>1e6);
-  mk('c-cap-alc-trr',{type:'bar',data:{labels:cp.map(d=>d.date),datasets:[
-    {label:'ALC',data:cp.map(d=>d.capad_alc),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:3,borderSkipped:false},
-    {label:'TRR',data:cp.map(d=>d.capad_trr),backgroundColor:'rgba(231,111,81,0.7)',borderRadius:3,borderSkipped:false}
+  // P and L tab
+  mk('c-pnl-desk',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'Net Arbitrage',data:rpnl.map(d=>d.net_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Net Proprietary',data:rpnl.map(d=>d.net_prop),borderColor:'#52b788',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Net Facilitation',data:rpnl.map(d=>d.net_facil),borderColor:'#f4a261',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Net Total',data:rpnl.map(d=>d.net_total),borderColor:'#ffffff',tension:.4,pointRadius:2,borderWidth:2.5,fill:false}
   ]},options:{...yM,plugins:{legend:leg()}}});
-})();
-  mk('c-cap-surplus',{type:'line',data:fline('capad_surplus','#52b788',true),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-cap-tl',{type:'line',data:fline('capad_tl','#2ec4b6',true),options:{...yB,plugins:{legend:{display:false}}}});
-  (()=>{
-  const cp=RAW.filter(d=>d.capad_alc>1e6&&d.capad_trr>1e6);
-  mk('c-cap-cover',{type:'line',data:{labels:cp.map(d=>d.date),datasets:[{data:cp.map(d=>parseFloat((d.capad_alc/d.capad_trr*100).toFixed(1))),borderColor:'#f4a261',backgroundColor:'rgba(244,162,97,0.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:{...yPct,plugins:{legend:{display:false}}}});
-})();
+  mk('c-realised',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'Arbitrage',data:rpnl.map(d=>d.realised_arb),borderColor:'#e76f51',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Proprietary',data:rpnl.map(d=>d.realised_prop),borderColor:'#52b788',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Total',data:rpnl.map(d=>d.realised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-unrealised',{type:'line',data:{labels:rpnl.map(d=>d.date),datasets:[
+    {label:'Arbitrage',data:rpnl.map(d=>d.unrealised_arb),borderColor:'#2ec4b6',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Total',data:rpnl.map(d=>d.unrealised_total),borderColor:'#f0f4f8',tension:.4,pointRadius:2,borderWidth:1.5,borderDash:[4,4],fill:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
 
-  // Custody
-  mk('c-jse',{type:'bar',data:fbar('custody_jse',v=>'rgba(46,196,182,0.7)'),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-custody-total',{type:'line',data:fline('custody_total','#52b788',true),options:{...yB,plugins:{legend:{display:false}}}});
-  mk('c-africa-cash',{type:'bar',data:fbar('cwc_africa_cash',v=>'rgba(186,117,23,0.7)'),options:{...yM,plugins:{legend:{display:false}}}});
-  mk('c-africa-stock',{type:'bar',data:fbar('cwc_africa_stock',v=>'rgba(186,117,23,0.7)'),options:{...yM,plugins:{legend:{display:false}}}});
+  // Cash and Working Capital tab
+  mk('c-cwc-full',{type:'line',data:{labels:rcwc.map(d=>d.date),datasets:[{...lineDs(rcwc,'cwc_group_total','#f4a261',true)}]},options:yM});
+  mk('c-cwc-sa',{type:'line',data:{labels:rcwc.map(d=>d.date),datasets:[{...lineDs(rcwc,'cwc_sa_total','#2ec4b6',true)}]},options:yM});
+  mk('c-cwc-uk',{type:'line',data:{labels:rcwc.map(d=>d.date),datasets:[{...lineDs(rcwc,'cwc_uk_total','#f4a261',true)}]},options:yM});
+  mk('c-cwc-us',{type:'line',data:{labels:rcwc.map(d=>d.date),datasets:[{...lineDs(rcwc,'cwc_us_total','#378ADD',true)}]},options:yM});
+  mk('c-africa-cash',{type:'bar',data:{labels:rafcash.map(d=>d.date),datasets:[{data:rafcash.map(d=>d.cwc_africa_cash),backgroundColor:'rgba(186,117,23,0.7)',borderRadius:3,borderSkipped:false}]},options:yM});
+  mk('c-africa-stock',{type:'bar',data:{labels:rafstock.map(d=>d.date),datasets:[{data:rafstock.map(d=>d.cwc_africa_stock),backgroundColor:'rgba(186,117,23,0.7)',borderRadius:3,borderSkipped:false}]},options:yM});
+
+  // CAPAD tab
+  mk('c-cap-alc-trr',{type:'bar',data:{labels:rcap.map(d=>d.date),datasets:[
+    {label:'ALC',data:rcap.map(d=>d.capad_alc),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:3,borderSkipped:false},
+    {label:'TRR',data:rcap.map(d=>d.capad_trr),backgroundColor:'rgba(231,111,81,0.7)',borderRadius:3,borderSkipped:false}
+  ]},options:{...yM,plugins:{legend:leg()}}});
+  mk('c-cap-surplus',{type:'line',data:{labels:rcap.map(d=>d.date),datasets:[{...lineDs(rcap,'capad_surplus','#52b788',true)}]},options:yM});
+  mk('c-cap-tl',{type:'line',data:{labels:rcap.map(d=>d.date),datasets:[{...lineDs(rcap,'capad_tl','#2ec4b6',true)}]},options:yB});
+  mk('c-cap-cover',{type:'line',data:{labels:rcap.map(d=>d.date),datasets:[{data:rcap.map(d=>parseFloat((d.capad_alc/d.capad_trr*100).toFixed(1))),borderColor:'#f4a261',backgroundColor:'rgba(244,162,97,0.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:yPct});
+
+  // Custody tab
+  mk('c-jse',{type:'bar',data:{labels:rjse.map(d=>d.date),datasets:[{data:rjse.map(d=>d.custody_jse),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:3,borderSkipped:false}]},options:yM});
+  mk('c-custody-total',{type:'line',data:{labels:rcust.map(d=>d.date),datasets:[{...lineDs(rcust,'custody_total','#52b788',true)}]},options:yB});
 
   updateRevRegion();
   updateCWCRegion();
@@ -645,12 +618,12 @@ function updateRevRegion(){
 }
 
 function updateCWCRegion(){
-  // fall back to last day with CWC data if selected day has none
-  let ci = selIdx;
-  while(ci >= 0 && RAW[ci].cwc_group_total < 1000) ci--;
-  if(ci < 0) ci = selIdx;
-  const c=RAW[ci];
-  mk('c-cwc-region',{type:'doughnut',data:{labels:['SA','Derivatives','Holdings','UK','US','Africa'],datasets:[{data:[c.cwc_sa_total,c.cwc_deriv_total,c.cwc_holdings_total,c.cwc_uk_total,c.cwc_us_total,c.cwc_africa_cash+c.cwc_africa_stock],backgroundColor:['#2ec4b6','#52b788','#52b788','#f4a261','#378ADD','#BA7517'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tick,font:{size:11},boxWidth:10,padding:8},position:'bottom'}},cutout:'60%'}});
+  const candidates=RAW.filter(d=>d.cwc_group_total>1000);
+  const c=candidates.find(d=>d.sort===RAW[selIdx].sort)||candidates[candidates.length-1];
+  mk('c-cwc-region',{type:'doughnut',data:{
+    labels:['SA','Derivatives','Holdings','UK','US','Africa'],
+    datasets:[{data:[c.cwc_sa_total,c.cwc_deriv_total,c.cwc_holdings_total,c.cwc_uk_total,c.cwc_us_total,c.cwc_africa_cash+c.cwc_africa_stock],backgroundColor:['#2ec4b6','#52b788','#3a9e6a','#f4a261','#378ADD','#BA7517'],borderWidth:0,hoverOffset:4}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tick,font:{size:11},boxWidth:10,padding:8},position:'bottom'}},cutout:'60%'}});
 }
 
 function updateAll(){
