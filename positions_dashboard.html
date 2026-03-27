@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Avior — Positions Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--navy:#0a1628;--navy2:#0f1e35;--card:#131f33;--card-b:rgba(255,255,255,0.07);--teal:#2ec4b6;--teal-dim:rgba(46,196,182,0.15);--amber:#f4a261;--green:#52b788;--red:#e76f51;--blue:#378ADD;--muted:#6a849e;--white:#f0f4f8;--tab-h:60px;--hdr-h:56px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);display:flex;flex-direction:column;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,196,182,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.pos{color:var(--green)!important;} .neg{color:var(--red)!important;} .tl{color:var(--teal)!important;} .am{color:var(--amber)!important;} .bl{color:var(--blue)!important;}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:3px;font-family:'DM Mono',monospace;}
+.b-arb{background:rgba(46,196,182,0.15);color:var(--teal);}
+.b-prop{background:rgba(82,183,136,0.15);color:var(--green);}
+.b-facil{background:rgba(244,162,97,0.15);color:var(--amber);}
+.b-adr{background:rgba(107,120,140,0.15);color:var(--muted);}
+
+/* HEADER */
+.hdr{position:relative;z-index:10;height:var(--hdr-h);background:var(--navy2);border-bottom:.5px solid var(--card-b);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;flex-shrink:0;}
+.hdr-logo{display:flex;align-items:center;gap:12px;}
+.oct{width:34px;height:34px;background:var(--teal);clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 80%,80% 100%,20% 100%,0% 80%,0% 20%);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--navy);flex-shrink:0;}
+.hdr-brand{font-size:16px;font-weight:600;letter-spacing:.07em;}
+.hdr-sub{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.hdr-right{text-align:right;}
+.hdr-title{font-size:15px;font-weight:600;color:var(--teal);}
+.hdr-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* TABS */
+.tabs{position:relative;z-index:10;height:var(--tab-h);background:var(--navy2);border-bottom:.5px solid var(--card-b);display:flex;align-items:stretch;flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:1;min-width:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border-bottom:2px solid transparent;padding:8px 6px 6px;transition:all .15s;white-space:nowrap;}
+.tab.active{border-bottom-color:var(--teal);}
+.tab-ico{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background .15s;}
+.tab.active .tab-ico{background:var(--teal-dim);}
+.tab-ico svg{width:15px;height:15px;fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s;}
+.tab.active .tab-ico svg{stroke:var(--teal);}
+.tab-lbl{font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);transition:color .15s;}
+.tab.active .tab-lbl{color:var(--teal);}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;z-index:1;}
+.panel{display:none;padding:1.25rem 1.25rem 3rem;}
+.panel.active{display:block;animation:fadeUp .25s ease both;}
+
+/* SECTION HEADERS */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+.sec-title{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.sec-note{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* KPI STRIP */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.2rem;}
+@media(min-width:600px){.kpis{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:900px){.kpis{grid-template-columns:repeat(5,1fr);}}
+.kpi{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:.9rem 1rem;position:relative;overflow:hidden;animation:fadeUp .3s ease both;}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.ct::after{background:var(--teal);}.kpi.cg::after{background:var(--green);}.kpi.ca::after{background:var(--amber);}.kpi.cr::after{background:var(--red);}.kpi.cb::after{background:var(--blue);}
+.kl{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.kv{font-family:'DM Mono',monospace;font-size:18px;color:var(--white);}
+.ks{font-size:10px;color:var(--muted);margin-top:3px;}
+
+/* CHARTS */
+.chart-card{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:1rem;}
+.chart-card h3{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+.chart-wrap{position:relative;height:200px;}
+@media(min-width:768px){.chart-wrap{height:240px;}}
+.grid2{display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:1rem;}
+@media(min-width:650px){.grid2{grid-template-columns:1fr 1fr;}}
+.grid3{display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:1rem;}
+@media(min-width:700px){.grid3{grid-template-columns:1fr 1fr 1fr;}}
+.grid2 .chart-wrap,.grid3 .chart-wrap{height:180px;}
+
+/* POSITION TABLES */
+.tbl-wrap{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:1rem;overflow-x:auto;}
+.tbl-wrap h3{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;}
+.pos-table{width:100%;border-collapse:collapse;min-width:640px;}
+.pos-table th{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 10px;border-bottom:1px solid var(--teal-dim);}
+.pos-table th:first-child,.pos-table th:nth-child(2){text-align:left;}
+.pos-table td{padding:7px 10px;font-size:11px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.04);text-align:right;color:var(--white);white-space:nowrap;}
+.pos-table td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--white);}
+.pos-table td:nth-child(2){text-align:left;}
+.pos-table tr:last-child td{border-bottom:none;}
+.pos-table tr:hover td{background:rgba(255,255,255,0.025);}
+.pos-table tr.tr-total td{border-top:1px solid var(--teal-dim);border-bottom:none;color:var(--teal);font-weight:500;padding-top:10px;}
+.pos-table tr.tr-total td:first-child{color:var(--teal);}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;}
+.filt{padding:5px 12px;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:var(--card);border:1px solid var(--card-b);border-radius:20px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.filt.active{border-color:var(--teal);color:var(--teal);background:rgba(46,196,182,0.1);}
+.filt-prop.active{border-color:var(--green);color:var(--green);background:rgba(82,183,136,0.1);}
+.filt-facil.active{border-color:var(--amber);color:var(--amber);background:rgba(244,162,97,0.1);}
+.filt-adr.active{border-color:var(--muted);color:var(--white);background:rgba(107,120,140,0.1);}
+
+/* SEARCH */
+.search-row{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+.pos-search{flex:1;background:var(--card);border:1px solid var(--card-b);border-radius:8px;padding:8px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+.pos-search::placeholder{color:var(--muted);}
+.pos-search:focus{border-color:rgba(46,196,182,0.4);}
+
+/* EXPOSURE BARS */
+.exp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.exp-label{font-size:11px;color:var(--muted);min-width:110px;}
+.exp-track{flex:1;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;display:flex;}
+.exp-long{height:100%;background:var(--teal);opacity:.8;border-radius:4px 0 0 4px;transition:width .5s ease;}
+.exp-short{height:100%;background:var(--red);opacity:.7;border-radius:0 4px 4px 0;transition:width .5s ease;}
+.exp-vals{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);min-width:160px;text-align:right;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">
+    <div class="oct">AV</div>
+    <div>
+      <div class="hdr-brand">AVIOR</div>
+      <div class="hdr-sub">Capital Markets</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-title">Positions Dashboard</div>
+    <div class="hdr-date">2 March — 26 March 2026 &nbsp;|&nbsp; 19 trading days</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('overview',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+    <span class="tab-lbl">Overview</span>
+  </div>
+  <div class="tab" onclick="showTab('pnl',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+    <span class="tab-lbl">P and L</span>
+  </div>
+  <div class="tab" onclick="showTab('exposure',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+    <span class="tab-lbl">Exposure</span>
+  </div>
+  <div class="tab" onclick="showTab('jse',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>
+    <span class="tab-lbl">JSE</span>
+  </div>
+  <div class="tab" onclick="showTab('nonjse',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span class="tab-lbl">Non-JSE</span>
+  </div>
+  <div class="tab" onclick="showTab('all',this)">
+    <div class="tab-ico"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+    <span class="tab-lbl">All Positions</span>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="kpis">
+    <div class="kpi ct" style="animation-delay:.04s"><div class="kl">Net YTD Profit</div><div class="kv">R24.6M</div><div class="ks">26 Mar 2026</div></div>
+    <div class="kpi cg" style="animation-delay:.08s"><div class="kl">Arb YTD</div><div class="kv">R17.3M</div><div class="ks">Realised + Unrealised</div></div>
+    <div class="kpi cg" style="animation-delay:.12s"><div class="kl">Prop YTD</div><div class="kv">R6.1M</div><div class="ks">Realised + Unrealised</div></div>
+    <div class="kpi ca" style="animation-delay:.16s"><div class="kl">Facil YTD</div><div class="kv">R1.2M</div><div class="ks">Realised + Unrealised</div></div>
+    <div class="kpi ct" style="animation-delay:.20s"><div class="kl">Gross Exposure</div><div class="kv">R94.7M</div><div class="ks">Total portfolio 26 Mar</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="chart-card"><h3>Net YTD Profit — all desks</h3><div class="chart-wrap"><canvas id="c-net-ytd"></canvas></div></div>
+    <div class="chart-card"><h3>YTD by desk</h3><div class="chart-wrap"><canvas id="c-desk-ytd"></canvas></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="chart-card"><h3>Gross nominal exposure</h3><div class="chart-wrap"><canvas id="c-gross"></canvas></div></div>
+    <div class="chart-card"><h3>Portfolio mix — 26 Mar</h3><div class="chart-wrap"><canvas id="c-mix"></canvas></div></div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Long vs short market value</h3>
+    <div style="margin-top:4px;">
+      <div class="exp-bar-row">
+        <div class="exp-label">JSE</div>
+        <div class="exp-track"><div class="exp-long" style="width:71%"></div><div class="exp-short" style="width:29%"></div></div>
+        <div class="exp-vals">Long R36.5M &nbsp;|&nbsp; Short R14.5M</div>
+      </div>
+      <div class="exp-bar-row">
+        <div class="exp-label">Non-JSE</div>
+        <div class="exp-track"><div class="exp-long" style="width:93%"></div><div class="exp-short" style="width:7%"></div></div>
+        <div class="exp-vals">Long R40.7M &nbsp;|&nbsp; Short R3.0M</div>
+      </div>
+      <div class="exp-bar-row">
+        <div class="exp-label">Total Portfolio</div>
+        <div class="exp-track"><div class="exp-long" style="width:82%"></div><div class="exp-short" style="width:18%"></div></div>
+        <div class="exp-vals">Long R77.2M &nbsp;|&nbsp; Short R17.5M</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P AND L -->
+<div class="panel" id="panel-pnl">
+  <div class="kpis">
+    <div class="kpi cg"><div class="kl">Arb Realised</div><div class="kv neg">-R131.8M</div><div class="ks">May 24 base</div></div>
+    <div class="kpi ct"><div class="kl">Arb Unrealised</div><div class="kv pos">+R164.2M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi cg"><div class="kl">Arb YTD Net</div><div class="kv pos">R17.3M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi cg"><div class="kl">Prop YTD</div><div class="kv pos">R6.1M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi ca"><div class="kl">Facil YTD</div><div class="kv pos">R1.2M</div><div class="ks">26 Mar</div></div>
+  </div>
+
+  <div class="chart-card"><h3>YTD profit by desk — all 19 days</h3><div class="chart-wrap" style="height:260px;"><canvas id="c-pnl-desk"></canvas></div></div>
+
+  <div class="grid2">
+    <div class="chart-card"><h3>Arbitrage — realised vs unrealised</h3><div class="chart-wrap"><canvas id="c-arb-split"></canvas></div></div>
+    <div class="chart-card"><h3>Daily net YTD movement</h3><div class="chart-wrap"><canvas id="c-daily-move"></canvas></div></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <h3>P and L summary — all 19 trading days</h3>
+    <table class="pos-table" id="pnl-table"></table>
+  </div>
+</div>
+
+<!-- EXPOSURE -->
+<div class="panel" id="panel-exposure">
+  <div class="kpis">
+    <div class="kpi ct"><div class="kl">Total Gross</div><div class="kv">R94.7M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi cg"><div class="kl">Total Long</div><div class="kv">R77.2M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi cr"><div class="kl">Total Short</div><div class="kv">R17.5M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi ca"><div class="kl">JSE Gross</div><div class="kv">R50.9M</div><div class="ks">26 Mar</div></div>
+    <div class="kpi ct"><div class="kl">Non-JSE Gross</div><div class="kv">R43.8M</div><div class="ks">26 Mar</div></div>
+  </div>
+
+  <div class="chart-card"><h3>Total gross nominal exposure — 19 day trend</h3><div class="chart-wrap"><canvas id="c-exp-trend"></canvas></div></div>
+  <div class="grid2">
+    <div class="chart-card"><h3>JSE vs Non-JSE gross exposure</h3><div class="chart-wrap"><canvas id="c-exp-split"></canvas></div></div>
+    <div class="chart-card"><h3>Long vs short total portfolio</h3><div class="chart-wrap"><canvas id="c-ls-trend"></canvas></div></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <h3>Exposure summary — all days</h3>
+    <table class="pos-table" id="exp-table"></table>
+  </div>
+</div>
+
+<!-- JSE POSITIONS -->
+<div class="panel" id="panel-jse">
+  <div class="sec-hdr">
+    <span class="sec-title">JSE Positions — 26 March 2026</span>
+    <span class="sec-note">29 instruments</span>
+  </div>
+  <div class="search-row">
+    <input class="pos-search" id="jse-search" placeholder="Search instrument..." oninput="filterTable('jse-pos-table',this.value)">
+  </div>
+  <div class="filter-bar" id="jse-filters">
+    <button class="filt active" onclick="filterByStrat('jse-pos-table','All',this)">All</button>
+    <button class="filt" onclick="filterByStrat('jse-pos-table','Arbitrage',this)">Arbitrage</button>
+    <button class="filt filt-prop" onclick="filterByStrat('jse-pos-table','Prop',this)">Proprietary</button>
+    <button class="filt filt-facil" onclick="filterByStrat('jse-pos-table','Facilitation',this)">Facilitation</button>
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:0;">
+    <table class="pos-table" id="jse-pos-table">
+      <thead><tr>
+        <th>Instrument</th><th>Strategy</th>
+        <th>Quantity</th><th>Market Value</th><th>Book Value</th><th>Unrealised P and L</th>
+      </tr></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- NON-JSE POSITIONS -->
+<div class="panel" id="panel-nonjse">
+  <div class="sec-hdr">
+    <span class="sec-title">Non-JSE Positions — 26 March 2026</span>
+    <span class="sec-note">Multiple markets</span>
+  </div>
+  <div class="search-row">
+    <input class="pos-search" id="nonjse-search" placeholder="Search instrument..." oninput="filterTable('nonjse-pos-table',this.value)">
+  </div>
+  <div class="filter-bar">
+    <button class="filt active" onclick="filterByStrat('nonjse-pos-table','All',this)">All</button>
+    <button class="filt" onclick="filterByStrat('nonjse-pos-table','Arbitrage',this)">Arbitrage</button>
+    <button class="filt filt-prop" onclick="filterByStrat('nonjse-pos-table','Prop',this)">Proprietary</button>
+    <button class="filt filt-adr" onclick="filterByStrat('nonjse-pos-table','ADR',this)">ADR</button>
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:0;">
+    <table class="pos-table" id="nonjse-pos-table">
+      <thead><tr>
+        <th>Instrument</th><th>Strategy</th>
+        <th>Quantity</th><th>Market Value</th><th>Book Value</th><th>Unrealised P and L</th>
+      </tr></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- ALL POSITIONS -->
+<div class="panel" id="panel-all">
+  <div class="sec-hdr">
+    <span class="sec-title">All Positions — 26 March 2026</span>
+    <span class="sec-note">JSE and Non-JSE combined</span>
+  </div>
+  <div class="search-row">
+    <input class="pos-search" id="all-search" placeholder="Search any instrument..." oninput="filterTable('all-pos-table',this.value)">
+  </div>
+  <div class="filter-bar">
+    <button class="filt active" onclick="filterByStrat('all-pos-table','All',this)">All</button>
+    <button class="filt" onclick="filterByStrat('all-pos-table','Arbitrage',this)">Arbitrage</button>
+    <button class="filt filt-prop" onclick="filterByStrat('all-pos-table','Prop',this)">Proprietary</button>
+    <button class="filt filt-facil" onclick="filterByStrat('all-pos-table','Facilitation',this)">Facilitation</button>
+    <button class="filt filt-adr" onclick="filterByStrat('all-pos-table','ADR',this)">ADR</button>
+    <button class="filt" id="long-filter" onclick="toggleLongShort(this)">Longs Only</button>
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:0;">
+    <table class="pos-table" id="all-pos-table">
+      <thead><tr>
+        <th>Instrument</th><th>Strategy</th><th>Market</th>
+        <th>Quantity</th><th>Market Value</th><th>Book Value</th><th>Unrealised P and L</th>
+      </tr></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+</div>
+
+</div><!-- content -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const TREND = [
+  {date:"02 Mar",arb_ytd:18330994,prop_ytd:5880609,facil_ytd:1129190,net_ytd:25340793,total_gross:89023947,jse_gross:52934560,nonjse_gross:36089387,total_long:65323726,total_short:23700220,arb_real:-72246940,arb_unreal:105752897,prop_real:5639108,prop_unreal:454359,facil_real:7997275,facil_unreal:-2631401},
+  {date:"03 Mar",arb_ytd:17193876,prop_ytd:6217754,facil_ytd:961371,net_ytd:24373001,total_gross:78079467,jse_gross:43271516,nonjse_gross:34807951,total_long:62407879,total_short:15671588,arb_real:-76823337,arb_unreal:109192176,prop_real:5639108,prop_unreal:791504,facil_real:7997275,facil_unreal:-2799220},
+  {date:"04 Mar",arb_ytd:15466247,prop_ytd:6191824,facil_ytd:890084,net_ytd:22548155,total_gross:75251448,jse_gross:41951596,nonjse_gross:33299852,total_long:60455420,total_short:14796029,arb_real:-76823337,arb_unreal:107464547,prop_real:5639108,prop_unreal:765574,facil_real:7997275,facil_unreal:-2870507},
+  {date:"05 Mar",arb_ytd:18113203,prop_ytd:6288669,facil_ytd:948357,net_ytd:25350229,total_gross:79413897,jse_gross:45566430,nonjse_gross:33847466,total_long:63358002,total_short:16055895,arb_real:-76823337,arb_unreal:110111503,prop_real:5639108,prop_unreal:862419,facil_real:7997276,facil_unreal:-2812235},
+  {date:"06 Mar",arb_ytd:16904397,prop_ytd:6500094,facil_ytd:1121586,net_ytd:24526077,total_gross:92428800,jse_gross:51206510,nonjse_gross:41222290,total_long:69548489,total_short:22880311,arb_real:-76822321,arb_unreal:108901681,prop_real:5639108,prop_unreal:1073844,facil_real:7997276,facil_unreal:-2639006},
+  {date:"09 Mar",arb_ytd:14955674,prop_ytd:6470333,facil_ytd:1052457,net_ytd:22478464,total_gross:87343726,jse_gross:45561958,nonjse_gross:41781768,total_long:65634202,total_short:21709524,arb_real:-76822321,arb_unreal:106952958,prop_real:5639108,prop_unreal:1044083,facil_real:7997276,facil_unreal:-2708135},
+  {date:"10 Mar",arb_ytd:16435261,prop_ytd:6677140,facil_ytd:930539,net_ytd:24042940,total_gross:97989480,jse_gross:56460040,nonjse_gross:41529440,total_long:75837568,total_short:22151913,arb_real:-76822321,arb_unreal:108432545,prop_real:5639108,prop_unreal:1250890,facil_real:7997276,facil_unreal:-2830053},
+  {date:"11 Mar",arb_ytd:15511201,prop_ytd:6528127,facil_ytd:915322,net_ytd:22954650,total_gross:93604914,jse_gross:56839966,nonjse_gross:36764948,total_long:74570305,total_short:19034609,arb_real:-77997855,arb_unreal:108684019,prop_real:5639108,prop_unreal:1101877,facil_real:7997276,facil_unreal:-2845270},
+  {date:"12 Mar",arb_ytd:14591378,prop_ytd:6503628,facil_ytd:955796,net_ytd:22050802,total_gross:93553861,jse_gross:53921332,nonjse_gross:39632529,total_long:72968468,total_short:20585393,arb_real:-77988550,arb_unreal:107754891,prop_real:5639108,prop_unreal:1077378,facil_real:7997276,facil_unreal:-2804796},
+  {date:"13 Mar",arb_ytd:14910000,prop_ytd:6511641,facil_ytd:1047101,net_ytd:22468742,total_gross:89911680,jse_gross:49963627,nonjse_gross:39948053,total_long:72317480,total_short:17594201,arb_real:-77988550,arb_unreal:108073513,prop_real:5639108,prop_unreal:1085391,facil_real:7997276,facil_unreal:-2713491},
+  {date:"16 Mar",arb_ytd:13613239,prop_ytd:6357858,facil_ytd:891871,net_ytd:20862968,total_gross:89656982,jse_gross:49893249,nonjse_gross:39763733,total_long:72096068,total_short:17560914,arb_real:-77809874,arb_unreal:106598076,prop_real:5639108,prop_unreal:931608,facil_real:7997276,facil_unreal:-2868721},
+  {date:"17 Mar",arb_ytd:14235799,prop_ytd:6236249,facil_ytd:905738,net_ytd:21377786,total_gross:89225339,jse_gross:48725780,nonjse_gross:40499559,total_long:69404105,total_short:19821234,arb_real:-129367945,arb_unreal:158778707,prop_real:5639108,prop_unreal:809999,facil_real:7997276,facil_unreal:-2854854},
+  {date:"18 Mar",arb_ytd:13162540,prop_ytd:6385180,facil_ytd:976694,net_ytd:20524414,total_gross:96875800,jse_gross:59190989,nonjse_gross:37684812,total_long:78873142,total_short:18002658,arb_real:-122148635,arb_unreal:150486138,prop_real:5639108,prop_unreal:958930,facil_real:7997276,facil_unreal:-2783898},
+  {date:"19 Mar",arb_ytd:14169559,prop_ytd:6164194,facil_ytd:944000,net_ytd:21277753,total_gross:85354535,jse_gross:50113132,nonjse_gross:35241403,total_long:69364404,total_short:15990130,arb_real:-130504114,arb_unreal:159848636,prop_real:5639108,prop_unreal:737944,facil_real:7997276,facil_unreal:-2816592},
+  {date:"20 Mar",arb_ytd:13321715,prop_ytd:6153768,facil_ytd:848786,net_ytd:20324269,total_gross:85063375,jse_gross:49739922,nonjse_gross:35323453,total_long:69503951,total_short:15559424,arb_real:-130502614,arb_unreal:158999292,prop_real:5639108,prop_unreal:727518,facil_real:7997276,facil_unreal:-2911806},
+  {date:"23 Mar",arb_ytd:11895621,prop_ytd:5782828,facil_ytd:909919,net_ytd:18588368,total_gross:96174904,jse_gross:51149311,nonjse_gross:45025593,total_long:74088647,total_short:22086257,arb_real:-130502614,arb_unreal:157573198,prop_real:5639108,prop_unreal:356578,facil_real:7997276,facil_unreal:-2850673},
+  {date:"24 Mar",arb_ytd:16036446,prop_ytd:5774071,facil_ytd:946726,net_ytd:22757243,total_gross:110416556,jse_gross:65610129,nonjse_gross:44806427,total_long:86077005,total_short:24339551,arb_real:-131817892,arb_unreal:163029301,prop_real:5639108,prop_unreal:347821,facil_real:7997276,facil_unreal:-2813866},
+  {date:"25 Mar",arb_ytd:17202470,prop_ytd:6097647,facil_ytd:1031171,net_ytd:24331288,total_gross:94930641,jse_gross:53642799,nonjse_gross:41287842,total_long:73323539,total_short:21607103,arb_real:-131817892,arb_unreal:164195325,prop_real:5639108,prop_unreal:671397,facil_real:7997276,facil_unreal:-2729421},
+  {date:"26 Mar",arb_ytd:17261333,prop_ytd:6102563,facil_ytd:1198526,net_ytd:24562422,total_gross:94691078,jse_gross:50917147,nonjse_gross:43773931,total_long:77202314,total_short:17488763,arb_real:-131759029,arb_unreal:164195325,prop_real:5639108,prop_unreal:676313,facil_real:7996551,facil_unreal:-2561341},
+];
+
+const LABELS = TREND.map(d=>d.date);
+
+const JSE = [
+  {sym:"INL.SJ",strat:"Prop",qty:89599,mv:11707901,bv:11959689,unreal:-251787},
+  {sym:"BEL.SJ",strat:"Prop",qty:252160,mv:9579558,bv:12834234,unreal:-3254675},
+  {sym:"MNP.SJ",strat:"Facilitation",qty:27591,mv:5362587,bv:7704402,unreal:-2341815},
+  {sym:"BVT.SJ",strat:"Prop",qty:11132,mv:2535758,bv:2886281,unreal:-350522},
+  {sym:"APH.SJ",strat:"Arbitrage",qty:94957,mv:1338894,bv:-9241725,unreal:10826347},
+  {sym:"SRI.SJ",strat:"Arbitrage",qty:60157,mv:1094256,bv:16916588,unreal:-15822333},
+  {sym:"SDL.SJ",strat:"Arbitrage",qty:59869,mv:957904,bv:1020004,unreal:-62100},
+  {sym:"KP2.SJ",strat:"Arbitrage",qty:1017807,mv:742999,bv:-48001865,unreal:48744864},
+  {sym:"HYP.SJ",strat:"Facilitation",qty:9338,mv:520780,bv:740306,unreal:-219526},
+  {sym:"ORN.SJ",strat:"Arbitrage",qty:1355515,mv:447320,bv:-14385816,unreal:14833136},
+  {sym:"SCD.SJ",strat:"Arbitrage",qty:24822,mv:347508,bv:336874,unreal:10634},
+  {sym:"ISO.SJ",strat:"Arbitrage",qty:2869,mv:252472,bv:-2032072,unreal:-1779600},
+  {sym:"PHP.SJ",strat:"Arbitrage",qty:8601,mv:177439,bv:200601,unreal:-23162},
+  {sym:"PWR.SJ",strat:"Arbitrage",qty:2128,mv:109230,bv:200976,unreal:-91745},
+  {sym:"MKR.SJ",strat:"Arbitrage",qty:3226,mv:59358,bv:444483,unreal:-385124},
+  {sym:"SKA.SJ",strat:"Arbitrage",qty:81573,mv:2202,bv:-414391,unreal:416594},
+  {sym:"GCT.SJ",strat:"Arbitrage",qty:9,mv:0,bv:133,unreal:-133},
+  {sym:"KBO.SJ",strat:"Arbitrage",qty:500000,mv:-97000,bv:97000,unreal:0},
+  {sym:"DRA.SJ",strat:"Arbitrage",qty:1458,mv:30643,bv:-30643,unreal:0},
+  {sym:"TRE.SJ",strat:"Prop",qty:1608966,mv:1696399,bv:-1696399,unreal:0},
+  {sym:"NRP.SJ",strat:"Arbitrage",qty:-25000,mv:-3457000,bv:-3077,unreal:-3453923},
+  {sym:"PPC.SJ",strat:"Facilitation",qty:-13618,mv:-78984,bv:0,unreal:-78984},
+  {sym:"KRO.SJ",strat:"Arbitrage",qty:-407,mv:-333740,bv:-7704484,unreal:7370744},
+  {sym:"GML.SJ",strat:"Arbitrage",qty:-350000,mv:-388500,bv:-3199129,unreal:2810629},
+  {sym:"BYI.SJ",strat:"Arbitrage",qty:-21502,mv:-1312697,bv:-56023061,unreal:54710364},
+  {sym:"THA.SJ",strat:"Arbitrage",qty:-54727,mv:-1327130,bv:-27774108,unreal:26446978},
+  {sym:"HMN.SJ",strat:"Arbitrage",qty:-29027,mv:-2033341,bv:-19209486,unreal:17176145},
+  {sym:"JBL.SJ",strat:"Arbitrage",qty:-2950000,mv:-2419000,bv:-14932608,unreal:12513608},
+  {sym:"INP.SJ",strat:"Prop",qty:-60399,mv:-7954548,bv:-8103245,unreal:148697},
+];
+
+const NONJSE = [
+  {sym:"THS.LN",strat:"Arbitrage",qty:175000,mv:4331933,bv:910671,unreal:3421262},
+  {sym:"NRP.NA",strat:"Arbitrage",qty:25886,mv:3589311,bv:-287167,unreal:3480125},
+  {sym:"JLP.LN",strat:"Arbitrage",qty:4450000,mv:3486553,bv:15455740,unreal:-11969187},
+  {sym:"GTCO.NL",strat:"Prop",qty:2930000,mv:3356315,bv:1627223,unreal:1729092},
+  {sym:"NEWGOLD.NL",strat:"Prop",qty:2172,mv:2943492,bv:127999,unreal:2815494},
+  {sym:"NESTLE.NL",strat:"Prop",qty:76000,mv:2580200,bv:681321,unreal:1898879},
+  {sym:"SUPR.LN",strat:"Arbitrage",qty:141998,mv:2570145,bv:-19535231,unreal:22105376},
+  {sym:"HMSO.LN",strat:"Arbitrage",qty:29027,mv:2071216,bv:19692173,unreal:-17620957},
+  {sym:"2330.TT",strat:"Arbitrage",qty:2000,mv:1955700,bv:1316092,unreal:639608},
+  {sym:"FANDY.US",strat:"ADR",qty:1800,mv:1656015,bv:0,unreal:0},
+  {sym:"ORN.AU",strat:"Arbitrage",qty:5189600,mv:1592169,bv:3767932,unreal:-2175763},
+  {sym:"BYIT.LN",strat:"Arbitrage",qty:21502,mv:1301836,bv:4838182,unreal:-3536346},
+  {sym:"KARO.US",strat:"Arbitrage",qty:1000,mv:828263,bv:741614,unreal:86649},
+  {sym:"KHOLY.US",strat:"ADR",qty:2200,mv:789050,bv:0,unreal:0},
+  {sym:"GEM.LN",strat:"Arbitrage",qty:612000,mv:667129,bv:3263995,unreal:-2596866},
+  {sym:"KP2.AU",strat:"Arbitrage",qty:917545,mv:638795,bv:757982,unreal:-119187},
+  {sym:"AIRTELAF.NL",strat:"Prop",qty:22365,mv:558454,bv:483488,unreal:74966},
+  {sym:"BUAFOODS.NL",strat:"Prop",qty:64500,mv:514710,bv:371779,unreal:142931},
+  {sym:"INTBREW.NL",strat:"Prop",qty:3369000,mv:485136,bv:441879,unreal:43257},
+  {sym:"NB.NL",strat:"Prop",qty:641000,mv:461200,bv:442559,unreal:18641},
+  {sym:"GLNCY.US",strat:"ADR",qty:1500,mv:366984,bv:0,unreal:0},
+  {sym:"DCYHY.US",strat:"ADR",qty:600,mv:365455,bv:0,unreal:0},
+  {sym:"AFM.CN",strat:"Arbitrage",qty:25000,mv:344400,bv:320280,unreal:24120},
+  {sym:"MONDY.US",strat:"ADR",qty:860,mv:332848,bv:0,unreal:0},
+  {sym:"GR1T.LN",strat:"Arbitrage",qty:148600,mv:227793,bv:-480943,unreal:708736},
+  {sym:"VETGRIF30.NL",strat:"Prop",qty:217538,mv:214057,bv:166644,unreal:47414},
+  {sym:"CCH.LN",strat:"ADR",qty:200,mv:196033,bv:178228,unreal:17805},
+  {sym:"BTI.US",strat:"ADR",qty:180,mv:178752,bv:0,unreal:0},
+  {sym:"AEBZY.US",strat:"ADR",qty:25000,mv:173723,bv:0,unreal:0},
+  {sym:"RIO.US",strat:"ADR",qty:110,mv:163604,bv:0,unreal:0},
+  {sym:"JUMSY.US",strat:"ADR",qty:350,mv:152659,bv:0,unreal:0},
+  {sym:"DRD.US",strat:"ADR",qty:320,mv:151741,bv:0,unreal:0},
+  {sym:"ASPI.US",strat:"Arbitrage",qty:1707,mv:146170,bv:600983,unreal:-454813},
+  {sym:"STANBICE.NL",strat:"Prop",qty:3114,mv:144535,bv:97697,unreal:46838},
+  {sym:"KP2.LN",strat:"Arbitrage",qty:175000,mv:127176,bv:1867898,unreal:-1740722},
+  {sym:"BKY.AU",strat:"Arbitrage",qty:25000,mv:141600,bv:128620,unreal:12980},
+  {sym:"88E.LN",strat:"Arbitrage",qty:300000,mv:102195,bv:363522,unreal:-261327},
+  {sym:"FIDELITY.NL",strat:"Prop",qty:510000,mv:96900,bv:99829,unreal:-2929},
+  {sym:"SERE.LN",strat:"Arbitrage",qty:7250,mv:97801,bv:105942,unreal:-8142},
+  {sym:"SKA.LN",strat:"Arbitrage",qty:150000,mv:91976,bv:180828,unreal:-88853},
+  {sym:"NGLOY.US",strat:"ADR",qty:220,mv:79241,bv:0,unreal:0},
+  {sym:"NGXGROUP.NL",strat:"Arbitrage",qty:35000,mv:63140,bv:52869,unreal:10271},
+  {sym:"ETI.NL",strat:"Prop",qty:158342,mv:72837,bv:72804,unreal:34},
+  {sym:"VETBANK.NL",strat:"Prop",qty:199998,mv:62419,bv:83835,unreal:-21416},
+  {sym:"UBA.NL",strat:"Prop",qty:125000,mv:59000,bv:59615,unreal:-615},
+  {sym:"SBSW.US",strat:"ADR",qty:260,mv:51949,bv:0,unreal:0},
+  {sym:"SSL.US",strat:"ADR",qty:200,mv:43800,bv:0,unreal:0},
+  {sym:"88E.AU",strat:"Arbitrage",qty:100000,mv:42480,bv:88500,unreal:-46020},
+  {sym:"SVM.AU",strat:"Arbitrage",qty:-25000,mv:-188800,bv:-190570,unreal:-1770},
+  {sym:"MNTK.US",strat:"Arbitrage",qty:-3560,mv:-67743,bv:-136542,unreal:68800},
+  {sym:"AIOT.US",strat:"Arbitrage",qty:-2128,mv:-110272,bv:-204981,unreal:94709},
+  {sym:"TSM.US",strat:"Arbitrage",qty:-400,mv:-2363309,bv:-1455329,unreal:-907980},
+  {sym:"CIA.AU",strat:"Arbitrage",qty:30000,mv:1949509,bv:-1949509,unreal:0},
+  {sym:"SO4.LN",strat:"Arbitrage",qty:55000,mv:306017,bv:-306017,unreal:0},
+  {sym:"CFR.SW",strat:"ADR",qty:50,mv:170390,bv:-170390,unreal:0},
+  {sym:"DEL.MP",strat:"Arbitrage",qty:9400,mv:14374,bv:40727,unreal:-26353},
+  {sym:"CBKD.LI",strat:"Arbitrage",qty:370,mv:146,bv:12106,unreal:-11960},
+];
+
+// ── FORMATTERS ────────────────────────────────────────────────────────
+const fM=(n,dp=1)=>{if(n===0||n===undefined)return'—';const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'R'+(a/1e9).toFixed(dp)+'B';if(a>=1e6)return s+'R'+(a/1e6).toFixed(dp)+'M';if(a>=1e3)return s+'R'+(a/1e3).toFixed(0)+'K';return s+'R'+a.toFixed(0);}
+const fN=(n)=>{if(!n)return'—';return n.toLocaleString();}
+const cls=(n)=>n>0?'pos':n<0?'neg':'';
+const stratBadge=(s)=>{const m={Arbitrage:'b-arb',Prop:'b-prop',Facilitation:'b-facil',ADR:'b-adr'};return`<span class="badge ${m[s]||'b-adr'}">${s}</span>`;}
+
+// ── CHARTS ────────────────────────────────────────────────────────────
+const CI={};
+const grid='rgba(255,255,255,0.05)',tick='#6a849e';
+const xScale={grid:{display:false},ticks:{color:tick,font:{size:9},maxRotation:0,minRotation:0,autoSkip:true,maxTicksLimit:10}};
+const yScale=(cb)=>({grid:{color:grid},ticks:{color:tick,font:{size:10},callback:cb}});
+const yM={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xScale,y:yScale(v=>'R'+(Math.abs(v)>=1e6?(v/1e6).toFixed(0)+'M':(v/1e3).toFixed(0)+'K'))}};
+const leg=(pos='bottom')=>({display:true,labels:{color:tick,font:{size:10},boxWidth:10,padding:10},position:pos});
+function mk(id,cfg){if(CI[id])CI[id].destroy();const el=document.getElementById(id);if(!el)return;CI[id]=new Chart(el.getContext('2d'),cfg);}
+
+function buildCharts(){
+  // Net YTD
+  mk('c-net-ytd',{type:'line',data:{labels:LABELS,datasets:[{data:TREND.map(d=>d.net_ytd),borderColor:'#2ec4b6',backgroundColor:'rgba(46,196,182,0.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:yM});
+
+  // YTD by desk stacked
+  mk('c-desk-ytd',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'Arbitrage',data:TREND.map(d=>d.arb_ytd),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:2},
+    {label:'Proprietary',data:TREND.map(d=>d.prop_ytd),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:2},
+    {label:'Facilitation',data:TREND.map(d=>d.facil_ytd),backgroundColor:'rgba(244,162,97,0.7)',borderRadius:2},
+  ]},options:{...yM,plugins:{legend:leg()},scales:{x:{...xScale,stacked:true},y:{...yScale(v=>'R'+(v/1e6).toFixed(0)+'M'),stacked:true}}}});
+
+  // Gross exposure
+  mk('c-gross',{type:'line',data:{labels:LABELS,datasets:[{data:TREND.map(d=>d.total_gross),borderColor:'#f4a261',backgroundColor:'rgba(244,162,97,0.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:yM});
+
+  // Mix doughnut
+  const lastDay = TREND[TREND.length-1];
+  mk('c-mix',{type:'doughnut',data:{labels:['JSE Gross','Non-JSE Gross'],datasets:[{data:[lastDay.jse_gross,lastDay.nonjse_gross],backgroundColor:['rgba(46,196,182,0.8)','rgba(82,183,136,0.8)'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tick,font:{size:11},boxWidth:10,padding:10},position:'bottom'}},cutout:'55%'}});
+
+  // PNL desk lines
+  mk('c-pnl-desk',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Arbitrage YTD',data:TREND.map(d=>d.arb_ytd),borderColor:'#2ec4b6',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Proprietary YTD',data:TREND.map(d=>d.prop_ytd),borderColor:'#52b788',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Facilitation YTD',data:TREND.map(d=>d.facil_ytd),borderColor:'#f4a261',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Net YTD',data:TREND.map(d=>d.net_ytd),borderColor:'#ffffff',tension:.4,pointRadius:2,borderWidth:2.5,fill:false},
+  ]},options:{...yM,plugins:{legend:leg('bottom')}}});
+
+  // Arb realised vs unrealised
+  mk('c-arb-split',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'Realised',data:TREND.map(d=>d.arb_real),backgroundColor:'rgba(231,111,81,0.6)',borderRadius:2},
+    {label:'Unrealised',data:TREND.map(d=>d.arb_unreal),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:2},
+  ]},options:{...yM,plugins:{legend:leg()}}});
+
+  // Daily move (day over day change in net_ytd)
+  const moves=TREND.map((d,i)=>i===0?0:d.net_ytd-TREND[i-1].net_ytd);
+  mk('c-daily-move',{type:'bar',data:{labels:LABELS,datasets:[{data:moves,backgroundColor:moves.map(v=>v>=0?'rgba(82,183,136,0.7)':'rgba(231,111,81,0.7)'),borderRadius:3}]},options:yM});
+
+  // Exposure trend
+  mk('c-exp-trend',{type:'line',data:{labels:LABELS,datasets:[{data:TREND.map(d=>d.total_gross),borderColor:'#2ec4b6',backgroundColor:'rgba(46,196,182,0.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:yM});
+
+  // JSE vs Non-JSE
+  mk('c-exp-split',{type:'bar',data:{labels:LABELS,datasets:[
+    {label:'JSE',data:TREND.map(d=>d.jse_gross),backgroundColor:'rgba(46,196,182,0.7)',borderRadius:2},
+    {label:'Non-JSE',data:TREND.map(d=>d.nonjse_gross),backgroundColor:'rgba(82,183,136,0.7)',borderRadius:2},
+  ]},options:{...yM,plugins:{legend:leg()},scales:{x:{...xScale,stacked:true},y:{...yScale(v=>'R'+(v/1e6).toFixed(0)+'M'),stacked:true}}}});
+
+  // Long vs Short
+  mk('c-ls-trend',{type:'line',data:{labels:LABELS,datasets:[
+    {label:'Long',data:TREND.map(d=>d.total_long),borderColor:'#52b788',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+    {label:'Short',data:TREND.map(d=>-d.total_short),borderColor:'#e76f51',tension:.4,pointRadius:2,borderWidth:2,fill:false},
+  ]},options:{...yM,plugins:{legend:leg()}}});
+}
+
+// ── TABLES ────────────────────────────────────────────────────────────
+function buildPnlTable(){
+  let h='<thead><tr><th>Date</th><th>Arb Realised</th><th>Arb Unrealised</th><th>Arb YTD</th><th>Prop YTD</th><th>Facil YTD</th><th>Net YTD</th></tr></thead><tbody>';
+  TREND.forEach(d=>{
+    h+=`<tr><td>${d.date}</td><td class="${cls(d.arb_real)}">${fM(d.arb_real)}</td><td class="${cls(d.arb_unreal)}">${fM(d.arb_unreal)}</td><td class="pos">${fM(d.arb_ytd)}</td><td class="pos">${fM(d.prop_ytd)}</td><td class="pos">${fM(d.facil_ytd)}</td><td class="tl">${fM(d.net_ytd)}</td></tr>`;
+  });
+  h+='</tbody>';
+  document.getElementById('pnl-table').innerHTML=h;
+}
+
+function buildExpTable(){
+  let h='<thead><tr><th>Date</th><th>Total Gross</th><th>JSE Gross</th><th>Non-JSE Gross</th><th>Total Long</th><th>Total Short</th></tr></thead><tbody>';
+  TREND.forEach(d=>{
+    h+=`<tr><td>${d.date}</td><td class="tl">${fM(d.total_gross)}</td><td>${fM(d.jse_gross)}</td><td>${fM(d.nonjse_gross)}</td><td class="pos">${fM(d.total_long)}</td><td class="neg">${fM(d.total_short)}</td></tr>`;
+  });
+  h+='</tbody>';
+  document.getElementById('exp-table').innerHTML=h;
+}
+
+function buildPositionTable(positions, tableId, includeMarket=false){
+  const tbody=document.querySelector(`#${tableId} tbody`);
+  const tfoot=document.querySelector(`#${tableId} tfoot`);
+  let rows='';
+  let totMV=0,totBV=0,totUnreal=0;
+
+  positions.forEach(p=>{
+    totMV+=p.mv; totBV+=p.bv; totUnreal+=p.unreal;
+    const mkt = includeMarket ? `<td>${p.market||'JSE'}</td>` : '';
+    const extra = includeMarket ? `data-market="${p.market||'JSE'}" ` : '';
+    rows+=`<tr data-strat="${p.strat}" ${extra}>
+      <td>${p.sym}</td><td>${stratBadge(p.strat)}</td>
+      ${mkt}
+      <td>${fN(p.qty)}</td>
+      <td class="${cls(p.mv)}">${fM(p.mv)}</td>
+      <td class="${cls(p.bv)}">${fM(p.bv)}</td>
+      <td class="${cls(p.unreal)}">${fM(p.unreal)}</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML=rows;
+  tfoot.innerHTML=`<tr class="tr-total"><td>Total</td><td colspan="${includeMarket?2:1}"></td><td></td><td class="${cls(totMV)}">${fM(totMV)}</td><td class="${cls(totBV)}">${fM(totBV)}</td><td class="${cls(totUnreal)}">${fM(totUnreal)}</td></tr>`;
+}
+
+function buildAllTable(){
+  const jseEx=JSE.map(p=>({...p,market:'JSE'}));
+  const nonjseEx=NONJSE.map(p=>({...p,market:'Non-JSE'}));
+  const all=[...jseEx,...nonjseEx].sort((a,b)=>Math.abs(b.mv)-Math.abs(a.mv));
+
+  const tbody=document.querySelector('#all-pos-table tbody');
+  const tfoot=document.querySelector('#all-pos-table tfoot');
+  let rows=''; let totMV=0,totBV=0,totUnreal=0;
+
+  all.forEach(p=>{
+    totMV+=p.mv; totBV+=p.bv; totUnreal+=p.unreal;
+    const mktBadge=p.market==='JSE'?'<span class="badge b-arb" style="font-size:9px">JSE</span>':'<span class="badge b-adr" style="font-size:9px">Non-JSE</span>';
+    rows+=`<tr data-strat="${p.strat}" data-market="${p.market}" data-mv="${p.mv}">
+      <td>${p.sym}</td><td>${stratBadge(p.strat)}</td><td>${mktBadge}</td>
+      <td>${fN(p.qty)}</td>
+      <td class="${cls(p.mv)}">${fM(p.mv)}</td>
+      <td class="${cls(p.bv)}">${fM(p.bv)}</td>
+      <td class="${cls(p.unreal)}">${fM(p.unreal)}</td>
+    </tr>`;
+  });
+  tbody.innerHTML=rows;
+  tfoot.innerHTML=`<tr class="tr-total"><td>Total</td><td></td><td></td><td></td><td class="${cls(totMV)}">${fM(totMV)}</td><td class="${cls(totBV)}">${fM(totBV)}</td><td class="${cls(totUnreal)}">${fM(totUnreal)}</td></tr>`;
+}
+
+// ── FILTER / SEARCH ───────────────────────────────────────────────────
+let currentStrat={};
+let longOnly=false;
+
+function filterByStrat(tableId, strat, btn){
+  const btns=btn.closest('.filter-bar').querySelectorAll('.filt');
+  if(btn.id==='long-filter') return;
+  btns.forEach(b=>{if(b.id!=='long-filter')b.classList.remove('active');});
+  btn.classList.add('active');
+  currentStrat[tableId]=strat;
+  applyFilters(tableId);
+}
+
+function toggleLongShort(btn){
+  longOnly=!longOnly;
+  btn.classList.toggle('active',longOnly);
+  applyFilters('all-pos-table');
+}
+
+function applyFilters(tableId){
+  const rows=document.querySelectorAll(`#${tableId} tbody tr`);
+  const search=(document.getElementById(tableId==='jse-pos-table'?'jse-search':tableId==='nonjse-pos-table'?'nonjse-search':'all-search')||{value:''}).value.toLowerCase();
+  const strat=currentStrat[tableId]||'All';
+  rows.forEach(r=>{
+    const rStrat=r.dataset.strat||'';
+    const rMV=parseFloat(r.dataset.mv||'0');
+    const text=r.textContent.toLowerCase();
+    let show=true;
+    if(strat!=='All'&&rStrat!==strat) show=false;
+    if(search&&!text.includes(search)) show=false;
+    if(longOnly&&rMV<0) show=false;
+    r.style.display=show?'':'none';
+  });
+}
+
+function filterTable(tableId, val){
+  applyFilters(tableId);
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────
+function showTab(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+buildCharts();
+buildPnlTable();
+buildExpTable();
+buildPositionTable(JSE,'jse-pos-table');
+buildPositionTable(NONJSE,'nonjse-pos-table');
+buildAllTable();
+</script>
+</body>
+</html>
