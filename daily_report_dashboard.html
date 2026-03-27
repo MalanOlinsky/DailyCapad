@@ -86,6 +86,76 @@ footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--teal-dim);dis
 footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .kpi:nth-child(1){animation-delay:.04s;}.kpi:nth-child(2){animation-delay:.08s;}.kpi:nth-child(3){animation-delay:.12s;}.kpi:nth-child(4){animation-delay:.16s;}.kpi:nth-child(5){animation-delay:.20s;}
+
+/* ── FULL TABLE TOOLBAR ─────────────────────────────────────────── */
+.ft-toolbar{display:flex;flex-direction:column;gap:12px;margin-bottom:1rem;}
+.ft-search-wrap{position:relative;}
+.ft-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--muted);stroke-width:2;fill:none;}
+.ft-search{width:100%;background:var(--card);border:1px solid var(--card-b);border-radius:8px;padding:8px 12px 8px 32px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.ft-search:focus{border-color:rgba(46,196,182,.4);}
+.ft-search::placeholder{color:var(--muted);}
+
+/* Dual slider */
+.ft-slider-wrap{background:var(--card);border:1px solid var(--card-b);border-radius:8px;padding:10px 14px;}
+.ft-slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.ft-slider-label span:first-child{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.ft-range-val{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);}
+.ft-dual-slider{position:relative;height:20px;}
+.ft-track{position:absolute;top:50%;left:0;right:0;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;transform:translateY(-50%);}
+.ft-fill{position:absolute;height:100%;background:var(--teal);border-radius:2px;opacity:.6;}
+.ft-range{position:absolute;width:100%;height:100%;top:0;left:0;-webkit-appearance:none;appearance:none;background:transparent;pointer-events:none;outline:none;}
+.ft-range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--teal);border:2px solid var(--navy);cursor:pointer;pointer-events:all;box-shadow:0 0 0 3px rgba(46,196,182,.2);}
+.ft-range::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--teal);border:2px solid var(--navy);cursor:pointer;pointer-events:all;}
+.ft-range-min{z-index:3;}.ft-range-max{z-index:4;}
+
+/* Status pills */
+.ft-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.ft-pill{padding:4px 12px;font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;background:var(--card);border:1px solid var(--card-b);border-radius:20px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.ft-pill.active{background:rgba(46,196,182,.15);border-color:var(--teal);color:var(--teal);}
+.ft-pill[data-status="ok"].active{background:rgba(82,183,136,.15);border-color:var(--green);color:var(--green);}
+.ft-pill[data-status="warn"].active{background:rgba(244,162,97,.15);border-color:var(--amber);color:var(--amber);}
+.ft-pill[data-status="alert"].active{background:rgba(231,111,81,.15);border-color:var(--red);color:var(--red);}
+.ft-pill[data-status="nodata"].active{background:rgba(107,132,158,.15);border-color:var(--muted);color:var(--muted);}
+
+/* Column toggles */
+.ft-col-toggles{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.ft-col-toggles::before{content:'Columns:';font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.ft-col-btn{padding:3px 10px;font-size:10px;background:rgba(46,196,182,.12);border:1px solid rgba(46,196,182,.25);border-radius:4px;color:var(--teal);cursor:pointer;transition:all .15s;}
+.ft-col-btn.hidden{background:var(--card);border-color:var(--card-b);color:var(--muted);text-decoration:line-through;}
+
+/* Column range filters */
+.ft-col-filters{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem;}
+@media(min-width:700px){.ft-col-filters{grid-template-columns:repeat(4,1fr);}}
+.ft-col-filter{background:var(--card);border:1px solid var(--card-b);border-radius:8px;padding:8px 10px;}
+.ft-cf-label{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.ft-cf-inputs{display:flex;gap:5px;}
+.ft-cf-input{flex:1;min-width:0;background:var(--navy);border:1px solid var(--card-b);border-radius:5px;padding:4px 7px;color:var(--white);font-family:'DM Mono',monospace;font-size:11px;outline:none;width:100%;}
+.ft-cf-input:focus{border-color:rgba(46,196,182,.4);}
+.ft-cf-input::placeholder{color:var(--muted);font-size:10px;}
+
+/* Table */
+.ft-table{width:100%;border-collapse:collapse;min-width:900px;}
+.ft-table th{padding:9px 12px;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;border-bottom:1px solid var(--teal-dim);white-space:nowrap;cursor:pointer;user-select:none;transition:color .15s;position:sticky;top:0;background:var(--card);z-index:2;}
+.ft-table th:first-child{text-align:left;}
+.ft-table th:hover{color:var(--white);}
+.ft-table th .sort-ico{display:inline-block;margin-left:4px;opacity:.3;font-size:9px;}
+.ft-table th.sort-asc .sort-ico::after{content:'↑';opacity:1;}
+.ft-table th.sort-desc .sort-ico::after{content:'↓';opacity:1;}
+.ft-table th.sort-asc,.ft-table th.sort-desc{color:var(--teal);}
+.ft-table th.sort-asc .sort-ico,.ft-table th.sort-desc .sort-ico{opacity:1;}
+.ft-table td{padding:8px 12px;font-size:11px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(255,255,255,.04);text-align:right;color:var(--white);white-space:nowrap;}
+.ft-table td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);}
+.ft-table tr:hover td{background:rgba(255,255,255,.025);}
+.ft-table tr.tr-total td{border-top:1px solid var(--teal-dim);border-bottom:none;color:var(--teal);font-weight:500;padding-top:10px;background:var(--card);}
+.ft-table td.hidden-col,.ft-table th.hidden-col{display:none;}
+
+/* Footer */
+.ft-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.7rem;padding:0 2px;}
+#ft-count{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.ft-export{padding:5px 14px;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:rgba(46,196,182,.12);border:1px solid rgba(46,196,182,.25);border-radius:6px;color:var(--teal);cursor:pointer;transition:all .15s;}
+.ft-export:hover{background:rgba(46,196,182,.2);}
+.ft-reset{padding:5px 14px;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:var(--card);border:1px solid var(--card-b);border-radius:6px;color:var(--muted);cursor:pointer;transition:all .15s;align-self:flex-start;}
+.ft-reset:hover{color:var(--white);border-color:rgba(255,255,255,.2);}
 </style>
 </head>
 <body>
@@ -334,10 +404,67 @@ footer span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 
 <!-- FULL TABLE -->
 <div class="panel" id="panel-table">
-  <div class="table-card">
-    <h3>All metrics — all 16 trading days</h3>
-    <table id="full-table"></table>
+
+  <!-- FILTER TOOLBAR -->
+  <div class="ft-toolbar">
+
+    <!-- Search -->
+    <div class="ft-search-wrap">
+      <svg viewBox="0 0 24 24" class="ft-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="ft-search" class="ft-search" placeholder="Search date or value…" oninput="ftRender()">
+    </div>
+
+    <!-- Date slider -->
+    <div class="ft-slider-wrap">
+      <div class="ft-slider-label">
+        <span>Date range</span>
+        <span id="ft-range-label" class="ft-range-val">All dates</span>
+      </div>
+      <div class="ft-dual-slider">
+        <div class="ft-track" id="ft-track">
+          <div class="ft-fill" id="ft-fill"></div>
+        </div>
+        <input type="range" id="ft-min" class="ft-range ft-range-min" min="0" value="0" oninput="ftSlider()">
+        <input type="range" id="ft-max" class="ft-range ft-range-max" min="0" value="0" oninput="ftSlider()">
+      </div>
+    </div>
+
+    <!-- Status filter -->
+    <div class="ft-pills" id="ft-status-pills">
+      <button class="ft-pill active" data-status="all" onclick="ftSetStatus(this)">All</button>
+      <button class="ft-pill" data-status="ok" onclick="ftSetStatus(this)">Compliant</button>
+      <button class="ft-pill" data-status="warn" onclick="ftSetStatus(this)">Monitor</button>
+      <button class="ft-pill" data-status="alert" onclick="ftSetStatus(this)">Risk spike</button>
+      <button class="ft-pill" data-status="nodata" onclick="ftSetStatus(this)">No data</button>
+    </div>
+
+    <!-- Column toggles -->
+    <div class="ft-col-toggles" id="ft-col-toggles"></div>
+
+    <!-- Reset -->
+    <button class="ft-reset" onclick="ftReset()">Reset filters</button>
   </div>
+
+  <!-- COLUMN RANGE FILTERS -->
+  <div class="ft-col-filters" id="ft-col-filters"></div>
+
+  <!-- TABLE -->
+  <div class="table-card" style="padding:0;overflow-x:auto;">
+    <table id="full-table" class="ft-table">
+      <thead id="ft-thead"></thead>
+      <tbody id="ft-tbody"></tbody>
+      <tfoot id="ft-tfoot"></tfoot>
+    </table>
+  </div>
+
+  <!-- ROW COUNT -->
+  <div class="ft-footer">
+    <span id="ft-count"></span>
+    <div class="ft-export-wrap">
+      <button class="ft-export" onclick="ftExportCSV()">Export CSV</button>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -518,16 +645,285 @@ function updateCWCBars(){
   document.getElementById('cwc-bars').innerHTML=h;
 }
 
-function updateFullTable(){
-  let html='<thead><tr><th>Date</th><th>Revenue Today</th><th>MTD Revenue</th><th>Net Profit</th><th>CWC Group</th><th>CAPAD ALC</th><th>CAPAD Surplus</th><th>Trading Limit</th><th>Status</th></tr></thead><tbody>';
-  RAW.forEach(d=>{
-    const noData=d.net_total===0;
-    const cov=d.capad_alc&&d.capad_trr&&d.capad_trr>1e6?(d.capad_alc/d.capad_trr*100).toFixed(0):'—';
-    const status=noData?'<span class="badge b-warn">No data</span>':d.capad_trr>55e6?'<span class="badge b-alert">Risk spike</span>':d.capad_surplus>0&&d.capad_surplus<75e6?'<span class="badge b-warn">Monitor</span>':'<span class="badge b-ok">Compliant</span>';
-    html+=`<tr><td>${d.date}</td><td class="${d.rev_total_today<0?'neg':d.rev_total_today>0?'pos':''}">${noData?'—':fM(d.rev_total_today)}</td><td>${noData?'—':fM(d.rev_total_mtd)}</td><td class="${noData?'':'pos'}">${noData?'—':fM(d.net_total)}</td><td>${d.cwc_group_total>1000?fM(d.cwc_group_total):'—'}</td><td class="${d.capad_alc>1e6?'pos':''}">${d.capad_alc>1e6?fM(d.capad_alc):'—'}</td><td class="${d.capad_surplus>0&&d.capad_surplus<80e6?'am':d.capad_surplus>0?'pos':''}">${d.capad_surplus>0?fM(d.capad_surplus):'—'}</td><td>${d.capad_tl>1e6?fB(d.capad_tl):'—'}</td><td>${status}</td></tr>`;
+// ── FULL TABLE ENGINE ──────────────────────────────────────────────────
+const FT_COLS = [
+  {key:'date',      label:'Date',           fmt:(d)=>d.date,                  numeric:false, always:true},
+  {key:'rev_today', label:'Rev Today',      fmt:(d)=>d.net_total>0?fM(d.rev_total_today):'—',  numeric:true,  field:'rev_total_today'},
+  {key:'rev_mtd',   label:'MTD Revenue',    fmt:(d)=>d.net_total>0?fM(d.rev_total_mtd):'—',   numeric:true,  field:'rev_total_mtd'},
+  {key:'rev_ytd',   label:'YTD Revenue',    fmt:(d)=>d.net_total>0?fM(d.rev_total_ytd):'—',   numeric:true,  field:'rev_total_ytd'},
+  {key:'rev_proj',  label:'MTD Projected',  fmt:(d)=>d.net_total>0?fM(d.rev_total_proj):'—',  numeric:true,  field:'rev_total_proj'},
+  {key:'net_arb',   label:'Net Arb',        fmt:(d)=>d.net_total>0?fM(d.net_arb):'—',         numeric:true,  field:'net_arb'},
+  {key:'net_prop',  label:'Net Prop',       fmt:(d)=>d.net_total>0?fM(d.net_prop):'—',        numeric:true,  field:'net_prop'},
+  {key:'net_facil', label:'Net Facil',      fmt:(d)=>d.net_total>0?fM(d.net_facil):'—',       numeric:true,  field:'net_facil'},
+  {key:'net_total', label:'Net Profit',     fmt:(d)=>d.net_total>0?fM(d.net_total):'—',       numeric:true,  field:'net_total'},
+  {key:'cwc',       label:'CWC Group',      fmt:(d)=>d.cwc_group_total>1000?fM(d.cwc_group_total):'—', numeric:true, field:'cwc_group_total'},
+  {key:'alc',       label:'CAPAD ALC',      fmt:(d)=>d.capad_alc>1e6?fM(d.capad_alc):'—',    numeric:true,  field:'capad_alc'},
+  {key:'trr',       label:'CAPAD TRR',      fmt:(d)=>d.capad_trr>1e6?fM(d.capad_trr):'—',    numeric:true,  field:'capad_trr'},
+  {key:'surplus',   label:'Surplus',        fmt:(d)=>d.capad_surplus>0?fM(d.capad_surplus):'—', numeric:true, field:'capad_surplus'},
+  {key:'tl',        label:'Trading Limit',  fmt:(d)=>d.capad_tl>1e6?fB(d.capad_tl):'—',      numeric:true,  field:'capad_tl'},
+  {key:'cust_jse',  label:'Custody JSE',    fmt:(d)=>d.custody_jse>1000?fM(d.custody_jse):'—', numeric:true, field:'custody_jse'},
+  {key:'status',    label:'Status',         fmt:(d)=>ftStatus(d),                              numeric:false, always:true},
+];
+
+const FT_FILTERABLE = ['rev_today','rev_mtd','net_total','cwc','alc','trr','surplus'];
+
+let ftSort = {col:'date', dir:'asc'};
+let ftStatusFilter = 'all';
+let ftHidden = new Set(['rev_ytd','rev_proj','net_arb','net_prop','net_facil','cust_jse']);
+let ftColMin = {}, ftColMax = {};
+let ftDateMin = 0, ftDateMax = 0;
+
+function ftStatus(d){
+  if(d.net_total===0) return '<span class="badge b-warn">No data</span>';
+  if(d.capad_trr>55e6) return '<span class="badge b-alert">Risk spike</span>';
+  if(d.capad_surplus>0&&d.capad_surplus<75e6) return '<span class="badge b-warn">Monitor</span>';
+  return '<span class="badge b-ok">Compliant</span>';
+}
+
+function ftStatusKey(d){
+  if(d.net_total===0) return 'nodata';
+  if(d.capad_trr>55e6) return 'alert';
+  if(d.capad_surplus>0&&d.capad_surplus<75e6) return 'warn';
+  return 'ok';
+}
+
+function ftVal(d, col){
+  if(!col.numeric) return null;
+  const f = col.field;
+  return f ? (d[f]||0) : 0;
+}
+
+function ftInitSlider(){
+  const max = RAW.length - 1;
+  const minEl = document.getElementById('ft-min');
+  const maxEl = document.getElementById('ft-max');
+  minEl.max = max; maxEl.max = max;
+  minEl.value = 0; maxEl.value = max;
+  ftDateMin = 0; ftDateMax = max;
+  ftUpdateSliderUI();
+}
+
+function ftUpdateSliderUI(){
+  const max = RAW.length - 1;
+  const minEl = document.getElementById('ft-min');
+  const maxEl = document.getElementById('ft-max');
+  const fill = document.getElementById('ft-fill');
+  const leftPct = (ftDateMin / max) * 100;
+  const rightPct = (ftDateMax / max) * 100;
+  fill.style.left = leftPct + '%';
+  fill.style.width = (rightPct - leftPct) + '%';
+  const label = document.getElementById('ft-range-label');
+  if(ftDateMin===0 && ftDateMax===max){
+    label.textContent = 'All dates';
+  } else {
+    label.textContent = RAW[ftDateMin].date + ' — ' + RAW[ftDateMax].date;
+  }
+}
+
+function ftSlider(){
+  const minEl = document.getElementById('ft-min');
+  const maxEl = document.getElementById('ft-max');
+  let lo = parseInt(minEl.value), hi = parseInt(maxEl.value);
+  if(lo > hi){ const t=lo; lo=hi; hi=t; }
+  ftDateMin = lo; ftDateMax = hi;
+  ftUpdateSliderUI();
+  ftRender();
+}
+
+function ftBuildColToggles(){
+  const wrap = document.getElementById('ft-col-toggles');
+  if(!wrap) return;
+  let h = '';
+  FT_COLS.filter(c=>!c.always).forEach(c=>{
+    const hidden = ftHidden.has(c.key);
+    h += `<button class="ft-col-btn ${hidden?'hidden':''}" onclick="ftToggleCol('${c.key}',this)">${c.label}</button>`;
   });
-  html+='</tbody>';
-  document.getElementById('full-table').innerHTML=html;
+  wrap.innerHTML = h;
+}
+
+function ftToggleCol(key, btn){
+  if(ftHidden.has(key)) ftHidden.delete(key);
+  else ftHidden.add(key);
+  btn.classList.toggle('hidden', ftHidden.has(key));
+  ftRender();
+}
+
+function ftBuildColFilters(){
+  const wrap = document.getElementById('ft-col-filters');
+  if(!wrap) return;
+  let h = '';
+  FT_COLS.filter(c=>FT_FILTERABLE.includes(c.key)&&!ftHidden.has(c.key)).forEach(c=>{
+    const vals = RAW.filter(d=>d.net_total>0).map(d=>ftVal(d,c)).filter(v=>v!==null&&v!==0);
+    const mn = vals.length?Math.min(...vals):0;
+    const mx = vals.length?Math.max(...vals):0;
+    const curMin = ftColMin[c.key]!==undefined?ftColMin[c.key]:'';
+    const curMax = ftColMax[c.key]!==undefined?ftColMax[c.key]:'';
+    h += `<div class="ft-col-filter">
+      <div class="ft-cf-label">${c.label}</div>
+      <div class="ft-cf-inputs">
+        <input class="ft-cf-input" type="number" placeholder="Min" value="${curMin}" title="Range: ${fM(mn)}" oninput="ftColMin['${c.key}']=this.value?parseFloat(this.value):undefined;ftRender()">
+        <input class="ft-cf-input" type="number" placeholder="Max" value="${curMax}" title="Max: ${fM(mx)}" oninput="ftColMax['${c.key}']=this.value?parseFloat(this.value):undefined;ftRender()">
+      </div>
+    </div>`;
+  });
+  wrap.innerHTML = h;
+}
+
+function ftSetStatus(btn){
+  document.querySelectorAll('.ft-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ftStatusFilter = btn.dataset.status;
+  ftRender();
+}
+
+function ftSortBy(col){
+  if(ftSort.col===col) ftSort.dir = ftSort.dir==='asc'?'desc':'asc';
+  else { ftSort.col=col; ftSort.dir='asc'; }
+  ftRender();
+}
+
+function ftFilter(){
+  const search = (document.getElementById('ft-search')||{value:''}).value.toLowerCase().trim();
+  return RAW.slice(ftDateMin, ftDateMax+1).filter(d=>{
+    if(ftStatusFilter!=='all' && ftStatusKey(d)!==ftStatusFilter) return false;
+    if(search){
+      const row = d.date.toLowerCase() + ' ' + Object.values(d).join(' ').toLowerCase();
+      if(!row.includes(search)) return false;
+    }
+    for(const key of FT_FILTERABLE){
+      const col = FT_COLS.find(c=>c.key===key);
+      if(!col) continue;
+      const v = ftVal(d, col);
+      if(ftColMin[key]!==undefined && v < ftColMin[key]) return false;
+      if(ftColMax[key]!==undefined && v > ftColMax[key]) return false;
+    }
+    return true;
+  });
+}
+
+function ftSorted(rows){
+  const col = FT_COLS.find(c=>c.key===ftSort.col);
+  if(!col) return rows;
+  return [...rows].sort((a,b)=>{
+    let va, vb;
+    if(col.key==='date'){ va=a.sort; vb=b.sort; }
+    else if(col.key==='status'){ va=ftStatusKey(a); vb=ftStatusKey(b); }
+    else { va=ftVal(a,col)||0; vb=ftVal(b,col)||0; }
+    if(va<vb) return ftSort.dir==='asc'?-1:1;
+    if(va>vb) return ftSort.dir==='asc'?1:-1;
+    return 0;
+  });
+}
+
+function ftCellClass(d, col){
+  if(!col.numeric) return '';
+  const v = ftVal(d,col);
+  if(!v) return '';
+  if(col.key==='trr'&&v>55e6) return 'neg';
+  if(col.key==='surplus'&&v<75e6&&v>0) return 'am';
+  return v>0?'pos':v<0?'neg':'';
+}
+
+function ftRender(){
+  const thead = document.getElementById('ft-thead');
+  const tbody = document.getElementById('ft-tbody');
+  const tfoot = document.getElementById('ft-tfoot');
+  const count = document.getElementById('ft-count');
+  if(!thead||!tbody) return;
+
+  const visibleCols = FT_COLS.filter(c=>!ftHidden.has(c.key));
+
+  // Header
+  let thHtml = '<tr>';
+  visibleCols.forEach(c=>{
+    const isSorted = ftSort.col===c.key;
+    const sortClass = isSorted?(ftSort.dir==='asc'?'sort-asc':'sort-desc'):'';
+    thHtml += `<th class="${sortClass}" onclick="ftSortBy('${c.key}')">${c.label}<span class="sort-ico"></span></th>`;
+  });
+  thHtml += '</tr>';
+  thead.innerHTML = thHtml;
+
+  // Rows
+  const filtered = ftFilter();
+  const sorted = ftSorted(filtered);
+
+  let tbHtml = '';
+  sorted.forEach(d=>{
+    tbHtml += '<tr>';
+    visibleCols.forEach(c=>{
+      const cls = ftCellClass(d,c);
+      tbHtml += `<td class="${cls}">${c.fmt(d)}</td>`;
+    });
+    tbHtml += '</tr>';
+  });
+  tbody.innerHTML = tbHtml || '<tr><td colspan="' + visibleCols.length + '" style="text-align:center;color:var(--muted);padding:2rem;">No rows match current filters</td></tr>';
+
+  // Totals row (numeric cols only, visible data with real values)
+  const realRows = sorted.filter(d=>d.net_total>0);
+  let totHtml = '<tr class="tr-total">';
+  visibleCols.forEach((c,i)=>{
+    if(i===0){ totHtml += `<td>${realRows.length} days shown</td>`; return; }
+    if(c.key==='status'||!c.numeric){ totHtml += '<td></td>'; return; }
+    const vals = realRows.map(d=>ftVal(d,c)).filter(v=>v&&Math.abs(v)<1e10);
+    const avg = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+    if(c.field==='capad_tl'||c.field==='capad_alc'||c.field==='capad_trr'||c.field==='capad_surplus'){
+      totHtml += `<td title="Average">${avg?fM(avg):'—'}</td>`;
+    } else if(c.field==='rev_total_mtd'||c.field==='rev_total_ytd'||c.field==='cwc_group_total'){
+      const last = [...realRows].sort((a,b)=>a.sort>b.sort?-1:1)[0];
+      totHtml += `<td title="Latest">${last?c.fmt(last):'—'}</td>`;
+    } else {
+      const sum = vals.reduce((a,b)=>a+b,0);
+      totHtml += `<td title="Sum">${sum?fM(sum):'—'}</td>`;
+    }
+  });
+  totHtml += '</tr>';
+  tfoot.innerHTML = totHtml;
+
+  if(count) count.textContent = `${sorted.length} of ${RAW.length} days`;
+
+  ftBuildColFilters();
+}
+
+function ftReset(){
+  ftSort = {col:'date', dir:'asc'};
+  ftStatusFilter = 'all';
+  ftColMin = {}; ftColMax = {};
+  ftHidden = new Set(['rev_ytd','rev_proj','net_arb','net_prop','net_facil','cust_jse']);
+  ftDateMin = 0; ftDateMax = RAW.length - 1;
+  document.getElementById('ft-min').value = 0;
+  document.getElementById('ft-max').value = RAW.length - 1;
+  document.getElementById('ft-search').value = '';
+  document.querySelectorAll('.ft-pill').forEach((b,i)=>b.classList.toggle('active',i===0));
+  ftUpdateSliderUI();
+  ftBuildColToggles();
+  ftRender();
+}
+
+function ftExportCSV(){
+  const rows = ftSorted(ftFilter());
+  const visCols = FT_COLS.filter(c=>!ftHidden.has(c.key));
+  const header = visCols.map(c=>c.label).join(',');
+  const lines = rows.map(d=>
+    visCols.map(c=>{
+      if(c.key==='status') return ftStatusKey(d);
+      if(c.key==='date') return d.date;
+      const v = ftVal(d,c);
+      return v!==null?v:'';
+    }).join(',')
+  );
+  const csv = [header,...lines].join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'avior_daily_report.csv';
+  a.click();
+}
+
+function updateFullTable(){
+  ftInitSlider();
+  ftBuildColToggles();
+  ftBuildColFilters();
+  ftRender();
 }
 
 // Charts
