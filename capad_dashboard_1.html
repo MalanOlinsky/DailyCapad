@@ -292,6 +292,7 @@
 // 27 Mar exact from xlsx: ALC=135,711,365 TRR=55,345,943 Limit=4,018,271,100
 // Prior days: trend-fitted to hit 26 Mar anchor values
 // ══════════════════════════════════════════════════════
+  // DATA_START
 const DAYS=['4 Mar','5 Mar','6 Mar','9 Mar','10 Mar','11 Mar','12 Mar','13 Mar','16 Mar','17 Mar','18 Mar','19 Mar','20 Mar','23 Mar','24 Mar','25 Mar','26 Mar','27 Mar','28 Mar','31 Mar','1 Apr','2 Apr','3 Apr','4 Apr','7 Apr','8 Apr','9 Apr','10 Apr','13 Apr','14 Apr','15 Apr','16 Apr','17 Apr','20 Apr'];
 const DATES_FULL=['04 Mar 2026','05 Mar 2026','06 Mar 2026','09 Mar 2026','10 Mar 2026','11 Mar 2026','12 Mar 2026','13 Mar 2026','16 Mar 2026','17 Mar 2026','18 Mar 2026','19 Mar 2026','20 Mar 2026','23 Mar 2026','24 Mar 2026','25 Mar 2026','26 Mar 2026','27 Mar 2026','28 Mar 2026','31 Mar 2026','01 Apr 2026','02 Apr 2026','03 Apr 2026','04 Apr 2026','07 Apr 2026','08 Apr 2026','09 Apr 2026','10 Apr 2026','13 Apr 2026','14 Apr 2026','15 Apr 2026','16 Apr 2026','17 Apr 2026','20 Apr 2026'];
 const N=34;
@@ -321,7 +322,7 @@ const RETAINED=Array(N).fill(-5478228);
 const TREASURY=Array(N).fill(8647754);
 const DIVIDENDS=Array(N).fill(0);
 const SUB_LOANS=Array(N).fill(128122438);
-
+// DATA_END
 let selectedIdx=N-1;
 
 // helpers
