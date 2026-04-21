@@ -518,7 +518,7 @@ jobs:
 const fs = require('fs');
 
 // ── Read stored CAPAD data ──────────────────────────────────────────────────
-// The form on index_3.html stores data in window.storage (artifact storage).
+// The form on index_3.html stores data in localStorage and syncs from capad_data.json.
 // For GitHub Actions, data is passed via environment variable or a JSON file
 // that you export from the form and commit to the repo.
 //
@@ -686,25 +686,51 @@ const SUB_LOANS=Array(N).fill(128122438);
 
 <script>
 // ══════════════════════════════════════════════════
-// STORAGE
+// STORAGE — localStorage (works in all browsers on GitHub Pages)
 // ══════════════════════════════════════════════════
 const KEY = 'capad_daily_records';
 
-async function getRecords() {
+function getRecords() {
   try {
-    const r = await window.storage.get(KEY);
-    return r ? JSON.parse(r.value) : [];
+    const raw = localStorage.getItem(KEY);
+    return raw ? JSON.parse(raw) : [];
   } catch(e) { return []; }
 }
 
-async function saveRecords(records) {
-  await window.storage.set(KEY, JSON.stringify(records));
+function saveRecords(records) {
+  try { localStorage.setItem(KEY, JSON.stringify(records)); } catch(e) {}
+}
+
+// Fetch capad_data.json from the repo root and merge into localStorage.
+// This runs on every page load — so committing a new capad_data.json
+// is all you need to do to update the live data.
+async function syncFromRepo() {
+  try {
+    const res = await fetch('capad_data.json?v=' + Date.now());
+    if (!res.ok) return;
+    const fetched = await res.json();
+    if (!Array.isArray(fetched) || fetched.length === 0) return;
+    const local = getRecords();
+    const repoLatestDate = fetched[fetched.length - 1].date;
+    const localNewer = local.filter(r => r.date > repoLatestDate);
+    const merged = [...fetched, ...localNewer];
+    merged.sort((a,b) => a.date.localeCompare(b.date));
+    if (merged.length !== local.length || fetched.length > (local.length - localNewer.length)) {
+      saveRecords(merged);
+      console.log('Synced ' + merged.length + ' CAPAD records from repo');
+    }
+  } catch(e) {
+    console.log('capad_data.json not reachable — using local storage');
+  }
 }
 
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
 async function init() {
+  // Sync data from capad_data.json in repo (source of truth)
+  await syncFromRepo();
+
   // Top bar date
   document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
 
@@ -717,7 +743,7 @@ async function init() {
 }
 
 async function refreshAll() {
-  const records = await getRecords();
+  const records = getRecords();
   updateTopBar(records);
   updateHomeKpis(records);
   renderHistory(records);
@@ -811,7 +837,7 @@ async function saveEntry() {
   });
   if (!ok) { toast('Fill in all required (*) fields', true); return; }
 
-  const records = await getRecords();
+  const records = getRecords();
   const dateVal = document.getElementById('f_date').value;
   const existing = records.findIndex(r => r.date === dateVal);
   if (existing >= 0) {
@@ -839,7 +865,7 @@ async function saveEntry() {
   records.sort((a,b) => a.date.localeCompare(b.date));
   btn.disabled = true;
   try {
-    await saveRecords(records);
+    saveRecords(records);
     toast(`Saved — ${record.dateLabel} · Coverage ${record.coverage.toFixed(1)}%`);
     await refreshAll();
     clearVarFields();
@@ -897,15 +923,15 @@ function renderHistory(records) {
 
 async function deleteRecord(date) {
   if (!confirm(`Delete ${date}?`)) return;
-  const records = (await getRecords()).filter(r => r.date !== date);
-  await saveRecords(records);
+  const records = (getRecords()).filter(r => r.date !== date);
+  saveRecords(records);
   toast('Record deleted');
   await refreshAll();
 }
 
 async function clearAllData() {
   if (!confirm('Delete ALL stored CAPAD data? This cannot be undone.')) return;
-  try { await window.storage.delete(KEY); } catch(e) {}
+  localStorage.removeItem(KEY);
   toast('All data cleared');
   await refreshAll();
 }
@@ -914,7 +940,7 @@ async function clearAllData() {
 // EXPORT
 // ══════════════════════════════════════════════════
 async function exportCSV() {
-  const records = await getRecords();
+  const records = getRecords();
   if (!records.length) { toast('No data to export', true); return; }
   const hdr = ['Date','Day Label','ALC','TRR','Coverage %','Surplus','Trading Limit','Capital Res','P/L','Income','Expense','Impaired','Illiquid','Unrealised','Base Req','LER','Pos Risk','CP Ctrl','CP Non','CP Loans','CP 30','Notes'];
   const rows = records.map(r => [r.date,r.dateLabel,r.alc,r.trr,r.coverage.toFixed(2),r.surplus,Math.round(r.tradingLimit),r.capitalRes,r.pnl,r.income,r.expense,r.impaired,r.illiquid,r.unrealised,r.baseReq,r.ler,r.posRisk,r.cpCtrl,r.cpNon,r.cpLoans,r.cp30,r.notes||'']);
@@ -924,14 +950,14 @@ async function exportCSV() {
 }
 
 async function exportJSON() {
-  const records = await getRecords();
+  const records = getRecords();
   if (!records.length) { toast('No data to export', true); return; }
   download('capad_data.json', 'application/json', JSON.stringify(records, null, 2));
   toast('JSON downloaded — commit this file to your repo root');
 }
 
 async function copyDashboardArrays() {
-  const records = await getRecords();
+  const records = getRecords();
   if (!records.length) { toast('No data to export', true); return; }
   const R = records, N = R.length;
   const arr = (nm,vals) => `const ${nm}=[${vals.join(',')}];`;
