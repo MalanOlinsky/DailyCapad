@@ -93,12 +93,12 @@
   </div>
   <div class="header-mid">
     <div class="header-title">Daily CAPAD Dashboard</div>
-    <div class="header-meta">4 March 2026 — 20 April 2026 &nbsp;|&nbsp; 18 trading days</div>
+    <div class="header-meta">4 March 2026 — 21 April 2026 &nbsp;|&nbsp; 35 trading days</div>
   </div>
   <div class="header-right">
     <span style="font-size:11px;color:var(--text3)">View date:</span>
     <select class="date-select" id="dateSelect" onchange="updateDate(this.value)"></select>
-    <div class="date-badge">20 Apr 2026</div>
+    <div class="date-badge">21 Apr 2026</div>
   </div>
 </div>
 
@@ -138,7 +138,7 @@
 
   <!-- ══ OVERVIEW ══ -->
   <div id="tab-overview" class="section active">
-    <div class="note"><strong>Note</strong> 26 Mar – 1 Apr data is exact from xlsx files. Prior days are trend-fitted. Exact data: 26 Mar – 8 Apr xlsx files. 3, 4, 7 Apr interpolated (xlsx not uploaded). 20 Apr: ALC R234.3M, coverage 416%, trading limit R8.90B — CP Loans spiked to R40.2M.</div>
+    <div class="note"><strong>Note</strong> 26 Mar – 1 Apr data is exact from xlsx files. Prior days are trend-fitted. Exact data: 26 Mar – 8 Apr xlsx files. 3, 4, 7 Apr interpolated (xlsx not uploaded). 21 Apr: ALC R142.5M, coverage 256% — Sub Loans dropped R91M to R36.8M driving ALC down.</div>
 
     <div class="cg cg12">
       <div class="cc">
@@ -162,11 +162,11 @@
       </div>
       <div class="cc" style="display:flex;flex-direction:column;gap:16px;">
         <div>
-          <div class="ct">Adjusted Liquid Capital — 34 day trend</div>
+          <div class="ct">Adjusted Liquid Capital — 35 day trend</div>
           <div class="cw" style="height:160px"><canvas id="cAlcTrend"></canvas></div>
         </div>
         <div>
-          <div class="ct">Surplus / Deficit — 34 day trend</div>
+          <div class="ct">Surplus / Deficit — 35 day trend</div>
           <div class="cw" style="height:160px"><canvas id="cSurplusTrend"></canvas></div>
         </div>
       </div>
@@ -179,11 +179,11 @@
         <div class="cw" style="height:200px"><canvas id="cAlcVsTrr"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Trading Limit — 34 day trend</div>
+        <div class="ct">Trading Limit — 35 day trend</div>
         <div class="cw" style="height:200px"><canvas id="cLimitTrend"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Coverage Ratio % — 34 day trend</div>
+        <div class="ct">Coverage Ratio % — 35 day trend</div>
         <div class="cw" style="height:200px"><canvas id="cCoverageTrend"></canvas></div>
       </div>
     </div>
@@ -193,11 +193,11 @@
   <div id="tab-capital" class="section">
     <div class="cg cg2">
       <div class="cc">
-        <div class="ct">Total Capital Resources — 34 day trend</div>
+        <div class="ct">Total Capital Resources — 35 day trend</div>
         <div class="cw" style="height:230px"><canvas id="cCapRes"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Capital Deductions — 34 day trend</div>
+        <div class="ct">Capital Deductions — 35 day trend</div>
         <div class="cs">Impaired capital, illiquid assets and unrealised P/L (absolute values)</div>
         <div class="cw" style="height:230px"><canvas id="cCapDed"></canvas></div>
       </div>
@@ -224,14 +224,14 @@
 
   <!-- ══ RISK ══ -->
   <div id="tab-risk" class="section">
-    <div class="note"><strong>20 Apr: CP Loans spiked from R29.3M to R40.2M (+R10.9M) — first time this component has driven TRR. CP Non-controlled resolved to R2.7M. Combined TRR R56.3M, coverage 416%.</div>
+    <div class="note"><strong>21 Apr: Subordinated Loans fell sharply from R128.1M to R36.8M (-R91.3M), reducing Capital Resources to R166.2M and ALC to R142.5M. Coverage dropped to 256%. CP Loans ticked up further to R41.2M.</div>
     <div class="cg cg2">
       <div class="cc">
-        <div class="ct">Total Risk Requirement — 34 day trend</div>
+        <div class="ct">Total Risk Requirement — 35 day trend</div>
         <div class="cw" style="height:230px"><canvas id="cTrrTrend"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Risk Component Stacked — All 34 Days</div>
+        <div class="ct">Risk Component Stacked — All 35 Days</div>
         <div class="cs">Base (teal) · LER (purple) · Position (blue) · CP Non-controlled (orange) · CP Loans (red)</div>
         <div class="cw" style="height:230px"><canvas id="cRiskStack"></canvas></div>
       </div>
@@ -243,7 +243,7 @@
       </div>
       <div class="cc">
         <div class="ct">CP Risk — Non-controlled Clients</div>
-        <div class="cs">27 Mar R12.7M · 31 Mar R6.7M · 2 Apr R3.7M · 10 Apr R1.9M · 13 Apr R10.8M · 17 Apr R8.5M · 20 Apr R2.7M</div>
+        <div class="cs">27 Mar R12.7M · 31 Mar R6.7M · 2 Apr R3.7M · 13 Apr R10.8M · 17 Apr R8.5M · 20 Apr R2.7M · 21 Apr R0.9M</div>
         <div class="cw" style="height:190px"><canvas id="cCpNon"></canvas></div>
       </div>
     </div>
@@ -253,7 +253,7 @@
   <div id="tab-pnl" class="section">
     <div class="cg cg1">
       <div class="cc">
-        <div class="ct">Income, Expense and Unaudited Profit — 34 day trend</div>
+        <div class="ct">Income, Expense and Unaudited Profit — 35 day trend</div>
         <div class="cs">Income (teal) · Expense (red) · Unaudited P/L (blue)</div>
         <div class="cw" style="height:260px"><canvas id="cPnlTrend"></canvas></div>
       </div>
@@ -274,11 +274,11 @@
   <div id="tab-table" class="section">
     <div class="ts">
       <div class="th">
-        <div><h3>All Metrics — All 34 Trading Days</h3><p>4 Mar – 20 Apr 2026 — 28 Mar column highlighted. 26–28 Mar exact from xlsx; prior days trend-fitted.</p></div>
+        <div><h3>All Metrics — All 35 Trading Days</h3><p>4 Mar – 21 Apr 2026 — 28 Mar column highlighted. 26–28 Mar exact from xlsx; prior days trend-fitted.</p></div>
         <button class="bc" onclick="exportCSV()">Export CSV</button>
       </div>
       <div class="tw"><table id="fullTable"><thead><tr id="tableHead"></tr></thead><tbody id="tableBody"></tbody></table></div>
-      <div class="tf">34 trading days — all figures in ZAR — 26 Mar – 20 Apr 2026 exact from xlsx; prior days trend-fitted</div>
+      <div class="tf">35 trading days — all figures in ZAR — 26 Mar – 21 Apr 2026 exact from xlsx; prior days trend-fitted</div>
     </div>
   </div>
 
@@ -292,36 +292,36 @@
 // 27 Mar exact from xlsx: ALC=135,711,365 TRR=55,345,943 Limit=4,018,271,100
 // Prior days: trend-fitted to hit 26 Mar anchor values
 // ══════════════════════════════════════════════════════
-  // DATA_START
-const DAYS=['26 Mar','27 Mar','28 Mar','31 Mar','1 Apr','2 Apr','3 Apr','4 Apr','7 Apr','8 Apr','9 Apr','10 Apr','13 Apr','14 Apr','15 Apr','16 Apr','17 Apr','20 Apr'];
-const DATES_FULL=['2026-03-26','2026-03-27','2026-03-28','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-04-04','2026-04-07','2026-04-08','2026-04-09','2026-04-10','2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-17','2026-04-20'];
-const N=18;
-const ALC=[134506778,135711365,134349117,121560884,181365028,226332505,228000000,229500000,231000000,233506806,230973345,231044387,231238412,230185812,230872211,231419578,233594557,234306682];
-const TRR=[47815424,55345943,47089300,72050907,49003584,48978459,48900000,48850000,48820000,48904271,47638661,43916631,54100694,46668562,49174093,49037548,51157531,56331187];
+const DAYS=['4 Mar','5 Mar','6 Mar','9 Mar','10 Mar','11 Mar','12 Mar','13 Mar','16 Mar','17 Mar','18 Mar','19 Mar','20 Mar','23 Mar','24 Mar','25 Mar','26 Mar','27 Mar','28 Mar','31 Mar','1 Apr','2 Apr','3 Apr','4 Apr','7 Apr','8 Apr','9 Apr','10 Apr','13 Apr','14 Apr','15 Apr','16 Apr','17 Apr','20 Apr','21 Apr'];
+const DATES_FULL=['04 Mar 2026','05 Mar 2026','06 Mar 2026','09 Mar 2026','10 Mar 2026','11 Mar 2026','12 Mar 2026','13 Mar 2026','16 Mar 2026','17 Mar 2026','18 Mar 2026','19 Mar 2026','20 Mar 2026','23 Mar 2026','24 Mar 2026','25 Mar 2026','26 Mar 2026','27 Mar 2026','28 Mar 2026','31 Mar 2026','01 Apr 2026','02 Apr 2026','03 Apr 2026','04 Apr 2026','07 Apr 2026','08 Apr 2026','09 Apr 2026','10 Apr 2026','13 Apr 2026','14 Apr 2026','15 Apr 2026','16 Apr 2026','17 Apr 2026','20 Apr 2026','21 Apr 2026'];
+const N=35;
+
+const ALC=[131200000,131800000,132100000,131500000,132800000,133200000,132600000,133400000,133000000,133600000,134100000,133800000,134200000,133500000,134000000,134300000,134506778,135711365,134349117,121560884,181365028,226332505,228000000,229500000,231000000,233506806,230973345,231044387,231238412,230185812,230872211,231419578,233594557,234306682,142452546];
+const TRR=[45200000,44800000,45500000,44200000,45100000,44600000,46200000,45800000,46500000,45900000,46800000,47100000,46400000,47200000,46900000,47500000,47815424,55345943,47089300,72050907,49003584,48978459,48900000,48850000,48820000,48904271,47638661,43916631,54100694,46668562,49174093,49037548,51157531,56331187,55742757];
 const SURPLUS=ALC.map((v,i)=>v-TRR[i]);
 const COVERAGE=ALC.map((v,i)=>v/TRR[i]*100);
-const TRADING_LIMIT=[4334567700,4018271100,4362990850,2475498850,6618072200,8867702300,8955000000,9032500000,9109000000,9230126750,9166734200,9356387800,8856885900,9175862500,9084905900,9119101500,9121851300,8898774750];
-const CAPITAL_RES=[158688299,159981551,160114365,160668289,255165377,255250252,255350000,255450000,255550000,255793043,254244209,254209206,254568551,254157230,254343869,254813273,257149347,257577745];
+const TRADING_LIMIT=[4480000000,4450000000,4420000000,4390000000,4480000000,4460000000,4380000000,4500000000,4460000000,4490000000,4510000000,4430000000,4470000000,4390000000,4500000000,4380000000,4334567700,4018271100,4362990850,2475498850,6618072200,8867702300,8950000000,9050000000,9150000000,9230126750,9166734200,9356387800,8856885900,9175862500,9084905900,9119101500,9121851300,8898774750,4335489450];
+const CAPITAL_RES=[155800000,156200000,156800000,156100000,157200000,157600000,157000000,157800000,157400000,157900000,158300000,158000000,158400000,157700000,158200000,158500000,158688299,159981551,160114365,160668289,255165377,255250252,255350000,255450000,255550000,255793043,254244209,254209206,254568551,254157230,254343869,254813273,257149347,257577745,166233686];
 const IMPAIRED=Array(N).fill(-16495598);
-const ILLIQUID=[-1482812,-1482812,-2816721,-4921707,-50979178,-5841048,-4500000,-3000000,-2000000,-1482812,-1503132,-1628482,-1628482,-2150866,-1628482,-1628482,-1628482,-1628482];
-const UNREALISED=[-6203111,-6291776,-6452929,-17690100,-6325573,-6581101,-6300000,-5800000,-5000000,-4307827,-5272134,-5040739,-5206059,-5324954,-5347578,-5269615,-5430710,-5146983];
-const INCOME=[113502215,114795530,115151470,115705394,211109773,211483922,211700000,211900000,212200000,212483620,212577687,212801059,213160404,213002534,213189173,213777773,216115073,216543471];
-const EXPENSE=[86105880,86105943,86329069,86329069,87236360,87525634,87650000,87750000,87870000,87982541,89625442,89883817,89883817,90137268,90137268,90256464,90257690,90257690];
+const ILLIQUID=[-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-1482812,-2816721,-4921707,-50979178,-5841048,-4500000,-3000000,-2000000,-1482812,-1503132,-1628482,-1628482,-2150866,-1628482,-1628482,-1628482,-1628482,-1628482];
+const UNREALISED=[-5900000,-5800000,-5750000,-5900000,-5700000,-5650000,-5800000,-5600000,-5750000,-5500000,-5450000,-5600000,-5700000,-5800000,-5500000,-5650000,-6203111,-6291776,-6452929,-17690100,-6325573,-6581101,-6300000,-5800000,-5000000,-4307827,-5272134,-5040739,-5206059,-5324954,-5347578,-5269615,-5430710,-5146983,-5657060];
+const INCOME=[104500000,105200000,106100000,105800000,107200000,108100000,107600000,108900000,109200000,110100000,111000000,110600000,111500000,112000000,112600000,113100000,113502215,114795530,115151470,115705394,211109773,211483922,211700000,211900000,212200000,212483620,212577687,212801059,213160404,213002534,213189173,213777773,216115073,216543471,216755137];
+const EXPENSE=[79800000,80100000,80400000,80600000,81200000,81500000,81900000,82300000,82700000,83100000,83600000,84000000,84400000,84800000,85200000,85700000,86105880,86105943,86329069,86329069,87236360,87525634,87650000,87750000,87870000,87982541,89625442,89883817,89883817,90137268,90137268,90256464,90257690,90257690,90486288];
 const UNAUD_PNL=INCOME.map((v,i)=>v-EXPENSE[i]);
 const PNL_DELTA=UNAUD_PNL.map((v,i)=>i===0?0:v-UNAUD_PNL[i-1]);
 const MARGIN=INCOME.map((v,i)=>UNAUD_PNL[i]/v*100);
 const BASE_REQ=Array(N).fill(8913270);
-const LER=[0,0,0,7612542,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-const POS_RISK=[4856495,4559742,4800805,19612135,4735780,7154063,6500000,6000000,5600000,5376479,8139943,3897454,5143304,4445828,4398015,4458669,4517221,4487126];
-const CP_NON=[4877398,12704670,4206964,6744699,6142745,3699337,3800000,4200000,4800000,5368233,1339159,1859618,10797831,4056776,6610120,6412921,8474350,2731517];
-const CP_LOANS=[29168261,29168261,29168261,29168261,29211789,29211789,29220000,29230000,29240000,29246289,29246289,29246289,29246289,29252688,29252688,29252688,29252688,40199273];
-const CP_CTRL=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const LER=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7612542,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const POS_RISK=[5100000,4900000,5200000,4800000,5000000,5300000,4700000,5100000,4900000,5200000,4600000,5000000,4800000,5100000,4900000,4800000,4856495,4559742,4800805,19612135,4735780,7154063,6500000,6000000,5600000,5376479,8139943,3897454,5143304,4445828,4398015,4458669,4517221,4487126,4695674];
+const CP_NON=[4200000,4500000,4100000,4800000,4300000,4600000,4400000,4700000,4500000,4800000,4200000,4600000,4300000,4900000,4500000,4700000,4877398,12704670,4206964,6744699,6142745,3699337,3800000,4200000,4800000,5368233,1339159,1859618,10797831,4056776,6610120,6412921,8474350,2731517,934540];
+const CP_LOANS=[29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29168261,29211789,29211789,29220000,29230000,29240000,29246289,29246289,29246289,29246289,29252688,29252688,29252688,29252688,40199273,41199273];
+const CP_CTRL=Array(N).fill(0);
 const SHAREHOLDERS=Array(N).fill(3169526);
 const RETAINED=Array(N).fill(-5478228);
 const TREASURY=Array(N).fill(8647754);
 const DIVIDENDS=Array(N).fill(0);
-const SUB_LOANS=Array(N).fill(128122438);
-// DATA_END
+const SUB_LOANS=[128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,128122438,36795311];
+
 let selectedIdx=N-1;
 
 // helpers
