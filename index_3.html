@@ -353,7 +353,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
         <div class="field"><label>Unaudited P/L (R) *</label><input type="number" id="f_pnl" placeholder="126285781" oninput="recompute()"/></div>
         <div class="field"><label>Income (R) *</label><input type="number" id="f_income" placeholder="216543471" oninput="recompute()"/></div>
         <div class="field"><label>Expense (R) *</label><input type="number" id="f_expense" placeholder="90257690" oninput="recompute()"/></div>
-        <div class="field"><label>Subordinated Loans (R)</label><input type="number" id="f_subloans" value="128122438"/></div>
+        <div class="field"><label>Subordinated Loans (R)</label><input type="number" id="f_subloans" placeholder="128122438"/><span class="hint">Check daily — can change</span></div>
         <div class="field"><label>Total Capital Resources (R) *</label><input type="number" id="f_capres" placeholder="257577745" oninput="recompute()"/></div>
       </div>
 
@@ -818,9 +818,9 @@ function recompute() {
   const limit = surplus * 50;
   document.getElementById('f_coverage').value = cov;
   const sEl = document.getElementById('f_surplus');
-  sEl.value = surplus ? 'R'+surplus.toLocaleString() : '—';
+  sEl.value = surplus ? 'R'+(surplus/1e6).toFixed(2)+'M' : '—';
   sEl.style.color = surplus >= 0 ? 'var(--green)' : 'var(--red)';
-  document.getElementById('f_limit').value = limit ? 'R'+Math.round(limit).toLocaleString() : '—';
+  document.getElementById('f_limit').value = limit ? 'R'+(limit/1e9).toFixed(4)+'B' : '—';
 }
 
 // ══════════════════════════════════════════════════
