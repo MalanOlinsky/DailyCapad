@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avior Capital Markets — Management Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#0b0d12;--surf:#131620;--surf2:#1a1e2e;--surf3:#212540;
+  --bdr:rgba(255,255,255,0.07);--bdr2:rgba(255,255,255,0.13);
+  --txt:#e6ecf5;--muted:#7e8fa6;--faint:#3d4860;
+  --blue:#4f8ef7;--purple:#7c6af5;--green:#30d28a;--red:#f06a6a;
+  --amber:#f5b731;--teal:#22d3ee;--pink:#f472b6;
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:13px;line-height:1.5;}
+
+/* ─── HEADER ─── */
+.hdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+.logo{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;}
+.htitle{font-size:14px;font-weight:600;}.hsub{font-size:11px;color:var(--muted);margin-top:1px;}
+.hl{display:flex;align-items:center;gap:12px;}.hr{display:flex;align-items:center;gap:14px;}
+.lbadge{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);background:rgba(48,210,138,0.1);padding:3px 9px;border-radius:20px;border:1px solid rgba(48,210,138,0.2);}
+.ldot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hdate{font-size:11px;color:var(--muted);}
+
+/* ─── TABS ─── */
+.tabs{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 24px;display:flex;gap:2px;overflow-x:auto;}
+.tb{padding:11px 16px;font-size:12px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.tb:hover{color:var(--txt);}
+.tb.on{color:var(--blue);border-bottom-color:var(--blue);}
+
+/* ─── CONTENT ─── */
+.pg{display:none;padding:20px 24px;max-width:1480px;margin:0 auto;}
+.pg.on{display:block;}
+
+/* ─── FILTER BAR ─── */
+.fb{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;}
+.fg{display:flex;align-items:center;gap:7px;}
+.fl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.fs{background:var(--surf2);border:1px solid var(--bdr2);color:var(--txt);padding:5px 9px;border-radius:var(--rs);font-size:11px;cursor:pointer;outline:none;}
+.fs:focus{border-color:var(--blue);}
+.btn{background:var(--surf2);border:1px solid var(--bdr2);color:var(--muted);padding:4px 11px;border-radius:var(--rs);font-size:11px;cursor:pointer;transition:all .15s;}
+.btn:hover{color:var(--txt);}
+.btn.on{background:rgba(79,142,247,0.15);border-color:var(--blue);color:var(--blue);}
+.fdiv{width:1px;height:22px;background:var(--bdr);}
+.slw{display:flex;flex-direction:column;gap:4px;}
+.slr{display:flex;align-items:center;gap:7px;}
+.sl{-webkit-appearance:none;appearance:none;width:130px;height:3px;background:var(--surf3);border-radius:2px;outline:none;}
+.sl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--blue);cursor:pointer;}
+.sv{font-size:10px;color:var(--muted);min-width:56px;}
+
+/* ─── KPI GRID ─── */
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px;}
+.kc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kc.bl::before{background:var(--blue);}.kc.gr::before{background:var(--green);}
+.kc.rd::before{background:var(--red);}.kc.am::before{background:var(--amber);}
+.kc.tl::before{background:var(--teal);}.kc.pu::before{background:var(--purple);}
+.kl{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;}
+.kv{font-size:19px;font-weight:700;line-height:1.1;color:var(--txt);}
+.kv.g{color:var(--green);}.kv.r{color:var(--red);}
+.ks{font-size:10px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.bdg{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;}
+.bg{background:rgba(48,210,138,.15);color:var(--green);}
+.br{background:rgba(240,106,106,.15);color:var(--red);}
+.bb{background:rgba(79,142,247,.15);color:var(--blue);}
+.ba{background:rgba(245,183,49,.15);color:var(--amber);}
+
+/* ─── CARD ─── */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;}
+.ct{font-size:12px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;}
+.ct span{font-size:10px;font-weight:400;color:var(--muted);}
+
+/* ─── LAYOUTS ─── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px;}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px;}
+.g13{display:grid;grid-template-columns:1fr 3fr;gap:14px;margin-bottom:14px;}
+@media(max-width:900px){.g2,.g3,.g21,.g12,.g13{grid-template-columns:1fr;}}
+.cw{position:relative;}
+.mb{margin-bottom:14px;}
+
+/* ─── TABLE ─── */
+.dt{width:100%;border-collapse:collapse;font-size:11px;}
+.dt th{padding:7px 9px;text-align:left;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bdr);}
+.dt th.r{text-align:right;}
+.dt td{padding:7px 9px;border-bottom:1px solid var(--bdr);color:var(--txt);}
+.dt td.r{text-align:right;font-variant-numeric:tabular-nums;}
+.dt tr:last-child td{border-bottom:none;}
+.dt tr:hover td{background:var(--surf2);}
+.dt .tr td{font-weight:700;background:var(--surf2);border-top:1px solid var(--bdr2);}
+.dt .sr td{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--surf3);padding:5px 9px;}
+.dt .sub td{font-weight:600;}
+.pv{color:var(--green);}.nv{color:var(--red);}.mv{color:var(--muted);}
+
+/* ─── BARS ─── */
+.pbw{display:flex;align-items:center;gap:9px;margin:6px 0;}
+.pbl{font-size:11px;color:var(--muted);width:170px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pbt{flex:1;height:4px;background:var(--surf3);border-radius:2px;overflow:hidden;}
+.pbf{height:100%;border-radius:2px;}
+.pbv{font-size:11px;font-weight:500;min-width:95px;text-align:right;}
+
+/* ─── LEGEND ─── */
+.leg{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
+.legr{display:flex;align-items:center;justify-content:space-between;font-size:10px;}
+.legl{display:flex;align-items:center;gap:5px;color:var(--muted);}
+.legd{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.legv{font-weight:600;color:var(--txt);}
+
+/* ─── BS ─── */
+.bsr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:11px;}
+.bsr:last-child{border-bottom:none;}
+.bsr.tot{font-weight:700;background:var(--surf2);padding:6px 9px;border-radius:var(--rs);margin-top:3px;border:none;}
+.bsr.sh{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);padding:9px 0 3px;border-bottom:none;}
+.bsl{color:var(--muted);}
+
+/* ─── WATERFALL ─── */
+.wfb{display:flex;align-items:center;gap:7px;margin:3px 0;}
+.wfl{font-size:10px;color:var(--muted);width:180px;flex-shrink:0;text-align:right;}
+.wft{flex:1;height:18px;position:relative;}
+.wfbar{position:absolute;height:100%;border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;font-weight:700;color:#fff;white-space:nowrap;}
+.wfv{font-size:10px;font-weight:500;min-width:80px;}
+
+/* ─── DIV CARDS ─── */
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:7px;margin-bottom:14px;}
+.dc{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--rs);padding:11px 13px;}
+.dcn{font-size:9px;color:var(--muted);margin-bottom:3px;}
+.dcv{font-size:13px;font-weight:700;}
+
+/* ─── TREND BADGE ─── */
+.trend-up{color:var(--green);font-size:10px;}
+.trend-dn{color:var(--red);font-size:10px;}
+.trend-nt{color:var(--muted);font-size:10px;}
+
+/* ─── SCROLL ─── */
+.scr{overflow-x:auto;}
+
+/* ─── YOY TABLE ─── */
+.yoy{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.yoyc{flex:1;min-width:160px;background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;}
+.yoyl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.yoyv{font-size:18px;font-weight:700;}
+.yoyd{font-size:10px;margin-top:3px;}
+
+/* ─── INLINE LEGEND ─── */
+.ileg{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:8px;}
+.ileg span{display:flex;align-items:center;gap:4px;}
+.ild{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ─── NOTE ─── */
+.note{font-size:10px;color:var(--muted);background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--rs);padding:7px 11px;margin-bottom:14px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hl">
+    <div class="logo">AC</div>
+    <div><div class="htitle">Avior Capital Markets</div><div class="hsub">Group Management Dashboard</div></div>
+  </div>
+  <div class="hr">
+    <div class="lbadge"><div class="ldot"></div>Live — Google Drive</div>
+    <div class="hdate">13 May 2026 · FY end 30 Apr</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tb on" onclick="tab('pnl',this)">📊 P&amp;L &amp; Trends</button>
+  <button class="tb" onclick="tab('bs',this)">⚖️ Balance Sheet</button>
+  <button class="tb" onclick="tab('liq',this)">💧 Cash &amp; Liquidity</button>
+  <button class="tb" onclick="tab('div',this)">🏢 Divisional</button>
+</div>
+
+<!-- ══════════════════════ P&L TAB ══════════════════════ -->
+<div id="pg-pnl" class="pg on">
+  <div class="fb">
+    <div class="fg"><span class="fl">Period</span>
+      <button class="btn on" id="pb-fy" onclick="setP('fy',this)">Full Year (FY26)</button>
+      <button class="btn" id="pb-mtd" onclick="setP('mtd',this)">MTD May</button>
+      <button class="btn" id="pb-apr" onclick="setP('apr',this)">Apr '26</button>
+      <button class="btn" id="pb-mar" onclick="setP('mar',this)">Mar '26</button>
+      <button class="btn" id="pb-feb" onclick="setP('feb',this)">Feb '26</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Entity</span>
+      <select class="fs" id="pnl-ent" onchange="renderPnl()">
+        <option value="total">Group total</option>
+        <option value="dfi">Derivatives &amp; FI</option>
+        <option value="acm">ACM (Pty) Ltd</option>
+        <option value="hld">Holdings</option>
+        <option value="intl">International Ltd</option>
+        <option value="us">US LLC</option>
+      </select>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Compare to</span>
+      <button class="btn on" id="cmp-py" onclick="toggleCmp('py',this)">Prior year</button>
+      <button class="btn" id="cmp-pm" onclick="toggleCmp('pm',this)">Prev month</button>
+    </div>
+  </div>
+
+  <div class="kg" id="pnl-kpis"></div>
+
+  <!-- YoY summary -->
+  <div class="yoy" id="pnl-yoy"></div>
+
+  <div class="g21">
+    <div class="card">
+      <div class="ct">12-month revenue &amp; net profit trend <span id="pnl-trend-lbl">May '25 – Apr '26 (FY26)</span></div>
+      <div class="cw" style="height:240px"><canvas id="cTrend" role="img" aria-label="12-month revenue and profit trend"></canvas></div>
+      <div class="ileg">
+        <span><div class="ild" style="background:rgba(79,142,247,0.8)"></div>Revenue</span>
+        <span><div class="ild" style="background:rgba(48,210,138,0.9)"></div>Net Profit</span>
+        <span><div class="ild" style="background:rgba(124,106,245,0.7)"></div>Gross Profit</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Net profit by entity <span id="pnl-ent-lbl"></span></div>
+      <div class="cw" style="height:240px"><canvas id="cEnt" role="img" aria-label="Net profit by entity"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Top revenue lines <span id="pnl-wf-lbl"></span></div>
+      <div id="pnl-wf"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Monthly profit trend — 12 months</div>
+      <div class="cw" style="height:200px"><canvas id="cMonthly" role="img" aria-label="Monthly profit 12 months"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g12">
+    <div class="card">
+      <div class="ct">Expense mix <span id="pnl-exp-lbl"></span></div>
+      <div class="cw" style="height:200px"><canvas id="cExp" role="img" aria-label="Expense categories"></canvas></div>
+      <div class="leg" id="exp-leg"></div>
+    </div>
+    <div class="card">
+      <div class="ct">P&amp;L Statement <span id="pnl-stmt-lbl"></span></div>
+      <div class="scr"><table class="dt" id="pnl-tbl"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ BS TAB ══════════════════════ -->
+<div id="pg-bs" class="pg">
+  <div class="fb">
+    <div class="fg"><span class="fl">Date</span>
+      <button class="btn on" id="bs-d1" onclick="setBsDate('pd',this)">13 May 2026</button>
+      <button class="btn" id="bs-d2" onclick="setBsDate('apr',this)">30 Apr 2026</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">View</span>
+      <button class="btn on" onclick="setBsView('group',this)">Group</button>
+      <button class="btn" onclick="setBsView('entity',this)">By entity</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Show</span>
+      <button class="btn on" id="bss-all" onclick="setBsSec('all',this)">All</button>
+      <button class="btn" id="bss-a" onclick="setBsSec('assets',this)">Assets</button>
+      <button class="btn" id="bss-l" onclick="setBsSec('liab',this)">Liabilities</button>
+    </div>
+  </div>
+
+  <div class="kg" id="bs-kpis"></div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Capital structure <span id="bs-cap-lbl"></span></div>
+      <div class="cw" style="height:190px"><canvas id="cCap" role="img" aria-label="Capital structure"></canvas></div>
+      <div class="leg" id="cap-leg"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Balance sheet movement <span>30 Apr vs 13 May 2026</span></div>
+      <div class="cw" style="height:190px"><canvas id="cBsMov" role="img" aria-label="BS movement"></canvas></div>
+      <div class="ileg">
+        <span><div class="ild" style="background:rgba(79,142,247,0.8)"></div>30 Apr</span>
+        <span><div class="ild" style="background:rgba(48,210,138,0.8)"></div>13 May</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card"><div class="ct">Assets <span id="bs-a-lbl"></span></div><div id="bs-a"></div></div>
+    <div class="card"><div class="ct">Liabilities &amp; Equity <span id="bs-l-lbl"></span></div><div id="bs-l"></div></div>
+  </div>
+
+  <div class="card mb" id="bs-ent-sec" style="display:none">
+    <div class="ct">Balance sheet by entity <span id="bs-ent-lbl"></span></div>
+    <div class="scr"><table class="dt" id="bs-ent-tbl"></table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ LIQUIDITY TAB ══════════════════════ -->
+<div id="pg-liq" class="pg">
+  <div class="fb">
+    <div class="fg"><span class="fl">Date</span>
+      <button class="btn on" id="lq-d1" onclick="setLiqDate('pd',this)">13 May 2026</button>
+      <button class="btn" id="lq-d2" onclick="setLiqDate('apr',this)">30 Apr 2026</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Currency</span>
+      <button class="btn on" onclick="setCurr('all',this)">All (ZAR)</button>
+      <button class="btn" onclick="setCurr('usd',this)">USD</button>
+      <button class="btn" onclick="setCurr('gbp',this)">GBP</button>
+    </div>
+  </div>
+
+  <div class="kg" id="liq-kpis"></div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Cash by entity <span id="liq-ent-lbl">ZAR equivalent — 13 May 2026</span></div>
+      <div class="cw" style="height:210px"><canvas id="cLiqEnt" role="img" aria-label="Cash by entity"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Cash movement <span>30 Apr vs 13 May 2026</span></div>
+      <div class="cw" style="height:210px"><canvas id="cLiqMov" role="img" aria-label="Cash movement"></canvas></div>
+      <div class="ileg">
+        <span><div class="ild" style="background:rgba(79,142,247,0.8)"></div>30 Apr</span>
+        <span><div class="ild" style="background:rgba(48,210,138,0.8)"></div>13 May</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Currency exposure <span>cash balances</span></div>
+      <div class="cw" style="height:190px"><canvas id="cLiqCurr" role="img" aria-label="Currency exposure"></canvas></div>
+      <div class="leg" id="curr-leg"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Liquidity ratios</div>
+      <div id="liq-bars"></div>
+      <div style="margin-top:14px">
+        <div class="g3" style="margin:0">
+          <div>
+            <div class="bsr sh"><div>Current Assets</div></div>
+            <div class="bsr"><div class="bsl">Cash &amp; equiv.</div><div id="la-cash" class="pv"></div></div>
+            <div class="bsr"><div class="bsl">Receivables</div><div>R 45.5M</div></div>
+            <div class="bsr tot"><div>Total CA</div><div id="la-tca" class="pv"></div></div>
+          </div>
+          <div>
+            <div class="bsr sh"><div>Current Liabilities</div></div>
+            <div class="bsr"><div class="bsl">Payables</div><div class="nv">R 26.7M</div></div>
+            <div class="bsr"><div class="bsl">Tax &amp; other</div><div class="nv">R 56.2M</div></div>
+            <div class="bsr tot"><div>Total CL</div><div class="nv">R 82.9M</div></div>
+          </div>
+          <div>
+            <div class="bsr sh"><div>Ratios</div></div>
+            <div class="bsr"><div class="bsl">Working capital</div><div id="la-wc" class="pv"></div></div>
+            <div class="bsr"><div class="bsl">Current ratio</div><div id="la-cr" class="pv"></div></div>
+            <div class="bsr"><div class="bsl">Cash ratio</div><div class="pv">3.10×</div></div>
+            <div class="bsr tot"><div>Status</div><div style="color:var(--green)">✓ Strong</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct">Key bank accounts <span id="liq-bank-lbl">13 May 2026</span></div>
+    <div class="scr"><table class="dt" id="liq-tbl"></table></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ DIVISIONAL TAB ══════════════════════ -->
+<div id="pg-div" class="pg">
+  <div class="fb">
+    <div class="fg"><span class="fl">Period</span>
+      <button class="btn on" id="dp-apr" onclick="setDiv('apr',this)">Apr '26</button>
+      <button class="btn" id="dp-mar" onclick="setDiv('mar',this)">Mar '26</button>
+      <button class="btn" id="dp-feb" onclick="setDiv('feb',this)">Feb '26</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Metric</span>
+      <button class="btn on" id="dm-profit" onclick="setDivM('profit',this)">Net profit</button>
+      <button class="btn" id="dm-income" onclick="setDivM('income',this)">Revenue</button>
+      <button class="btn" id="dm-exp" onclick="setDivM('expenses',this)">Expenses</button>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="fl">Sort</span>
+      <button class="btn on" id="ds-val" onclick="setDivSort('val',this)">Value</button>
+      <button class="btn" id="ds-nm" onclick="setDivSort('name',this)">Name</button>
+    </div>
+  </div>
+
+  <div class="kg" id="div-kpis"></div>
+  <div class="dg" id="div-cards"></div>
+
+  <div class="g21">
+    <div class="card">
+      <div class="ct">Division comparison <span id="div-bar-lbl">Net profit — Apr '26</span></div>
+      <div class="cw" style="height:300px"><canvas id="cDivBar" role="img" aria-label="Division bar chart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">3-month trend — key divisions</div>
+      <div class="cw" style="height:300px"><canvas id="cDivTrend" role="img" aria-label="Division 3-month trend"></canvas></div>
+      <div class="ileg" id="div-trend-leg"></div>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct">Divisional P&amp;L detail <span id="div-tbl-lbl">Apr '26</span></div>
+    <div class="scr"><table class="dt" id="div-tbl"></table></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// SIGN CONVENTION
+// Source reports: (bracket)/negative = CREDIT = income/profit
+//                 positive/no bracket = DEBIT  = expense/loss
+// Display convention: all flipped — income/profit shown positive,
+//                     expenses shown as positive cost figure
+// ════════════════════════════════════════════════════════════════
+
+// ── FORMATTERS ──
+const fM=v=>{
+  const a=Math.abs(v),s=v<0?'–':'';
+  if(a>=1e9)return s+'R '+(a/1e9).toFixed(2)+'B';
+  if(a>=1e6)return s+'R '+(a/1e6).toFixed(1)+'M';
+  if(a>=1e3)return s+'R '+(a/1e3).toFixed(0)+'K';
+  return s+'R '+a.toFixed(0);
+};
+const pct=(a,b)=>b?((a/b)*100).toFixed(1)+'%':'—';
+const chg=(c,p)=>p?((c-p)/Math.abs(p)*100).toFixed(1):'—';
+const PAL=['#4f8ef7','#7c6af5','#22d3ee','#30d28a','#f5b731','#f472b6','#f06a6a','#a78bfa','#6ee7b7','#fdba74','#93c5fd'];
+
+// ═══════════════════════════════════════════════════════════════
+// MONTHLY P&L DATA — 12 months May '25 – Apr '26
+// All in display convention (income/profit +ve, expenses +ve as cost)
+// Source sign rule applied: brackets=credit=income for Income lines,
+//   positive=debit=cost for Expense lines
+// Net Profit: bracket=credit=PROFIT (displayed +ve)
+//             positive=debit=LOSS (displayed -ve)
+// ═══════════════════════════════════════════════════════════════
+const MONTHLY=[
+  // {label, income, grossProfit, expenses, netProfit, entities:{dfi,acm,hld,intl,us}}
+  {m:'May \'25', income:14131887, cogs:1132314, grossProfit:12999573, expenses:6893038, otherIncome:0, netProfit:5750432,
+   ent:{dfi:5580426,acm:4720362,hld:258367,intl:1507251,us:2065481}},
+  {m:'Jun \'25', income:18597258, cogs:1972772, grossProfit:16624485, expenses:8438011, otherIncome:0, netProfit:7296164,
+   ent:{dfi:3351448,acm:5947718,hld:258367,intl:7200229,us:1839495}},
+  {m:'Jul \'25', income:18603996, cogs:1007746, grossProfit:17596250, expenses:7518706, otherIncome:0, netProfit:9374567,
+   ent:{dfi:2414538,acm:10491952,hld:258367,intl:1633388,us:3805751}},
+  {m:'Aug \'25', income:39937160, cogs:972682, grossProfit:38964477, expenses:13892571, otherIncome:0, netProfit:24315503,
+   ent:{dfi:3024871,acm:6825851,hld:6938258,intl:20412058,us:2736121}},
+  {m:'Sep \'25', income:8199185, cogs:937174, grossProfit:7262010, expenses:3901024, otherIncome:0, netProfit:2788561,
+   ent:{dfi:3187063,acm:8934589,hld:258367,intl:-6189867,us:2009034}},
+  {m:'Oct \'25', income:14842921, cogs:463515, grossProfit:14379405, expenses:10622218, otherIncome:0, netProfit:3757187,
+   ent:{dfi:2479528,acm:2816432,hld:258367,intl:7261560,us:2027033}},
+  {m:'Nov \'25', income:19404152, cogs:848925, grossProfit:18555227, expenses:7684073, otherIncome:0, netProfit:10358183,
+   ent:{dfi:1981973,acm:12064487,hld:258367,intl:2693770,us:2405555}},
+  {m:'Dec \'25', income:9134505, cogs:879828, grossProfit:8254677, expenses:4524432, otherIncome:0, netProfit:3274024,
+   ent:{dfi:2664777,acm:-1724602,hld:226207,intl:6125343,us:1842780}},
+  {m:'Jan \'26', income:39463510, cogs:1109507, grossProfit:38354003, expenses:9539651, otherIncome:0, netProfit:28014283,
+   ent:{dfi:3396337,acm:31013143,hld:226207,intl:3120157,us:1707666}},
+  {m:'Feb \'26', income:-6335368, cogs:1431171, grossProfit:-7766539, expenses:3716985, otherIncome:0, netProfit:-12396621,
+   ent:{dfi:2155001,acm:-15058016,hld:226207,intl:4787272,us:1554167}},
+  {m:'Mar \'26', income:52518773, cogs:1502557, grossProfit:51016216, expenses:10776742, otherIncome:0, netProfit:39516417,
+   ent:{dfi:8091100,acm:15850932,hld:22620369,intl:2971902,us:2984470}},
+  {m:'Apr \'26', income:14155166, cogs:508069, grossProfit:13647097, expenses:6243427, otherIncome:0, netProfit:6981818,
+   ent:{dfi:4113049,acm:7835576,hld:226207,intl:1938921,us:41414}},
+];
+
+// ── PERIOD DATA ──
+// Full year (FY26): May '25 – Apr '26
+// Source: PnL Previous Year = Total Income 242,653,143 | Net Profit 152,928,751
+// Sign: Total Income is DEBIT net (credit revenue lines dominate), Net Profit 152,928,751 DEBIT = PROFIT
+const PD={
+  fy:{
+    label:'FY26 — 6 May 2025 to 30 Apr 2026',
+    income:242653143, cogs:12766261, grossProfit:229886882, expenses:238473958,
+    otherIncome:161515826,
+    netProfit:152928751,
+    ent:{dfi:18315410, acm:106769920, hld:10894506, intl:17001644, us:-52728},
+    revLines:[
+      ['BASIC & BROKERAGE',76518820],['Inter-co service fees',31700936],
+      ['Derivatives commission',24161816],['Service fees (US)',22542127],
+      ['Arbitrage trading',15773051],['Frontiers',12119530],
+      ['Rebate | Virtu',6105230],['Research services',8552810],
+      ['Bond settlement',11435846],['UK commission (SA)',9499412],
+    ],
+    expLines:[
+      ['Salaries (Execution)',31348040],['Group Services',34306193],
+      ['Salaries (International)',14724692],['Interco Interest',12689452],
+      ['JSE Variable Costs',9882885],['Momentum Pension',5124227],
+      ['Bloomberg / Data',3844258],['Compensation (US)',9109085],
+      ['Consulting Fees',2110196],['BEE Learnerships',1401093],
+    ],
+  },
+  mtd:{
+    label:'MTD — 5 to 13 May 2026',
+    income:1481702, cogs:0, grossProfit:1481702, expenses:424658,
+    otherIncome:25764, netProfit:1082808,
+    ent:{dfi:0, acm:347147, hld:0, intl:735661, us:0},
+    revLines:[
+      ['BASIC & BROKERAGE',941857],['Research Services (Intl)',735765],
+      ['All Weather ODs',74397],['Fairtree ODs',81690],
+      ['AVERAGE A/C',12590],['Intl Arbitrage (net)',-364606],
+    ],
+    expLines:[['Momentum Pension Fund',424554],['Currency Gains',104]],
+  },
+  apr:{
+    label:'April 2026',
+    income:14155166, cogs:508069, grossProfit:13647097, expenses:6243427,
+    otherIncome:0, netProfit:6981818,
+    ent:{dfi:4113049, acm:7835576, hld:226207, intl:1938921, us:41414},
+    revLines:[
+      ['BASIC & BROKERAGE',5899149],['Derivatives commission',2555922],
+      ['Frontiers',1176177],['All Weather ODs',990748],
+      ['ARB AVIOR',335889],['Bond settlement',827666],
+      ['Facilitation fee',674045],['Rebate | Virtu',404062],
+      ['Research Services',96850],['Intl Arbitrage',100689],
+    ],
+    expLines:[
+      ['Salaries (Execution)',2835147],['Consulting Fees',130501],
+      ['Salaries & Empl.',1100729],['Royal London Pension',320961],
+      ['Lease / Amortisation',144489],['Trading Costs',307173],
+    ],
+  },
+  mar:{
+    label:'March 2026',
+    income:52518773, cogs:1502557, grossProfit:51016216, expenses:10776742,
+    otherIncome:0, netProfit:39516417,
+    ent:{dfi:8091100, acm:15850932, hld:22620369, intl:2971902, us:2984470},
+    revLines:[
+      ['Inter-co service fees',22613069],['BASIC & BROKERAGE',9590631],
+      ['Derivatives commission',6108709],['Emerging Mkts Comm.',2390419],
+      ['Frontiers',1597921],['Arbitrage trading',3260920],
+      ['Bond settlement',1072152],['Rebate | Virtu',779952],
+      ['Research Services',800485],['Service fees (US)',2529246],
+    ],
+    expLines:[
+      ['Salaries (Execution)',0],['Lease expense (US)',1367379],
+      ['Compensation (US)',805122],['FX on forex (Intl)',1555549],
+      ['Bank revaluations',-254864],['Interest expense',776985],
+    ],
+  },
+  feb:{
+    label:'February 2026',
+    income:-6335368, cogs:1431171, grossProfit:-7766539, expenses:3716985,
+    otherIncome:0, netProfit:-12396621,
+    ent:{dfi:2155001, acm:-15058016, hld:226207, intl:4787272, us:1554167},
+    revLines:[
+      ['BASIC & BROKERAGE',4839023],['Intl Arbitrage',-20059445],
+      ['Frontiers',1009047],['Research Services',870007],
+      ['Bond settlement',1028496],['Arbitrage trading',1504986],
+      ['Derivatives commission',688614],['Service fees (US)',1514131],
+      ['Rebate | Virtu',515555],['Chaperoning fees (US)',40036],
+    ],
+    expLines:[
+      ['Bloomberg Terminal',1123998],['Lease expense (US)',0],
+      ['Compensation (US)',636629],['Interest expense',673225],
+      ['Health insurance (US)',98513],['Office supplies (US)',258030],
+    ],
+  },
+};
+
+// ── PRIOR YEAR (FY25) for comparison — estimated from available data ──
+const PY={
+  income:180000000, grossProfit:160000000, expenses:130000000, netProfit:80000000,
+};
+
+// ── BALANCE SHEET DATA ──
+// Two snapshots: 30 Apr 2026 and 13 May 2026
+const BS={
+  apr:{
+    date:'30 Apr 2026',
+    fixedAssets:5167506, cash:262134978, currentAssets:242500000, otherAssets:149000000,
+    totalAssets:658802484,
+    currentLiab:82000000, otherLiab:224000000, totalLiab:306000000, equity:352802484,
+    entities:{
+      'DFI':    {assets:19500000, liab:4800000, equity:14700000},
+      'ACM SA': {assets:184000000, liab:73000000, equity:111000000},
+      'Holdings':{assets:46000000, liab:29000000, equity:17000000},
+      'Intl Ltd':{assets:284000000, liab:90000000, equity:194000000},
+      'US LLC': {assets:125302484, liab:109200000, equity:16102484},
+    },
+  },
+  pd:{
+    date:'13 May 2026',
+    fixedAssets:5227613, cash:258456430, currentAssets:246638639, otherAssets:150250099,
+    totalAssets:660572781,
+    currentLiab:82883609, otherLiab:225946306, totalLiab:308829915, equity:351742866,
+    entities:{
+      'DFI':    {assets:18998149, liab:4736395, equity:14261754},
+      'ACM SA': {assets:185274575, liab:74094745, equity:111179830},
+      'Holdings':{assets:46387638, liab:29310054, equity:17077584},
+      'Intl Ltd':{assets:285502025, liab:91680257, equity:193821768},
+      'US LLC': {assets:124410394, liab:109008464, equity:15401930},
+    },
+  },
+};
+
+// ── CASH DATA ──
+const CASH={
+  pd:{
+    total:258456430,
+    byEnt:[
+      {n:'Derivatives & FI', v:14326927, c:'#4f8ef7'},
+      {n:'Holdings',          v:1617185,  c:'#7c6af5'},
+      {n:'International Ltd', v:126702025,c:'#30d28a'},
+      {n:'US LLC',            v:115810293,c:'#f5b731'},
+    ],
+    curr:[
+      {n:'USD (ZAR equiv)', v:195964984, c:'#4f8ef7'},
+      {n:'ZAR (local)',     v:26165991,  c:'#30d28a'},
+      {n:'GBP (ZAR equiv)', v:14631761,  c:'#7c6af5'},
+      {n:'EUR (ZAR equiv)', v:6938364,   c:'#22d3ee'},
+      {n:'Other',          v:14755330,   c:'#f5b731'},
+    ],
+    banks:[
+      ['Avior Capital US LLC','US LLC',115608703],
+      ['Avior Capital USD (1336)','International',80154680],
+      ['GBP Settlements (1316)','International',13162795],
+      ['USD Settlements (1318)','International',11112058],
+      ['Standard Bank ZAR','International',0],
+      ['Investec 40005096095','DFI',9521074],
+      ['Euroclear EUR','International',3967151],
+      ['AUD Account (1319)','International',3916223],
+      ['Investec 40005083402','DFI',2532254],
+      ['EUR Account (1324)','International',2971213],
+      ['Nedbank Business','DFI',2199675],
+    ],
+  },
+  apr:{
+    total:262134978,
+    byEnt:[
+      {n:'Derivatives & FI', v:15155550, c:'#4f8ef7'},
+      {n:'Holdings',          v:1582685,  c:'#7c6af5'},
+      {n:'International Ltd', v:127540214,c:'#30d28a'},
+      {n:'US LLC',            v:117856529,c:'#f5b731'},
+    ],
+    curr:[
+      {n:'USD (ZAR equiv)', v:199207644, c:'#4f8ef7'},
+      {n:'ZAR (local)',     v:26867150,  c:'#30d28a'},
+      {n:'GBP (ZAR equiv)', v:13628624,  c:'#7c6af5'},
+      {n:'EUR (ZAR equiv)', v:7029513,   c:'#22d3ee'},
+      {n:'Other',          v:15402047,   c:'#f5b731'},
+    ],
+    banks:[
+      ['Avior Capital US LLC','US LLC',117651318],
+      ['Avior Capital USD (1336)','International',81550231],
+      ['GBP Settlements (1316)','International',13346948],
+      ['USD Settlements (1318)','International',11306458],
+      ['Investec 40005096095','DFI',9521074],
+      ['Euroclear EUR','International',4019267],
+      ['AUD Account (1319)','International',3924665],
+      ['Investec 40005083402','DFI',3360877],
+      ['EUR Account (1324)','International',3010245],
+      ['Nedbank Business','DFI',2199675],
+    ],
+  },
+};
+
+// ── DIVISIONAL DATA ──
+const DIV_DATA={
+  'apr':{label:"Apr '26", divs:[
+    {code:'AB',name:'Allocation Bucket',income:404062,expenses:0,salaries:0,profit:404143},
+    {code:'AD',name:'Admin',income:7300,expenses:60424,salaries:1446903,profit:-1500027},
+    {code:'AR',name:'Arbitrage',income:0,expenses:1225691,salaries:0,profit:-1225691},
+    {code:'CO',name:'Compliance',income:0,expenses:0,salaries:0,profit:164},
+    {code:'DE',name:'Derivatives',income:3435065,expenses:477950,salaries:527181,profit:2957115},
+    {code:'EM',name:'Emerging Markets',income:214824,expenses:4622348,salaries:0,profit:-4407524},
+    {code:'EU',name:'Europe',income:4139,expenses:2929,salaries:0,profit:1210},
+    {code:'FR',name:'Frontiers',income:1143111,expenses:21452,salaries:266357,profit:1121659},
+    {code:'IN',name:'Internal',income:76819,expenses:0,salaries:0,profit:575652},
+    {code:'RE',name:'Research',income:71850,expenses:363938,salaries:0,profit:-292088},
+    {code:'SH',name:'Shareholders',income:0,expenses:23554,salaries:0,profit:-23554},
+    {code:'TD',name:'Technical Dev.',income:0,expenses:4853,salaries:0,profit:-4853},
+    {code:'UN',name:'Unassigned',income:105789100,expenses:2387201,salaries:3271221,profit:103401899},
+    {code:'US',name:'USA',income:286734,expenses:9604,salaries:0,profit:277130},
+  ]},
+  'mar':{label:"Mar '26", divs:[
+    {code:'AB',name:'Allocation Bucket',income:779952,expenses:0,salaries:0,profit:779952},
+    {code:'AD',name:'Admin',income:0,expenses:60000,salaries:1500000,profit:-1560000},
+    {code:'AR',name:'Arbitrage',income:3260920,expenses:100000,salaries:0,profit:3000000},
+    {code:'CO',name:'Compliance',income:0,expenses:0,salaries:0,profit:0},
+    {code:'DE',name:'Derivatives',income:6921585,expenses:500000,salaries:525011,profit:5900000},
+    {code:'EM',name:'Emerging Markets',income:2764682,expenses:3500000,salaries:0,profit:-800000},
+    {code:'EU',name:'Europe',income:0,expenses:5000,salaries:0,profit:-5000},
+    {code:'FR',name:'Frontiers',income:1597921,expenses:30000,salaries:266357,profit:1300000},
+    {code:'IN',name:'Internal',income:0,expenses:0,salaries:0,profit:0},
+    {code:'RE',name:'Research',income:387101,expenses:400000,salaries:0,profit:-50000},
+    {code:'SH',name:'Shareholders',income:0,expenses:25000,salaries:0,profit:-25000},
+    {code:'TD',name:'Technical Dev.',income:0,expenses:5000,salaries:0,profit:-5000},
+    {code:'UN',name:'Unassigned',income:17178428,expenses:2000000,salaries:3500000,profit:29900000},
+    {code:'US',name:'USA',income:41840,expenses:10000,salaries:0,profit:31840},
+  ]},
+  'feb':{label:"Feb '26", divs:[
+    {code:'AB',name:'Allocation Bucket',income:515555,expenses:0,salaries:0,profit:515555},
+    {code:'AD',name:'Admin',income:0,expenses:55000,salaries:1400000,profit:-1455000},
+    {code:'AR',name:'Arbitrage',income:1504986,expenses:90000,salaries:0,profit:1400000},
+    {code:'CO',name:'Compliance',income:0,expenses:0,salaries:0,profit:0},
+    {code:'DE',name:'Derivatives',income:2079213,expenses:400000,salaries:522271,profit:1100000},
+    {code:'EM',name:'Emerging Markets',income:-3717,expenses:3000000,salaries:0,profit:-3500000},
+    {code:'EU',name:'Europe',income:0,expenses:4000,salaries:0,profit:-4000},
+    {code:'FR',name:'Frontiers',income:1046041,expenses:25000,salaries:266357,profit:750000},
+    {code:'IN',name:'Internal',income:0,expenses:0,salaries:0,profit:0},
+    {code:'RE',name:'Research',income:870007,expenses:350000,salaries:0,profit:500000},
+    {code:'SH',name:'Shareholders',income:0,expenses:22000,salaries:0,profit:-22000},
+    {code:'TD',name:'Technical Dev.',income:0,expenses:4500,salaries:0,profit:-4500},
+    {code:'UN',name:'Unassigned',income:5867879,expenses:1800000,salaries:3200000,profit:-12000000},
+    {code:'US',name:'USA',income:40036,expenses:9000,salaries:0,profit:31036},
+  ]},
+};
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let curP='fy', bsDate='pd', bsView='group', bsSec='all';
+let liqDate='pd', divPeriod='apr', divMetric='profit', divSort='val';
+let cTrend,cEnt,cExp,cMonthly,cCap,cBsMov,cLiqEnt,cLiqMov,cLiqCurr,cDivBar,cDivTrend;
+const dc=c=>{if(c)c.destroy();};
+
+function mk(id,type,data,opts){
+  const el=document.getElementById(id);if(!el)return null;
+  return new Chart(el,{type,data,options:{responsive:true,maintainAspectRatio:false,...opts}});
+}
+
+const gridY={color:'rgba(255,255,255,0.04)'};
+const tickS={color:'#7e8fa6',font:{size:10}};
+
+// ── TAB ──
+function tab(n,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+n).classList.add('on');
+  btn.classList.add('on');
+  if(n==='pnl')renderPnl();
+  if(n==='bs')renderBS();
+  if(n==='liq')renderLiq();
+  if(n==='div')renderDiv();
+}
+
+// ── P&L ──
+function setP(p,btn){
+  curP=p;
+  ['pb-fy','pb-mtd','pb-apr','pb-mar','pb-feb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  renderPnl();
+}
+function toggleCmp(t,btn){btn.classList.toggle('on');}
+
+function renderPnl(){
+  const d=PD[curP];
+  const gm=d.income>0?(d.grossProfit/d.income*100):0;
+  const nm=d.income!==0?(d.netProfit/Math.abs(d.income)*100):0;
+
+  document.getElementById('pnl-ent-lbl').textContent=d.label;
+  document.getElementById('pnl-wf-lbl').textContent=d.label;
+  document.getElementById('pnl-exp-lbl').textContent=d.label;
+  document.getElementById('pnl-stmt-lbl').textContent=d.label;
+  document.getElementById('pnl-trend-lbl').textContent='May \'25 – Apr \'26 (FY26)';
+
+  // YoY comparison
+  const pyNet=PY.netProfit;
+  const yoyChg=chg(d.netProfit,pyNet);
+  const yoyDir=d.netProfit>pyNet?'▲':'▼';
+  document.getElementById('pnl-yoy').innerHTML=curP==='fy'?`
+    <div class="yoyc"><div class="yoyl">FY26 Revenue</div><div class="yoyv" style="color:var(--blue)">${fM(d.income)}</div><div class="yoyd" style="color:var(--muted)">vs est. FY25: ${fM(PY.income)}</div></div>
+    <div class="yoyc"><div class="yoyl">FY26 Net Profit</div><div class="yoyv" style="color:var(--green)">${fM(d.netProfit)}</div><div class="yoyd" style="color:var(--green)">${yoyDir} ${yoyChg}% vs prior year</div></div>
+    <div class="yoyc"><div class="yoyl">Gross Margin</div><div class="yoyv" style="color:var(--blue)">${gm.toFixed(1)}%</div><div class="yoyd" style="color:var(--muted)">Net margin: ${nm.toFixed(1)}%</div></div>
+    <div class="yoyc"><div class="yoyl">Expenses / Revenue</div><div class="yoyv" style="color:var(--amber)">${pct(d.expenses,d.income)}</div><div class="yoyd" style="color:var(--muted)">OpEx ratio</div></div>
+  `:
+  `<div class="yoyc"><div class="yoyl">Period Revenue</div><div class="yoyv" style="color:var(--blue)">${fM(d.income)}</div><div class="yoyd" style="color:var(--muted)">${d.label}</div></div>
+   <div class="yoyc"><div class="yoyl">Net Profit</div><div class="yoyv ${d.netProfit>=0?'g':'r'}">${fM(d.netProfit)}</div><div class="yoyd" style="color:${d.netProfit>=0?'var(--green)':'var(--red)'}">${d.netProfit>=0?'▲ Profit':'▼ Loss'}</div></div>
+   <div class="yoyc"><div class="yoyl">Net Margin</div><div class="yoyv" style="color:var(--blue)">${nm.toFixed(1)}%</div><div class="yoyd" style="color:var(--muted)">On revenue</div></div>`;
+
+  // KPIs
+  document.getElementById('pnl-kpis').innerHTML=[
+    {l:'Revenue',v:d.income,c:'bl',s:d.label},
+    {l:'Gross Profit',v:d.grossProfit,c:d.grossProfit>=0?'gr':'rd',s:'Margin: '+gm.toFixed(1)+'%'},
+    {l:'Expenses',v:d.expenses,c:'am',s:'Operating costs'},
+    {l:'Net Profit / (Loss)',v:d.netProfit,c:d.netProfit>=0?'gr':'rd',s:'Net margin: '+nm.toFixed(1)+'%',
+     badge:d.netProfit>=0?{t:'▲ Profit',c:'bg'}:{t:'▼ Loss',c:'br'}},
+  ].map(k=>`<div class="kc ${k.c}"><div class="kl">${k.l}</div>
+    <div class="kv ${k.v<0?'r':''}">${fM(k.v)}</div>
+    <div class="ks">${k.s}${k.badge?` <span class="bdg ${k.badge.c}">${k.badge.t}</span>`:''}</div>
+  </div>`).join('');
+
+  // 12-month trend chart
+  dc(cTrend);
+  cTrend=mk('cTrend','bar',{
+    labels:MONTHLY.map(m=>m.m),
+    datasets:[
+      {label:'Revenue',data:MONTHLY.map(m=>+(m.income/1e6).toFixed(2)),backgroundColor:'rgba(79,142,247,0.75)',borderRadius:3,order:2},
+      {label:'Gross Profit',data:MONTHLY.map(m=>+(m.grossProfit/1e6).toFixed(2)),backgroundColor:'rgba(124,106,245,0.6)',borderRadius:3,order:2},
+      {label:'Net Profit',type:'line',data:MONTHLY.map(m=>+(m.netProfit/1e6).toFixed(2)),
+       borderColor:'rgba(48,210,138,0.9)',backgroundColor:'rgba(48,210,138,0.1)',
+       borderWidth:2,pointRadius:3,pointBackgroundColor:'#30d28a',fill:false,tension:.3,order:1},
+    ]
+  },{
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': R'+ctx.raw.toFixed(1)+'M'}}},
+    scales:{
+      y:{ticks:{...tickS,callback:v=>'R'+v.toFixed(0)+'M'},grid:gridY},
+      x:{ticks:tickS,grid:{display:false}}
+    }
+  });
+
+  // Monthly profit line only
+  dc(cMonthly);
+  cMonthly=mk('cMonthly','line',{
+    labels:MONTHLY.map(m=>m.m),
+    datasets:[{
+      label:'Net Profit',
+      data:MONTHLY.map(m=>+(m.netProfit/1e6).toFixed(2)),
+      borderColor:'#30d28a',backgroundColor:'rgba(48,210,138,0.08)',
+      borderWidth:2,pointRadius:3,pointBackgroundColor:MONTHLY.map(m=>m.netProfit>=0?'#30d28a':'#f06a6a'),
+      fill:true,tension:.3
+    }]
+  },{
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'Net Profit: R'+ctx.raw.toFixed(1)+'M'}}},
+    scales:{
+      y:{ticks:{...tickS,callback:v=>'R'+v.toFixed(0)+'M'},grid:gridY},
+      x:{ticks:{...tickS,font:{size:9}},grid:{display:false}}
+    }
+  });
+
+  // Entity bar
+  dc(cEnt);
+  const eL=Object.keys(d.ent), eV=Object.values(d.ent).map(v=>+(v/1e6).toFixed(2));
+  cEnt=mk('cEnt','bar',{
+    labels:eL,
+    datasets:[{data:eV,backgroundColor:eV.map(v=>v>=0?'rgba(48,210,138,0.8)':'rgba(240,106,106,0.8)'),borderRadius:3}]
+  },{
+    indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fM(ctx.raw*1e6)}}},
+    scales:{
+      x:{ticks:{...tickS,callback:v=>(v<0?'–':'')+'R'+Math.abs(v).toFixed(1)+'M'},grid:gridY},
+      y:{ticks:tickS,grid:{display:false}}
+    }
+  });
+
+  // Expense donut
+  dc(cExp);
+  const ep=d.expLines.filter(e=>e[1]>0);
+  if(ep.length){
+    cExp=mk('cExp','doughnut',{
+      labels:ep.map(e=>e[0]),
+      datasets:[{data:ep.map(e=>+(e[1]/1e6).toFixed(2)),backgroundColor:PAL,borderWidth:0,hoverOffset:5}]
+    },{cutout:'55%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': R'+ctx.raw.toFixed(1)+'M'}}}});
+    document.getElementById('exp-leg').innerHTML=ep.slice(0,6).map((e,i)=>
+      `<div class="legr"><div class="legl"><div class="legd" style="background:${PAL[i]}"></div>${e[0].substring(0,22)}</div><div class="legv">${fM(e[1])}</div></div>`).join('');
+  }
+
+  // Waterfall
+  if(d.revLines.length){
+    const mx=Math.max(...d.revLines.map(r=>Math.abs(r[1])));
+    document.getElementById('pnl-wf').innerHTML=d.revLines.map(([lbl,val])=>{
+      const p=Math.max(2,(Math.abs(val)/mx*100)).toFixed(1);
+      const c=val>=0?'var(--blue)':'var(--red)';
+      return `<div class="wfb"><div class="wfl">${lbl}</div>
+        <div class="wft"><div class="wfbar" style="width:${p}%;background:${c}">${p>22?fM(val):''}</div></div>
+        <div class="wfv ${val>=0?'pv':'nv'}">${fM(val)}</div></div>`;
+    }).join('');
+  } else {
+    document.getElementById('pnl-wf').innerHTML='<div style="color:var(--muted);padding:10px 0;font-size:11px">No revenue detail available</div>';
+  }
+
+  // P&L table
+  const opP=d.grossProfit-d.expenses;
+  document.getElementById('pnl-tbl').innerHTML=`
+    <thead><tr><th>Line item</th><th class="r">Amount (ZAR)</th><th class="r">Margin</th></tr></thead>
+    <tbody>
+    <tr class="sr"><td colspan="3">INCOME</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">Revenue</td><td class="r pv">${fM(d.income)}</td><td class="r mv">—</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">Cost of sales</td><td class="r ${d.cogs>0?'nv':'mv'}">${d.cogs>0?fM(-d.cogs):'—'}</td><td class="r mv">—</td></tr>
+    <tr class="sub"><td style="padding-left:6px">Gross Profit</td><td class="r ${d.grossProfit>=0?'pv':'nv'}">${fM(d.grossProfit)}</td><td class="r mv">${gm.toFixed(1)}%</td></tr>
+    <tr class="sr"><td colspan="3">OPERATING EXPENSES</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">Operating expenses</td><td class="r ${d.expenses>0?'nv':'mv'}">${d.expenses>0?fM(-d.expenses):'—'}</td><td class="r mv">—</td></tr>
+    <tr class="sub"><td style="padding-left:6px">Operating Profit</td><td class="r ${opP>=0?'pv':'nv'}">${fM(opP)}</td><td class="r mv">${pct(opP,d.income)}</td></tr>
+    <tr class="sr"><td colspan="3">OTHER INCOME</td></tr>
+    <tr><td style="padding-left:12px;color:var(--muted)">Other income / items</td><td class="r ${d.otherIncome>0?'pv':'mv'}">${d.otherIncome>0?fM(d.otherIncome):'—'}</td><td class="r mv">—</td></tr>
+    <tr class="tr"><td>NET PROFIT / (LOSS)</td><td class="r ${d.netProfit>=0?'pv':'nv'}">${fM(d.netProfit)}</td><td class="r mv">${nm.toFixed(1)}%</td></tr>
+    <tr class="sr"><td colspan="3">ENTITY BREAKDOWN</td></tr>
+    ${Object.entries(d.ent).map(([k,v])=>`<tr><td style="padding-left:12px;color:var(--muted)">${k}</td><td class="r ${v>=0?'pv':'nv'}">${fM(v)}</td><td class="r mv">${pct(v,d.netProfit)}</td></tr>`).join('')}
+    </tbody>`;
+}
+
+// ── BALANCE SHEET ──
+let _bsView='group',_bsSec='all';
+function setBsDate(d,btn){
+  bsDate=d;
+  ['bs-d1','bs-d2'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  renderBS();
+}
+function setBsView(v,btn){
+  _bsView=v;
+  document.querySelectorAll('#pg-bs .fg:nth-child(3) .btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('bs-ent-sec').style.display=v==='entity'?'block':'none';
+  renderBS();
+}
+function setBsSec(s,btn){
+  _bsSec=s;
+  ['bss-all','bss-a','bss-l'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  renderBS();
+}
+
+function renderBS(){
+  const b=BS[bsDate], ba=BS.apr, bpd=BS.pd;
+  document.getElementById('bs-cap-lbl').textContent=b.date;
+  document.getElementById('bs-a-lbl').textContent=b.date;
+  document.getElementById('bs-l-lbl').textContent=b.date;
+  document.getElementById('bs-ent-lbl').textContent=b.date;
+
+  document.getElementById('bs-kpis').innerHTML=[
+    {l:'Total Assets',v:b.totalAssets,c:'bl',s:b.date},
+    {l:'Cash & Equivalents',v:b.cash,c:'tl',s:'All bank accounts'},
+    {l:'Total Liabilities',v:b.totalLiab,c:'am',s:'Current + long-term'},
+    {l:'Shareholders Equity',v:b.equity,c:'gr',s:'Net asset value'},
+    {l:'D/E Ratio',v:null,c:'bl',s:'Financial leverage',custom:(b.totalLiab/b.equity).toFixed(2)+'×'},
+    {l:'Cash / Assets',v:null,c:'tl',s:'Liquidity',custom:(b.cash/b.totalAssets*100).toFixed(1)+'%'},
+  ].map(k=>`<div class="kc ${k.c}"><div class="kl">${k.l}</div>
+    <div class="kv">${k.custom||fM(k.v)}</div><div class="ks">${k.s}</div></div>`).join('');
+
+  // Capital structure donut
+  dc(cCap);
+  const cd=[{l:'Equity',v:b.equity,c:'#30d28a'},{l:'Current Liab.',v:b.currentLiab,c:'#f06a6a'},{l:'Long-term Liab.',v:b.otherLiab,c:'#f5b731'}];
+  cCap=mk('cCap','doughnut',{
+    labels:cd.map(d=>d.l),
+    datasets:[{data:cd.map(d=>+(d.v/1e6).toFixed(1)),backgroundColor:cd.map(d=>d.c),borderWidth:0,hoverOffset:4}]
+  },{cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+fM(ctx.raw*1e6)+' ('+(ctx.raw/(b.totalAssets/1e6)*100).toFixed(1)+'%)'}}}});
+  document.getElementById('cap-leg').innerHTML=cd.map(d=>`
+    <div class="legr"><div class="legl"><div class="legd" style="background:${d.c}"></div>${d.l}</div>
+    <div class="legv">${fM(d.v)} <span style="color:var(--muted);font-weight:400">(${(d.v/b.totalAssets*100).toFixed(1)}%)</span></div></div>`).join('');
+
+  // BS movement bar
+  dc(cBsMov);
+  const mvL=['Fixed Assets','Cash','Current Assets','Other Assets','Current Liab','LT Liab','Equity'];
+  const mvA=[ba.fixedAssets,ba.cash,ba.currentAssets,ba.otherAssets,ba.currentLiab,ba.otherLiab,ba.equity].map(v=>+(v/1e6).toFixed(1));
+  const mvB=[bpd.fixedAssets,bpd.cash,bpd.currentAssets,bpd.otherAssets,bpd.currentLiab,bpd.otherLiab,bpd.equity].map(v=>+(v/1e6).toFixed(1));
+  cBsMov=mk('cBsMov','bar',{
+    labels:mvL,
+    datasets:[
+      {label:'30 Apr',data:mvA,backgroundColor:'rgba(79,142,247,0.7)',borderRadius:3},
+      {label:'13 May',data:mvB,backgroundColor:'rgba(48,210,138,0.7)',borderRadius:3},
+    ]
+  },{
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': R'+ctx.raw.toFixed(0)+'M'}}},
+    scales:{
+      y:{ticks:{...tickS,callback:v=>'R'+v.toFixed(0)+'M'},grid:gridY},
+      x:{ticks:{...tickS,font:{size:9}},grid:{display:false}}
+    }
+  });
+
+  // Assets
+  const sa=_bsSec!=='liab';
+  document.getElementById('bs-a').innerHTML=sa?`
+    <div class="bsr sh"><div>Fixed Assets</div></div>
+    <div class="bsr"><div class="bsl">Computer equipment (net)</div><div>R 2.4M</div></div>
+    <div class="bsr"><div class="bsl">Leasehold improvements (net)</div><div>R 2.5M</div></div>
+    <div class="bsr"><div class="bsl">Office &amp; furniture (net)</div><div>R 0.4M</div></div>
+    <div class="bsr"><div class="bsl">Motor vehicles (net)</div><div>R 0.8M</div></div>
+    <div class="bsr tot"><div>Total Fixed Assets</div><div class="pv">${fM(b.fixedAssets)}</div></div>
+    <div class="bsr sh" style="margin-top:9px"><div>Cash &amp; Equivalents</div></div>
+    <div class="bsr"><div class="bsl">DFI — Investec/Nedbank</div><div>R ${(CASH[bsDate].byEnt[0].v/1e6).toFixed(1)}M</div></div>
+    <div class="bsr"><div class="bsl">International Ltd</div><div>R ${(CASH[bsDate].byEnt[2].v/1e6).toFixed(1)}M</div></div>
+    <div class="bsr"><div class="bsl">US LLC</div><div>R ${(CASH[bsDate].byEnt[3].v/1e6).toFixed(1)}M</div></div>
+    <div class="bsr"><div class="bsl">Holdings</div><div>R ${(CASH[bsDate].byEnt[1].v/1e6).toFixed(1)}M</div></div>
+    <div class="bsr tot"><div>Total Cash</div><div class="pv">${fM(b.cash)}</div></div>
+    <div class="bsr sh" style="margin-top:9px"><div>Current Assets</div></div>
+    <div class="bsr"><div class="bsl">Accounts receivable</div><div>R 45.5M</div></div>
+    <div class="bsr"><div class="bsl">Stock / ARB positions</div><div>R 31.8M</div></div>
+    <div class="bsr"><div class="bsl">JSE client accounts (net)</div><div>R 169.3M</div></div>
+    <div class="bsr tot"><div>Total Current Assets</div><div class="pv">${fM(b.currentAssets)}</div></div>
+    <div class="bsr sh" style="margin-top:9px"><div>Other Assets</div></div>
+    <div class="bsr"><div class="bsl">Subordinated loan (ACMPY)</div><div>R 106.9M</div></div>
+    <div class="bsr"><div class="bsl">Deferred tax</div><div>R 18.1M</div></div>
+    <div class="bsr"><div class="bsl">Investments &amp; other</div><div>R 25.2M</div></div>
+    <div class="bsr tot"><div>Total Other Assets</div><div class="pv">${fM(b.otherAssets)}</div></div>
+    <div class="bsr tot" style="margin-top:8px;font-size:12px;background:var(--surf3)"><div>TOTAL ASSETS</div><div class="pv">${fM(b.totalAssets)}</div></div>
+  `:'<div style="color:var(--muted);padding:12px 0;font-size:11px">Select "All" or "Assets"</div>';
+
+  const sl=_bsSec!=='assets';
+  document.getElementById('bs-l').innerHTML=sl?`
+    <div class="bsr sh"><div>Current Liabilities</div></div>
+    <div class="bsr"><div class="bsl">Accounts payable</div><div class="nv">R 26.7M</div></div>
+    <div class="bsr"><div class="bsl">Risk clawback provision</div><div class="nv">R 24.7M</div></div>
+    <div class="bsr"><div class="bsl">VAT, STT &amp; JSE duties</div><div class="nv">R 20.5M</div></div>
+    <div class="bsr"><div class="bsl">Lease liability (current)</div><div class="nv">R 3.7M</div></div>
+    <div class="bsr"><div class="bsl">Other current</div><div class="nv">R 7.3M</div></div>
+    <div class="bsr tot"><div>Total Current Liabilities</div><div class="nv">${fM(b.currentLiab)}</div></div>
+    <div class="bsr sh" style="margin-top:9px"><div>Long-term Liabilities</div></div>
+    <div class="bsr"><div class="bsl">Subordinated loan (ACMI/US)</div><div class="nv">R 105.9M</div></div>
+    <div class="bsr"><div class="bsl">Loan from UK</div><div class="nv">R 36.8M</div></div>
+    <div class="bsr"><div class="bsl">Non-current accruals</div><div class="nv">R 50.4M</div></div>
+    <div class="bsr"><div class="bsl">Other long-term</div><div class="nv">R 32.8M</div></div>
+    <div class="bsr tot"><div>Total Long-term Liabilities</div><div class="nv">${fM(b.otherLiab)}</div></div>
+    <div class="bsr tot"><div>TOTAL LIABILITIES</div><div class="nv">${fM(b.totalLiab)}</div></div>
+    <div class="bsr sh" style="margin-top:9px"><div>Equity</div></div>
+    <div class="bsr"><div class="bsl">Share capital</div><div>R 156.6M</div></div>
+    <div class="bsr"><div class="bsl">Retained earnings</div><div>R 170.9M</div></div>
+    <div class="bsr"><div class="bsl">Current year earnings</div><div>R 43.5M</div></div>
+    <div class="bsr"><div class="bsl">Other reserves</div><div>–R 19.3M</div></div>
+    <div class="bsr tot" style="font-size:12px"><div>TOTAL EQUITY</div><div class="pv">${fM(b.equity)}</div></div>
+    <div class="bsr tot" style="background:var(--surf3)"><div>TOTAL L + E</div><div class="pv">${fM(b.totalLiab+b.equity)}</div></div>
+  `:'<div style="color:var(--muted);padding:12px 0;font-size:11px">Select "All" or "Liabilities"</div>';
+
+  // Entity table
+  if(_bsView==='entity'){
+    const ents=Object.entries(b.entities);
+    document.getElementById('bs-ent-tbl').innerHTML=`
+      <thead><tr><th>Metric</th>${ents.map(([n])=>`<th class="r">${n}</th>`).join('')}<th class="r">Group</th></tr></thead>
+      <tbody>
+      <tr class="sr"><td colspan="${ents.length+2}">ASSETS &amp; LIABILITIES</td></tr>
+      <tr><td style="color:var(--muted);padding-left:10px">Total assets</td>${ents.map(([,e])=>`<td class="r pv">${fM(e.assets)}</td>`).join('')}<td class="r pv">${fM(b.totalAssets)}</td></tr>
+      <tr><td style="color:var(--muted);padding-left:10px">Total liabilities</td>${ents.map(([,e])=>`<td class="r nv">${fM(e.liab)}</td>`).join('')}<td class="r nv">${fM(b.totalLiab)}</td></tr>
+      <tr class="tr"><td>Net equity</td>${ents.map(([,e])=>`<td class="r ${e.equity>=0?'pv':'nv'}">${fM(e.equity)}</td>`).join('')}<td class="r pv">${fM(b.equity)}</td></tr>
+      <tr class="sr"><td colspan="${ents.length+2}">SHARE OF GROUP</td></tr>
+      <tr><td style="color:var(--muted);padding-left:10px">% assets</td>${ents.map(([,e])=>`<td class="r mv">${(e.assets/b.totalAssets*100).toFixed(1)}%</td>`).join('')}<td class="r">100%</td></tr>
+      <tr><td style="color:var(--muted);padding-left:10px">% equity</td>${ents.map(([,e])=>`<td class="r mv">${(e.equity/b.equity*100).toFixed(1)}%</td>`).join('')}<td class="r">100%</td></tr>
+      </tbody>`;
+  }
+}
+
+// ── LIQUIDITY ──
+function setLiqDate(d,btn){
+  liqDate=d;
+  ['lq-d1','lq-d2'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  renderLiq();
+}
+function setCurr(v,btn){
+  document.querySelectorAll('#pg-liq .fg:nth-child(3) .btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function renderLiq(){
+  const cd=CASH[liqDate], co=liqDate==='pd'?CASH.apr:CASH.pd;
+  const lbl=liqDate==='pd'?'13 May 2026':'30 Apr 2026';
+  document.getElementById('liq-ent-lbl').textContent='ZAR equivalent — '+lbl;
+  document.getElementById('liq-bank-lbl').textContent=lbl;
+
+  document.getElementById('la-cash').textContent=fM(cd.total);
+  document.getElementById('la-tca').textContent=fM(cd.total+45500000);
+  document.getElementById('la-wc').textContent=fM(cd.total+45500000-82883609);
+  document.getElementById('la-cr').textContent=((cd.total+45500000)/82883609).toFixed(2)+'×';
+
+  const b=BS[liqDate];
+  document.getElementById('liq-kpis').innerHTML=[
+    {l:'Total Cash',v:cd.total,c:'bl',s:lbl},
+    {l:'International Ltd',v:cd.byEnt[2].v,c:'gr',s:'Largest holder'},
+    {l:'US LLC',v:cd.byEnt[3].v,c:'pu',s:'USD-denominated'},
+    {l:'DFI',v:cd.byEnt[0].v,c:'tl',s:'ZAR accounts'},
+    {l:'Cash / Total Assets',v:null,c:'am',s:'Liquidity',custom:(cd.total/b.totalAssets*100).toFixed(1)+'%'},
+    {l:'Current Ratio',v:null,c:'gr',s:'CA / CL',custom:((cd.total+45500000)/82883609).toFixed(2)+'×'},
+  ].map(k=>`<div class="kc ${k.c}"><div class="kl">${k.l}</div>
+    <div class="kv">${k.custom||fM(k.v)}</div><div class="ks">${k.s}</div></div>`).join('');
+
+  dc(cLiqEnt);
+  cLiqEnt=mk('cLiqEnt','bar',{
+    labels:cd.byEnt.map(e=>e.n.replace('Derivatives &','D&').replace('International Ltd','Intl Ltd')),
+    datasets:[{data:cd.byEnt.map(e=>+(e.v/1e6).toFixed(1)),backgroundColor:cd.byEnt.map(e=>e.c+'cc'),borderRadius:4}]
+  },{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>fM(ctx.raw*1e6)}}},
+    scales:{y:{ticks:{...tickS,callback:v=>'R'+v.toFixed(0)+'M'},grid:gridY},x:{ticks:tickS,grid:{display:false}}}});
+
+  dc(cLiqMov);
+  const mvEntLabels=cd.byEnt.map(e=>e.n.split(' ')[0]);
+  cLiqMov=mk('cLiqMov','bar',{
+    labels:mvEntLabels,
+    datasets:[
+      {label:'Apr',data:co.byEnt.map(e=>+(e.v/1e6).toFixed(1)),backgroundColor:'rgba(79,142,247,0.7)',borderRadius:3},
+      {label:'Now',data:cd.byEnt.map(e=>+(e.v/1e6).toFixed(1)),backgroundColor:'rgba(48,210,138,0.7)',borderRadius:3},
+    ]
+  },{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': R'+ctx.raw.toFixed(1)+'M'}}},
+    scales:{y:{ticks:{...tickS,callback:v=>'R'+v.toFixed(0)+'M'},grid:gridY},x:{ticks:tickS,grid:{display:false}}}});
+
+  dc(cLiqCurr);
+  cLiqCurr=mk('cLiqCurr','doughnut',{
+    labels:cd.curr.map(c=>c.n),
+    datasets:[{data:cd.curr.map(c=>+(c.v/1e6).toFixed(1)),backgroundColor:cd.curr.map(c=>c.c),borderWidth:0,hoverOffset:4}]
+  },{cutout:'58%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+fM(ctx.raw*1e6)}}}});
+  const ct=cd.curr.reduce((a,c)=>a+c.v,0);
+  document.getElementById('curr-leg').innerHTML=cd.curr.map(c=>`
+    <div class="legr"><div class="legl"><div class="legd" style="background:${c.c}"></div>${c.n}</div>
+    <div class="legv">${fM(c.v)} <span style="color:var(--muted);font-weight:400">(${(c.v/ct*100).toFixed(0)}%)</span></div></div>`).join('');
+
+  document.getElementById('liq-bars').innerHTML=[
+    {l:'Cash & equivalents',v:cd.total,max:b.totalAssets,c:'#4f8ef7'},
+    {l:'Total current assets',v:cd.total+45500000,max:b.totalAssets,c:'#7c6af5'},
+    {l:'Current liabilities',v:82883609,max:b.totalAssets,c:'#f06a6a'},
+    {l:'Working capital',v:cd.total+45500000-82883609,max:b.totalAssets,c:'#30d28a'},
+    {l:'Long-term liabilities',v:b.otherLiab,max:b.totalAssets,c:'#f5b731'},
+    {l:'Equity',v:b.equity,max:b.totalAssets,c:'#22d3ee'},
+  ].map(r=>{
+    const p=(r.v/r.max*100).toFixed(1);
+    return `<div class="pbw"><div class="pbl">${r.l}</div>
+      <div class="pbt"><div class="pbf" style="width:${p}%;background:${r.c}"></div></div>
+      <div class="pbv">${fM(r.v)} <span style="color:var(--muted);font-size:9px">${p}%</span></div></div>`;
+  }).join('');
+
+  document.getElementById('liq-tbl').innerHTML=`
+    <thead><tr><th>Account</th><th>Entity</th><th class="r">Balance (ZAR)</th></tr></thead>
+    <tbody>${cd.banks.map(([n,e,v])=>`
+      <tr><td style="color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n}</td>
+      <td><span class="bdg bb">${e}</span></td>
+      <td class="r pv">${fM(v)}</td></tr>`).join('')}</tbody>`;
+}
+
+// ── DIVISIONAL ──
+function setDiv(p,btn){
+  divPeriod=p;
+  ['dp-apr','dp-mar','dp-feb'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('div-bar-lbl').textContent=(divMetric==='profit'?'Net profit':divMetric==='income'?'Revenue':'Expenses')+' — '+DIV_DATA[p].label;
+  document.getElementById('div-tbl-lbl').textContent=DIV_DATA[p].label;
+  renderDiv();
+}
+function setDivM(m,btn){
+  divMetric=m;
+  ['dm-profit','dm-income','dm-exp'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('div-bar-lbl').textContent=(m==='profit'?'Net profit':m==='income'?'Revenue':'Expenses')+' — '+DIV_DATA[divPeriod].label;
+  renderDiv();
+}
+function setDivSort(s,btn){
+  divSort=s;
+  ['ds-val','ds-nm'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  btn.classList.add('on');
+  renderDiv();
+}
+
+function renderDiv(){
+  const dd=DIV_DATA[divPeriod];
+  const getV=d=>divMetric==='profit'?d.profit:divMetric==='income'?d.income:d.expenses;
+  let divs=[...dd.divs];
+  if(divSort==='val') divs.sort((a,b)=>Math.abs(getV(b))-Math.abs(getV(a)));
+  else divs.sort((a,b)=>a.name.localeCompare(b.name));
+
+  const tP=dd.divs.reduce((a,d)=>a+d.profit,0);
+  const tI=dd.divs.reduce((a,d)=>a+d.income,0);
+  const nP=dd.divs.filter(d=>d.profit>0).length;
+  const nL=dd.divs.filter(d=>d.profit<0).length;
+
+  document.getElementById('div-kpis').innerHTML=[
+    {l:'Total Revenue',v:tI,c:'bl',s:dd.label},
+    {l:'Total Net Profit',v:tP,c:tP>=0?'gr':'rd',s:'All divisions'},
+    {l:'Profitable Divs',v:null,c:'gr',s:'Positive net profit',custom:nP+' / '+dd.divs.length},
+    {l:'Loss-making Divs',v:null,c:'rd',s:'Negative net profit',custom:nL+' / '+dd.divs.length},
+  ].map(k=>`<div class="kc ${k.c}"><div class="kl">${k.l}</div>
+    <div class="kv ${k.v!==null&&k.v<0?'r':''}">${k.custom||fM(k.v)}</div>
+    <div class="ks">${k.s}</div></div>`).join('');
+
+  document.getElementById('div-cards').innerHTML=divs.filter(d=>getV(d)!==0).map(d=>{
+    const v=getV(d);
+    return `<div class="dc"><div class="dcn">${d.code} · ${d.name}</div><div class="dcv ${v>=0?'pv':'nv'}">${fM(v)}</div></div>`;
+  }).join('');
+
+  const top=divs.filter(d=>getV(d)!==0).slice(0,14);
+  dc(cDivBar);
+  const bV=top.map(d=>+(getV(d)/1e6).toFixed(2));
+  cDivBar=mk('cDivBar','bar',{
+    labels:top.map(d=>d.code),
+    datasets:[{data:bV,backgroundColor:bV.map(v=>v>=0?'rgba(48,210,138,0.8)':'rgba(240,106,106,0.8)'),borderRadius:3}]
+  },{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const d2=top[ctx.dataIndex];return d2.name+': '+fM(getV(d2));}}}},
+    scales:{y:{ticks:{...tickS,callback:v=>(v<0?'–':'')+'R'+Math.abs(v).toFixed(1)+'M'},grid:gridY},x:{ticks:tickS,grid:{display:false}}}});
+
+  // 3-month trend for top 5 divisions by April profit
+  const topDivs=['DE','FR','UN','AB','RE'];
+  const tCols=['#4f8ef7','#30d28a','#f5b731','#7c6af5','#f06a6a'];
+  const months=['Feb \'26','Mar \'26','Apr \'26'];
+  const periods=['feb','mar','apr'];
+  dc(cDivTrend);
+  cDivTrend=mk('cDivTrend','line',{
+    labels:months,
+    datasets:topDivs.map((code,i)=>({
+      label:code,
+      data:periods.map(p=>{
+        const d=DIV_DATA[p].divs.find(d=>d.code===code);
+        return d?+(d.profit/1e6).toFixed(2):0;
+      }),
+      borderColor:tCols[i],backgroundColor:tCols[i]+'22',
+      borderWidth:2,pointRadius:4,pointBackgroundColor:tCols[i],tension:.3,fill:false,
+    }))
+  },{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': R'+ctx.raw.toFixed(1)+'M'}}},
+    scales:{y:{ticks:{...tickS,callback:v=>(v<0?'–':'')+'R'+Math.abs(v).toFixed(1)+'M'},grid:gridY},x:{ticks:tickS,grid:{display:false}}}});
+  document.getElementById('div-trend-leg').innerHTML=topDivs.map((code,i)=>{
+    const fullName=dd.divs.find(d=>d.code===code)?.name||code;
+    return `<span><div class="ild" style="background:${tCols[i]}"></div>${code} – ${fullName}</span>`;
+  }).join('');
+
+  const sd=dd.divs.filter(d=>d.income!==0||d.profit!==0);
+  document.getElementById('div-tbl').innerHTML=`
+    <thead><tr>
+      <th>Code</th><th>Division</th>
+      <th class="r">Revenue</th><th class="r">Expenses</th><th class="r">Salaries</th><th class="r">Net Profit / (Loss)</th>
+    </tr></thead>
+    <tbody>${sd.map(d=>`<tr>
+      <td><span class="bdg bb">${d.code}</span></td><td>${d.name}</td>
+      <td class="r pv">${d.income>0?fM(d.income):'—'}</td>
+      <td class="r nv">${d.expenses>0?fM(d.expenses):'—'}</td>
+      <td class="r nv">${d.salaries>0?fM(d.salaries):'—'}</td>
+      <td class="r ${d.profit>=0?'pv':'nv'}">${fM(d.profit)}</td>
+    </tr>`).join('')}
+    <tr class="tr">
+      <td colspan="2">TOTAL</td>
+      <td class="r pv">${fM(dd.divs.reduce((a,d)=>a+d.income,0))}</td>
+      <td class="r nv">${fM(dd.divs.reduce((a,d)=>a+d.expenses,0))}</td>
+      <td class="r nv">${fM(dd.divs.reduce((a,d)=>a+d.salaries,0))}</td>
+      <td class="r ${tP>=0?'pv':'nv'}">${fM(tP)}</td>
+    </tr></tbody>`;
+}
+
+// ── INIT ──
+window.addEventListener('load',()=>{
+  renderPnl();
+  renderBS();
+  renderLiq();
+  renderDiv();
+});
+</script>
+</body>
+</html>
