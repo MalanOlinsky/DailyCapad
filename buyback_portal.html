@@ -3,662 +3,891 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buyback Transaction Portal</title>
+<title>Avior Capital Markets – Buyback Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --surface2: #1a1e29;
-    --surface3: #222738;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #e8eaf0;
-    --text2: #8b90a0;
-    --text3: #555a6e;
-    --accent: #4f8ef7;
-    --accent2: #2563eb;
-    --accent-glow: rgba(79,142,247,0.15);
-    --green: #22c55e;
-    --green-bg: rgba(34,197,94,0.1);
-    --amber: #f59e0b;
-    --amber-bg: rgba(245,158,11,0.1);
-    --red: #ef4444;
-    --red-bg: rgba(239,68,68,0.1);
-    --font-display: 'DM Serif Display', serif;
-    --font-body: 'Outfit', sans-serif;
-    --font-mono: 'DM Mono', monospace;
-    --radius: 10px;
-    --radius-lg: 16px;
-  }
+:root {
+  --navy: #1a2332;
+  --navy2: #222e3d;
+  --teal: #1a9a8a;
+  --teal-light: #22c5b0;
+  --teal-hover: #158576;
+  --red: #c0392b;
+  --red-hover: #a93226;
+  --green-btn: #1e8449;
+  --green-btn-hover: #196f3d;
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --border: #dde1e7;
+  --text: #1a2332;
+  --text2: #4a5568;
+  --text3: #8a94a6;
+  --accent-cyan: #17c3b2;
+  --font: 'Inter', -apple-system, sans-serif;
+  --radius: 4px;
+  --radius-md: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+}
 
-  html { font-size: 15px; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-weight: 400;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-weight: 400;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* ── Layout ── */
-  .shell { display: flex; min-height: 100vh; }
+/* ── Alert banner ── */
+.alert-banner {
+  background: var(--navy2);
+  color: #c8d0db;
+  font-size: 12.5px;
+  text-align: center;
+  padding: 9px 40px;
+  position: relative;
+  letter-spacing: 0.1px;
+}
+.alert-banner a { color: var(--accent-cyan); text-decoration: none; margin-left: 6px; }
+.alert-banner a:hover { text-decoration: underline; }
+.alert-close {
+  position: absolute;
+  right: 16px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  color: #8a94a6; cursor: pointer;
+  font-size: 16px; line-height: 1;
+}
 
-  .sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    padding: 28px 0 24px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-  }
+/* ── Top nav ── */
+.topnav {
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  height: 58px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
-  .logo {
-    padding: 0 24px 28px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-  .logo-mark {
-    font-family: var(--font-display);
-    font-size: 22px;
-    color: var(--text);
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-  }
-  .logo-sub {
-    font-size: 11px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-top: 3px;
-  }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+}
+.logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
 
-  .nav { flex: 1; padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 13.5px;
-    color: var(--text2);
-    transition: background 0.15s, color 0.15s;
-    border: none;
-    background: none;
-    text-align: left;
-    width: 100%;
-  }
-  .nav-item:hover { background: var(--surface2); color: var(--text); }
-  .nav-item.active { background: var(--accent-glow); color: var(--accent); font-weight: 500; }
-  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.nav-links li button {
+  background: none;
+  border: none;
+  color: #c8d0db;
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: color 0.15s;
+  position: relative;
+}
+.nav-links li button:hover { color: #fff; }
+.nav-links li button.active { color: var(--accent-cyan); }
+.nav-links li button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 20px; height: 2px;
+  background: var(--accent-cyan);
+  border-radius: 2px;
+}
 
-  .nav-section {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--text3);
-    padding: 16px 12px 6px;
-  }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.requests-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #c8d0db;
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+.req-badge {
+  background: var(--accent-cyan);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-  .main { flex: 1; padding: 40px 48px; overflow-x: hidden; }
+/* ── Page body ── */
+.page-body {
+  flex: 1;
+  padding: 32px 36px 60px;
+}
 
-  /* ── View toggling ── */
-  .view { display: none; }
-  .view.active { display: block; }
+/* ── Section header ── */
+.section-header {
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+.section-sub {
+  font-size: 12.5px;
+  color: var(--text3);
+  margin-top: 3px;
+}
 
-  /* ── Page header ── */
-  .page-header { margin-bottom: 32px; }
-  .page-title { font-family: var(--font-display); font-size: 30px; color: var(--text); letter-spacing: -0.5px; }
-  .page-sub { font-size: 13px; color: var(--text3); margin-top: 6px; }
+/* ── Account selector bar ── */
+.account-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 44px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+.account-info svg {
+  width: 15px; height: 15px;
+  stroke: var(--text3);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.account-chevron {
+  color: var(--text3);
+  font-size: 13px;
+}
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  /* ── Metrics ── */
-  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 14px; margin-bottom: 32px; }
-  .metric-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 18px 20px;
-    transition: border-color 0.2s;
-  }
-  .metric-card:hover { border-color: var(--border2); }
-  .metric-label { font-size: 11.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-  .metric-value { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.2; }
-  .metric-value.green { color: var(--green); }
-  .metric-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+/* ── Buttons ── */
+.btn-buy {
+  background: var(--green-btn);
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  border-radius: var(--radius);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+}
+.btn-buy:hover { background: var(--green-btn-hover); }
 
-  /* ── Chart ── */
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    margin-bottom: 32px;
-  }
-  .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .chart-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .chart-legend { display: flex; gap: 16px; }
-  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
-  .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+.btn-sell {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  border-radius: var(--radius);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+}
+.btn-sell:hover { background: var(--red-hover); }
 
-  /* ── Table ── */
-  .table-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 32px;
-  }
-  .table-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .table-toolbar-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .toolbar-right { display: flex; gap: 10px; align-items: center; }
-  .search-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 7px 12px;
-    font-size: 13px;
-    color: var(--text);
-    font-family: var(--font-body);
-    outline: none;
-    width: 200px;
-    transition: border-color 0.2s;
-  }
-  .search-input::placeholder { color: var(--text3); }
-  .search-input:focus { border-color: var(--accent); }
-  .btn-export {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 7px 14px;
-    font-size: 12.5px;
-    color: var(--text2);
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .btn-export:hover { background: var(--surface3); color: var(--text); }
-  .btn-export svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn-primary {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary:hover { background: var(--teal-hover); }
 
-  .table-scroll { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 820px; }
-  thead tr { background: var(--surface2); }
-  th {
-    padding: 11px 16px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-    white-space: nowrap;
-    border-bottom: 1px solid var(--border);
-  }
-  td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-    white-space: nowrap;
-  }
-  tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: rgba(255,255,255,0.025); }
-  .num { text-align: right; font-family: var(--font-mono); font-size: 12.5px; }
-  .ticker-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    background: var(--accent-glow);
-    color: var(--accent);
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-weight: 500;
-  }
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
-  .status-pill.traded { background: var(--green-bg); color: var(--green); }
-  .status-pill.limit { background: var(--amber-bg); color: var(--amber); }
-  .status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.btn-secondary {
+  background: var(--white);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-family: var(--font);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-right: 8px;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
 
-  .empty-state {
-    text-align: center;
-    padding: 48px;
-    color: var(--text3);
-    font-size: 13px;
-  }
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius);
+  transition: color 0.15s, background 0.15s;
+  display: flex; align-items: center;
+}
+.btn-icon:hover { color: var(--text); background: var(--border); }
+.btn-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* ── Funding ── */
-  .funding-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 32px; }
-  .fund-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 18px 20px;
-  }
-  .fund-date { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-  .fund-amount { font-size: 20px; font-weight: 600; color: var(--text); font-family: var(--font-mono); }
-  .fund-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    background: var(--green-bg);
-    color: var(--green);
-    padding: 3px 9px;
-    border-radius: 20px;
-    margin-top: 10px;
-    font-weight: 500;
-  }
+.btn-danger {
+  background: none;
+  color: var(--red);
+  border: 1px solid rgba(192,57,43,0.3);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: var(--font);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-danger:hover { background: rgba(192,57,43,0.07); }
 
-  .balance-strip {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px 28px;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-    margin-bottom: 32px;
-  }
-  .bstrip-item { flex: 1; min-width: 140px; padding: 0 20px; }
-  .bstrip-item:first-child { padding-left: 0; }
-  .bstrip-divider { width: 1px; height: 40px; background: var(--border); }
-  .bstrip-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; }
-  .bstrip-value { font-size: 18px; font-weight: 600; color: var(--text); font-family: var(--font-mono); }
-  .bstrip-value.green { color: var(--green); }
+/* ── Views ── */
+.view { display: none; }
+.view.active { display: block; }
 
-  /* ── Admin / Capture form ── */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 28px 32px;
-    margin-bottom: 24px;
-  }
-  .form-card-title {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .form-card-title svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* ── Metrics row ── */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.metric-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.metric-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text3);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.metric-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-value.teal { color: var(--teal); }
+.metric-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
 
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 7px; font-weight: 500; }
-  .field input, .field select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    font-size: 13.5px;
-    color: var(--text);
-    font-family: var(--font-body);
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    appearance: none;
-  }
-  .field input:focus, .field select:focus { border-color: var(--accent); background: var(--surface3); }
-  .field input::placeholder { color: var(--text3); }
-  .field select option { background: var(--surface2); color: var(--text); }
+/* ── Card ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.card-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.card-body { padding: 20px; }
 
-  .auto-field {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--text2);
-    font-family: var(--font-mono);
-    min-height: 41px;
-  }
+/* ── Chart ── */
+.chart-wrap { position: relative; height: 220px; }
 
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 11px 24px;
-    font-size: 13.5px;
-    font-weight: 500;
-    font-family: var(--font-body);
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn-primary:hover { background: var(--accent2); }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary svg { width: 15px; height: 15px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* ── Table ── */
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 760px; }
+thead tr { background: #f8f9fb; }
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f0f2f5;
+  color: var(--text);
+  white-space: nowrap;
+}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #f8fffe; }
+.num { text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
 
-  .btn-ghost {
-    background: transparent;
-    color: var(--text2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 10px 18px;
-    font-size: 13px;
-    font-family: var(--font-body);
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-right: 10px;
-  }
-  .btn-ghost:hover { background: var(--surface3); color: var(--text); }
+.ticker-pill {
+  display: inline-block;
+  background: rgba(26,154,138,0.1);
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.status-pill.traded { background: rgba(30,132,73,0.1); color: #1e8449; }
+.status-pill.limit { background: rgba(245,158,11,0.1); color: #b7791f; }
 
-  .btn-danger {
-    background: transparent;
-    color: var(--red);
-    border: 1px solid rgba(239,68,68,0.25);
-    border-radius: var(--radius);
-    padding: 6px 12px;
-    font-size: 12px;
-    font-family: var(--font-body);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-danger:hover { background: var(--red-bg); }
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--text3);
+  font-size: 13px;
+}
 
-  .form-row { display: flex; gap: 16px; }
-  .form-row .field { flex: 1; }
+/* ── Balance strip ── */
+.balance-strip {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.bitem { flex: 1; min-width: 130px; padding: 0 20px; }
+.bitem:first-child { padding-left: 0; }
+.bitem-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; font-weight: 500; }
+.bitem-value { font-size: 16px; font-weight: 600; color: var(--text); }
+.bitem-value.teal { color: var(--teal); }
+.bdiv { width: 1px; height: 36px; background: var(--border); }
 
-  .toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background: var(--surface);
-    border: 1px solid var(--green);
-    color: var(--green);
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    font-size: 13px;
-    font-weight: 500;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.25s;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .toast.visible { transform: translateY(0); opacity: 1; }
+/* ── Funding ── */
+.funding-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.fund-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.fund-date { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 6px; font-weight: 500; }
+.fund-amount { font-size: 18px; font-weight: 600; color: var(--text); }
+.fund-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  background: rgba(30,132,73,0.1);
+  color: #1e8449;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-top: 8px;
+  font-weight: 500;
+}
 
-  .hint { font-size: 11.5px; color: var(--text3); margin-top: 4px; }
+/* ── Form ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field { margin-bottom: 14px; }
+.field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field input, .field select {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+.field input:focus, .field select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,154,138,0.1); }
+.field input::placeholder { color: #b0b7c3; }
+.field select option { background: var(--white); }
+.auto-field {
+  background: #f8f9fb;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--text2);
+  min-height: 38px;
+  font-variant-numeric: tabular-nums;
+}
+.form-row { display: flex; gap: 14px; }
+.form-row .field { flex: 1; }
+.calc-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text3);
+  font-weight: 600;
+  padding: 12px 0 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
 
-  .section-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--text3);
-    margin-bottom: 14px;
-    font-weight: 500;
-  }
+/* ── Search input ── */
+.search-wrap {
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  stroke: var(--text3); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+}
+.search-input {
+  background: #f8f9fb;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px 8px 32px;
+  font-size: 12.5px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  width: 210px;
+  transition: border-color 0.15s;
+}
+.search-input::placeholder { color: #b0b7c3; }
+.search-input:focus { border-color: var(--teal); }
 
-  @media (max-width: 860px) {
-    .sidebar { display: none; }
-    .main { padding: 24px 20px; }
-    .form-grid { grid-template-columns: 1fr; }
-  }
+/* ── Export btn ── */
+.btn-export {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--text2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.btn-export:hover { border-color: var(--teal); color: var(--teal); }
+.btn-export svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── Chart legend ── */
+.chart-legend { display: flex; gap: 16px; }
+.leg { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text3); }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Footer ── */
+.footer {
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  padding: 20px 36px 10px;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.footer-text {
+  font-size: 12px;
+  color: var(--text3);
+  position: relative;
+  z-index: 2;
+}
+.footer-wave {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: var(--white);
+  border: 1px solid var(--teal);
+  border-left: 4px solid var(--teal);
+  color: var(--text);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  transform: translateY(12px);
+  opacity: 0;
+  transition: all 0.22s;
+  z-index: 200;
+}
+.toast.visible { transform: translateY(0); opacity: 1; }
+.toast.error { border-color: var(--red); border-left-color: var(--red); }
+
+/* ── Tabs (sub-nav under account bar) ── */
+.sub-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+.sub-tab {
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s;
+}
+.sub-tab:hover { color: var(--text); }
+.sub-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
 </style>
 </head>
 <body>
 
-<div class="shell">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-mark">BuyBack<br>Portal</div>
-      <div class="logo-sub">Transaction Mgmt</div>
-    </div>
-    <nav class="nav">
-      <div class="nav-section">Dashboard</div>
-      <button class="nav-item active" onclick="showView('dashboard')">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Overview
-      </button>
-      <button class="nav-item" onclick="showView('transactions')">
-        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
-        Transactions
-      </button>
-      <button class="nav-item" onclick="showView('funding')">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-        Funding
-      </button>
-      <div class="nav-section">Admin</div>
-      <button class="nav-item" onclick="showView('capture')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Capture Trade
-      </button>
-      <button class="nav-item" onclick="showView('capturefund')">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Add Funding
-      </button>
-    </nav>
-  </aside>
+<!-- Alert banner -->
+<div class="alert-banner" id="alertBanner">
+  Please be aware of impersonators claiming to be affiliated with Avior Capital Markets (Pty) Ltd ("Avior") on social media.
+  <a href="#">- Show more</a>
+  <button class="alert-close" onclick="document.getElementById('alertBanner').remove()">✕</button>
+</div>
 
-  <!-- Main content -->
-  <main class="main">
+<!-- Top nav -->
+<nav class="topnav">
+  <a class="logo" href="#">
+    <!-- Avior-style angled chevron logo mark -->
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 28L14 8L18 18L22 8L30 28" stroke="#17c3b2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 28L18 12L26 28" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+    </svg>
+    <span class="logo-text">AVIOR</span>
+  </a>
+  <ul class="nav-links">
+    <li><button class="active" onclick="topNav(this,'overview')">Portfolio</button></li>
+    <li><button onclick="topNav(this,'transactions')">Transactions</button></li>
+    <li><button onclick="topNav(this,'funding')">Funding</button></li>
+    <li><button onclick="topNav(this,'admin')">Admin</button></li>
+  </ul>
+  <div class="nav-right">
+    <button class="requests-btn">Requests <span class="req-badge">0</span></button>
+    <div class="avatar">AM</div>
+  </div>
+</nav>
 
-    <!-- ── OVERVIEW ── -->
-    <div class="view active" id="view-dashboard">
-      <div class="page-header">
-        <div class="page-title">Overview</div>
-        <div class="page-sub" id="dash-sub">Loading transactions…</div>
-      </div>
-      <div class="metrics" id="dash-metrics"></div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div class="chart-title">Daily volume &amp; trade value</div>
-          <div class="chart-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#4f8ef7"></div>Volume</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#22c55e"></div>Value (R)</div>
-          </div>
-        </div>
-        <div style="position:relative;height:240px;"><canvas id="mainChart" role="img" aria-label="Daily volume and trade value chart"></canvas></div>
-      </div>
-      <div class="balance-strip" id="dash-balance"></div>
+<!-- Page body -->
+<div class="page-body">
+
+  <!-- ── OVERVIEW ── -->
+  <div class="view active" id="view-overview">
+    <div class="section-header">
+      <div class="section-title">Portfolio Overview</div>
     </div>
 
-    <!-- ── TRANSACTIONS ── -->
-    <div class="view" id="view-transactions">
-      <div class="page-header">
-        <div class="page-title">All Transactions</div>
-        <div class="page-sub">Full trade log with cost breakdown</div>
+    <!-- Account bar -->
+    <div class="account-bar">
+      <div class="account-info">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span id="acct-label">124693 | Client@Avior.Co.Za</span>
+        <span class="account-chevron">›</span>
       </div>
-      <div class="table-card">
-        <div class="table-toolbar">
-          <div class="table-toolbar-title" id="tx-count">— transactions</div>
-          <div class="toolbar-right">
-            <input class="search-input" id="tx-search" placeholder="Search ticker, date…" oninput="renderTxTable()">
-            <button class="btn-export" onclick="exportCSV()">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              Export CSV
-            </button>
-          </div>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th><th>Ticker</th><th>Status</th>
-                <th class="num">Volume</th><th class="num">Avg price (c)</th>
-                <th class="num">Trade value (R)</th><th class="num">Brokerage (R)</th>
-                <th class="num">STT (R)</th><th class="num">VAT (R)</th>
-                <th class="num">Total cost (R)</th><th></th>
-              </tr>
-            </thead>
-            <tbody id="tx-tbody"></tbody>
-          </table>
-        </div>
+      <div class="account-actions">
+        <button class="btn-buy" onclick="topNav(document.querySelector('.nav-links li:nth-child(4) button'),'admin'); setAdminTab('capture')">BUY</button>
+        <button class="btn-sell" onclick="topNav(document.querySelector('.nav-links li:nth-child(4) button'),'admin'); setAdminTab('capture')">SELL</button>
+        <button class="btn-icon" title="Refresh" onclick="renderOverview()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+        <button class="btn-icon" title="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+        <button class="btn-icon" title="Report"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
       </div>
     </div>
 
-    <!-- ── FUNDING ── -->
-    <div class="view" id="view-funding">
-      <div class="page-header">
-        <div class="page-title">Funding</div>
-        <div class="page-sub">Cash receipts allocated to BDA account</div>
+    <div class="metrics-row" id="ov-metrics"></div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Daily volume &amp; trade value</div>
+        <div class="chart-legend">
+          <div class="leg"><div class="leg-dot" style="background:#1a9a8a"></div>Volume</div>
+          <div class="leg"><div class="leg-dot" style="background:#2563eb"></div>Value (R)</div>
+        </div>
       </div>
-      <div class="funding-grid" id="fund-grid"></div>
-      <div class="balance-strip" id="fund-balance"></div>
+      <div class="card-body" style="padding-bottom:16px;">
+        <div class="chart-wrap"><canvas id="ovChart"></canvas></div>
+      </div>
     </div>
 
-    <!-- ── CAPTURE TRADE ── -->
-    <div class="view" id="view-capture">
-      <div class="page-header">
-        <div class="page-title">Capture Trade</div>
-        <div class="page-sub">Enter daily buyback transaction</div>
-      </div>
-      <div class="form-card">
-        <div class="form-card-title">
-          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Trade details
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label>Trade date</label>
-            <input type="date" id="c-date">
-          </div>
-          <div class="field">
-            <label>Ticker</label>
-            <input type="text" id="c-ticker" placeholder="e.g. XXX.SJ" style="text-transform:uppercase">
-          </div>
-          <div class="field">
-            <label>Status</label>
-            <select id="c-status">
-              <option value="traded">Traded</option>
-              <option value="limit">Above limit</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label>Volume traded (shares)</label>
-            <input type="number" id="c-vol" placeholder="0" oninput="recalc()">
-          </div>
-          <div class="field">
-            <label>Avg price (cents)</label>
-            <input type="number" id="c-price" placeholder="0.00" step="0.01" oninput="recalc()">
-          </div>
-        </div>
+    <div class="balance-strip" id="ov-balance"></div>
+  </div>
 
-        <div class="section-label" style="margin-top:8px;">Calculated values</div>
-        <div class="form-row">
-          <div class="field">
-            <label>Trade value excl. costs (R)</label>
-            <div class="auto-field" id="c-excl">—</div>
-          </div>
-          <div class="field">
-            <label>Brokerage @ 0.10% (R)</label>
-            <div class="auto-field" id="c-brok">—</div>
-          </div>
-          <div class="field">
-            <label>STT @ 0.25% (R)</label>
-            <div class="auto-field" id="c-stt">—</div>
-          </div>
+  <!-- ── TRANSACTIONS ── -->
+  <div class="view" id="view-transactions">
+    <div class="section-header">
+      <div class="section-title">Transactions</div>
+      <div class="section-sub">Full buyback trade log with cost breakdown</div>
+    </div>
+    <div class="account-bar" style="margin-bottom:16px;">
+      <div class="account-info">
+        <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>124693 | Client@Avior.Co.Za</span>
+        <span class="account-chevron">›</span>
+      </div>
+      <div class="account-actions">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="tx-search" placeholder="Search ticker, date…" oninput="renderTxTable()">
         </div>
-        <div class="form-row">
-          <div class="field">
-            <label>Strate fee (R)</label>
-            <input type="number" id="c-strate" placeholder="0.00" step="0.01" oninput="recalc()">
+        <button class="btn-export" onclick="exportCSV()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Export CSV
+        </button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title" id="tx-count">— transactions</div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th>Date</th><th>Ticker</th><th>Status</th>
+            <th class="num">Volume</th><th class="num">Avg price (c)</th>
+            <th class="num">Trade value (R)</th><th class="num">Brokerage (R)</th>
+            <th class="num">STT (R)</th><th class="num">VAT (R)</th>
+            <th class="num">Total cost (R)</th><th></th>
+          </tr></thead>
+          <tbody id="tx-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FUNDING ── -->
+  <div class="view" id="view-funding">
+    <div class="section-header">
+      <div class="section-title">Funding</div>
+      <div class="section-sub">Cash receipts allocated to BDA account</div>
+    </div>
+    <div class="funding-grid" id="fund-grid"></div>
+    <div class="balance-strip" id="fund-balance"></div>
+  </div>
+
+  <!-- ── ADMIN ── -->
+  <div class="view" id="view-admin">
+    <div class="section-header">
+      <div class="section-title">Admin</div>
+      <div class="section-sub">Capture daily transactions and record funding</div>
+    </div>
+
+    <div class="sub-tabs">
+      <button class="sub-tab active" id="tab-capture" onclick="setAdminTab('capture')">Capture Trade</button>
+      <button class="sub-tab" id="tab-capturefund" onclick="setAdminTab('capturefund')">Add Funding</button>
+    </div>
+
+    <!-- Capture Trade panel -->
+    <div id="panel-capture">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Trade details</div></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="field">
+              <label>Trade date</label>
+              <input type="date" id="c-date">
+            </div>
+            <div class="field">
+              <label>Ticker</label>
+              <input type="text" id="c-ticker" placeholder="e.g. XXX.SJ" style="text-transform:uppercase">
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <select id="c-status" onchange="recalc()">
+                <option value="traded">Traded</option>
+                <option value="limit">Above limit</option>
+              </select>
+            </div>
           </div>
-          <div class="field">
-            <label>Inv. protection levy (R)</label>
-            <input type="number" id="c-invprot" placeholder="0.00" step="0.01" oninput="recalc()">
+          <div class="form-row">
+            <div class="field">
+              <label>Volume traded (shares)</label>
+              <input type="number" id="c-vol" placeholder="0" oninput="recalc()">
+            </div>
+            <div class="field">
+              <label>Avg price (cents)</label>
+              <input type="number" id="c-price" placeholder="0.00" step="0.01" oninput="recalc()">
+            </div>
+            <div class="field">
+              <label>Strate fee (R)</label>
+              <input type="number" id="c-strate" placeholder="0.00" step="0.01" oninput="recalc()">
+            </div>
+            <div class="field">
+              <label>Inv. protection levy (R)</label>
+              <input type="number" id="c-invprot" placeholder="0.00" step="0.01" oninput="recalc()">
+            </div>
           </div>
-          <div class="field">
-            <label>VAT @ 15% on brokerage (R)</label>
-            <div class="auto-field" id="c-vat">—</div>
+
+          <div class="calc-label">Calculated values</div>
+          <div class="form-row">
+            <div class="field">
+              <label>Trade value excl. costs (R)</label>
+              <div class="auto-field" id="c-excl">—</div>
+            </div>
+            <div class="field">
+              <label>Brokerage @ 0.10% (R)</label>
+              <div class="auto-field" id="c-brok">—</div>
+            </div>
+            <div class="field">
+              <label>STT @ 0.25% (R)</label>
+              <div class="auto-field" id="c-stt">—</div>
+            </div>
+            <div class="field">
+              <label>VAT @ 15% on brokerage (R)</label>
+              <div class="auto-field" id="c-vat">—</div>
+            </div>
+            <div class="field">
+              <label>Total trade cost (R)</label>
+              <div class="auto-field" id="c-total" style="font-weight:600;color:var(--teal);">—</div>
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label>Total trade cost (R)</label>
-            <div class="auto-field" id="c-total" style="color:var(--accent);font-size:15px;font-weight:500;">—</div>
-          </div>
-          <div class="field">
+          <div class="field" style="max-width:400px;">
             <label>Notes</label>
             <input type="text" id="c-notes" placeholder="Optional notes">
           </div>
-        </div>
-        <div style="margin-top:8px;">
-          <button class="btn-ghost" onclick="clearForm()">Clear</button>
-          <button class="btn-primary" onclick="saveTrade()">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            Save transaction
-          </button>
+          <div style="margin-top:4px;">
+            <button class="btn-secondary" onclick="clearForm()">Clear</button>
+            <button class="btn-primary" onclick="saveTrade()">Save transaction</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ── ADD FUNDING ── -->
-    <div class="view" id="view-capturefund">
-      <div class="page-header">
-        <div class="page-title">Add Funding</div>
-        <div class="page-sub">Record a cash receipt to BDA</div>
-      </div>
-      <div class="form-card" style="max-width:520px;">
-        <div class="form-card-title">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-          Funding receipt
-        </div>
-        <div class="field">
-          <label>Date received</label>
-          <input type="date" id="f-date">
-        </div>
-        <div class="field">
-          <label>Amount (ZAR)</label>
-          <input type="number" id="f-amount" placeholder="0.00" step="0.01">
-        </div>
-        <div class="field">
-          <label>Reference</label>
-          <input type="text" id="f-ref" placeholder="e.g. Wire ref, bank ref">
-        </div>
-        <div>
-          <button class="btn-ghost" onclick="clearFundForm()">Clear</button>
-          <button class="btn-primary" onclick="saveFunding()">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            Record funding
-          </button>
+    <!-- Add Funding panel -->
+    <div id="panel-capturefund" style="display:none;">
+      <div class="card" style="max-width:480px;">
+        <div class="card-header"><div class="card-title">Record funding receipt</div></div>
+        <div class="card-body">
+          <div class="field">
+            <label>Date received</label>
+            <input type="date" id="f-date">
+          </div>
+          <div class="field">
+            <label>Amount (ZAR)</label>
+            <input type="number" id="f-amount" placeholder="0.00" step="0.01">
+          </div>
+          <div class="field">
+            <label>Reference</label>
+            <input type="text" id="f-ref" placeholder="e.g. Wire ref, bank ref">
+          </div>
+          <div>
+            <button class="btn-secondary" onclick="clearFundForm()">Clear</button>
+            <button class="btn-primary" onclick="saveFunding()">Record funding</button>
+          </div>
         </div>
       </div>
 
-      <div class="table-card" style="max-width:520px;">
-        <div class="table-toolbar"><div class="table-toolbar-title">Funding history</div></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Funding history</div></div>
         <div class="table-scroll">
           <table>
             <thead><tr><th>Date</th><th>Amount (R)</th><th>Reference</th><th></th></tr></thead>
@@ -667,24 +896,34 @@
         </div>
       </div>
     </div>
+  </div>
 
-  </main>
-</div>
+</div><!-- /page-body -->
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-text">Copyright © 2026 Avior Capital Markets. All rights reserved. Avior Capital Markets (Pty) Ltd is a member of the JSE.</div>
+  <svg class="footer-wave" viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="160">
+    <path d="M0 80 C200 10 400 150 600 80 C800 10 1000 140 1200 70 C1350 20 1420 90 1440 60 L1440 180 L0 180 Z" fill="rgba(23,195,178,0.07)"/>
+    <path d="M0 100 C180 40 380 160 580 90 C780 20 980 150 1180 80 C1340 30 1420 100 1440 80 L1440 180 L0 180 Z" fill="rgba(23,195,178,0.05)"/>
+    <path d="M0 120 C220 60 420 160 620 100 C820 40 1020 150 1220 90 C1360 50 1430 110 1440 100 L1440 180 L0 180 Z" fill="rgba(23,195,178,0.04)"/>
+  </svg>
+</footer>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── Data layer (localStorage) ───────────────────────────────────────────────
+// ── Data ─────────────────────────────────────────────────────────────────────
 const SEED_TRADES = [
-  { id:'s1', date:'2025-09-05', ticker:'XXX.SJ', status:'traded', vol:27721,  price:2200,    excl:609862,     brok:609.87,   strate:36.71, invprot:2.02, stt:1524.66,  vat:97.29,  total:612132.55, notes:'' },
-  { id:'s2', date:'2025-09-08', ticker:'XXX.SJ', status:'traded', vol:250000, price:2197.99, excl:5494975,    brok:5494.98,  strate:129.27,invprot:18.14,stt:13737.44, vat:846.36, total:5515201.19,notes:'' },
-  { id:'s3', date:'2025-09-09', ticker:'XXX.SJ', status:'traded', vol:142279, price:2188.11, excl:3113221.03, brok:3113.23,  strate:129.27,invprot:10.28,stt:7783.06,  vat:487.92, total:3124744.79,notes:'' },
-  { id:'s4', date:'2025-09-10', ticker:'XXX.SJ', status:'traded', vol:71715,  price:2199.9,  excl:1577658.29, brok:1577.66,  strate:94.95, invprot:5.21, stt:3944.15,  vat:251.67, total:1583531.93,notes:'' },
-  { id:'s5', date:'2025-09-11', ticker:'XXX.SJ', status:'traded', vol:122784, price:2199.91, excl:2701137.49, brok:2701.14,  strate:129.27,invprot:8.92, stt:6752.85,  vat:425.9,  total:2711155.57,notes:'' },
-  { id:'s6', date:'2025-09-12', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,     invprot:0,    stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
-  { id:'s7', date:'2025-09-15', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,     invprot:0,    stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
-  { id:'s8', date:'2025-09-16', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,     invprot:0,    stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
+  { id:'s1', date:'2025-09-05', ticker:'XXX.SJ', status:'traded', vol:27721,  price:2200,    excl:609862,     brok:609.87,   strate:36.71,  invprot:2.02,  stt:1524.66,  vat:97.29,  total:612132.55, notes:'' },
+  { id:'s2', date:'2025-09-08', ticker:'XXX.SJ', status:'traded', vol:250000, price:2197.99, excl:5494975,    brok:5494.98,  strate:129.27, invprot:18.14, stt:13737.44, vat:846.36, total:5515201.19,notes:'' },
+  { id:'s3', date:'2025-09-09', ticker:'XXX.SJ', status:'traded', vol:142279, price:2188.11, excl:3113221.03, brok:3113.23,  strate:129.27, invprot:10.28, stt:7783.06,  vat:487.92, total:3124744.79,notes:'' },
+  { id:'s4', date:'2025-09-10', ticker:'XXX.SJ', status:'traded', vol:71715,  price:2199.9,  excl:1577658.29, brok:1577.66,  strate:94.95,  invprot:5.21,  stt:3944.15,  vat:251.67, total:1583531.93,notes:'' },
+  { id:'s5', date:'2025-09-11', ticker:'XXX.SJ', status:'traded', vol:122784, price:2199.91, excl:2701137.49, brok:2701.14,  strate:129.27, invprot:8.92,  stt:6752.85,  vat:425.9,  total:2711155.57,notes:'' },
+  { id:'s6', date:'2025-09-12', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,      invprot:0,     stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
+  { id:'s7', date:'2025-09-15', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,      invprot:0,     stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
+  { id:'s8', date:'2025-09-16', ticker:'XXX.SJ', status:'limit',  vol:0,      price:0,       excl:0,          brok:0,        strate:0,      invprot:0,     stt:0,        vat:0,      total:0,         notes:'Trading above the limit' },
 ];
 const SEED_FUNDING = [
   { id:'f1', date:'2025-09-05', amount:6000000,  ref:'Allocated to BDA' },
@@ -692,92 +931,91 @@ const SEED_FUNDING = [
   { id:'f3', date:'2025-09-11', amount:5000001,  ref:'Allocated to BDA' },
 ];
 
-function getTrades() {
-  const stored = localStorage.getItem('bbTrades');
-  return stored ? JSON.parse(stored) : SEED_TRADES;
-}
-function saveTrades(arr) { localStorage.setItem('bbTrades', JSON.stringify(arr)); }
-function getFunding() {
-  const stored = localStorage.getItem('bbFunding');
-  return stored ? JSON.parse(stored) : SEED_FUNDING;
-}
-function saveFundingData(arr) { localStorage.setItem('bbFunding', JSON.stringify(arr)); }
+function getTrades() { try { const s = localStorage.getItem('bbTrades'); return s ? JSON.parse(s) : SEED_TRADES; } catch(e) { return SEED_TRADES; } }
+function saveTrades(a) { localStorage.setItem('bbTrades', JSON.stringify(a)); }
+function getFunding() { try { const s = localStorage.getItem('bbFunding'); return s ? JSON.parse(s) : SEED_FUNDING; } catch(e) { return SEED_FUNDING; } }
+function saveFundingData(a) { localStorage.setItem('bbFunding', JSON.stringify(a)); }
 
-// ─── Navigation ───────────────────────────────────────────────────────────────
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
-  if (id === 'dashboard') renderDashboard();
-  if (id === 'transactions') renderTxTable();
-  if (id === 'funding') renderFunding();
-  if (id === 'capturefund') renderFundTable();
-}
-
-// ─── Formatters ───────────────────────────────────────────────────────────────
-const R = n => 'R\u202f' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
-const N = n => n.toLocaleString('en-ZA');
+// ── Formatters ────────────────────────────────────────────────────────────────
+const R  = n => 'R\u202f' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+const N  = n => n.toLocaleString('en-ZA');
 const fmtDate = d => { const p = d.split('-'); return `${p[2]} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+p[1]-1]} ${p[0]}`; };
 
-// ─── Dashboard ────────────────────────────────────────────────────────────────
-let chartInst = null;
+// ── Nav ───────────────────────────────────────────────────────────────────────
+let ovChart = null;
 
-function renderDashboard() {
-  const trades = getTrades();
+function topNav(btn, viewId) {
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewId).classList.add('active');
+  if (viewId === 'overview') renderOverview();
+  if (viewId === 'transactions') renderTxTable();
+  if (viewId === 'funding') renderFunding();
+  if (viewId === 'admin') { renderFundTable(); }
+}
+
+function setAdminTab(tab) {
+  document.getElementById('panel-capture').style.display = tab === 'capture' ? 'block' : 'none';
+  document.getElementById('panel-capturefund').style.display = tab === 'capturefund' ? 'block' : 'none';
+  document.getElementById('tab-capture').classList.toggle('active', tab === 'capture');
+  document.getElementById('tab-capturefund').classList.toggle('active', tab === 'capturefund');
+}
+
+// ── Overview ──────────────────────────────────────────────────────────────────
+function renderOverview() {
+  const trades  = getTrades();
   const funding = getFunding();
-  const active = trades.filter(t => t.status === 'traded');
-  const totalVol = active.reduce((a,t) => a + t.vol, 0);
+  const active  = trades.filter(t => t.status === 'traded');
+  const totalVol  = active.reduce((a,t) => a + t.vol, 0);
   const totalExcl = active.reduce((a,t) => a + t.excl, 0);
   const totalCost = active.reduce((a,t) => a + t.total, 0);
-  const avgPx = active.length ? active.reduce((a,t)=>a+t.price,0)/active.length : 0;
-  const totalFund = funding.reduce((a,f)=>a+f.amount,0);
-  const cashBal = totalFund - totalCost;
+  const avgPx     = active.length ? active.reduce((a,t) => a + t.price, 0) / active.length : 0;
+  const totalFund = funding.reduce((a,f) => a + f.amount, 0);
+  const cashBal   = totalFund - totalCost;
 
-  document.getElementById('dash-sub').textContent = `${trades.length} total entries · ${active.length} traded · ${trades.filter(t=>t.status==='limit').length} above-limit days`;
-
-  document.getElementById('dash-metrics').innerHTML = `
+  document.getElementById('ov-metrics').innerHTML = `
     <div class="metric-card"><div class="metric-label">Total volume</div><div class="metric-value">${N(totalVol)}</div><div class="metric-sub">Shares traded</div></div>
     <div class="metric-card"><div class="metric-label">Avg price</div><div class="metric-value">${avgPx.toFixed(1)}c</div><div class="metric-sub">Per security</div></div>
-    <div class="metric-card"><div class="metric-label">Trade value</div><div class="metric-value">${(totalExcl/1e6).toFixed(2)}M</div><div class="metric-sub">Excl. costs (R)</div></div>
-    <div class="metric-card"><div class="metric-label">Total costs</div><div class="metric-value">${R(trades.reduce((a,t)=>a+(t.brok+t.stt+t.vat),0))}</div><div class="metric-sub">Brokerage + levies</div></div>
-    <div class="metric-card"><div class="metric-label">Cash balance</div><div class="metric-value green">${(cashBal/1e6).toFixed(2)}M</div><div class="metric-sub">Remaining (R)</div></div>
+    <div class="metric-card"><div class="metric-label">Trade value</div><div class="metric-value">R${(totalExcl/1e6).toFixed(2)}M</div><div class="metric-sub">Excl. costs</div></div>
+    <div class="metric-card"><div class="metric-label">Total costs</div><div class="metric-value">${R(active.reduce((a,t)=>a+t.brok+t.stt+t.vat,0))}</div><div class="metric-sub">Brokerage + levies</div></div>
+    <div class="metric-card"><div class="metric-label">Cash balance</div><div class="metric-value teal">R${(cashBal/1e6).toFixed(2)}M</div><div class="metric-sub">Remaining</div></div>
   `;
 
-  const chartData = active.sort((a,b)=>a.date.localeCompare(b.date));
-  if (chartInst) { chartInst.destroy(); chartInst = null; }
-  chartInst = new Chart(document.getElementById('mainChart'), {
+  const chartData = [...active].sort((a,b) => a.date.localeCompare(b.date));
+  if (ovChart) { ovChart.destroy(); ovChart = null; }
+  ovChart = new Chart(document.getElementById('ovChart'), {
     data: {
       labels: chartData.map(t => fmtDate(t.date)),
       datasets: [
-        { type:'bar', label:'Volume', data: chartData.map(t=>t.vol), backgroundColor:'rgba(79,142,247,0.6)', borderRadius:4, yAxisID:'y' },
-        { type:'line', label:'Trade value', data: chartData.map(t=>Math.round(t.excl)), borderColor:'#22c55e', backgroundColor:'transparent', pointBackgroundColor:'#22c55e', pointRadius:4, tension:0.3, yAxisID:'y2' }
+        { type:'bar', label:'Volume', data: chartData.map(t=>t.vol), backgroundColor:'rgba(26,154,138,0.65)', borderRadius:3, yAxisID:'y' },
+        { type:'line', label:'Trade value', data: chartData.map(t=>Math.round(t.excl)), borderColor:'#2563eb', backgroundColor:'transparent', pointBackgroundColor:'#2563eb', pointRadius:4, tension:0.3, yAxisID:'y2' }
       ]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ctx.datasetIndex===0 ? ' '+ctx.raw.toLocaleString('en-ZA')+' shares' : ' R'+ctx.raw.toLocaleString('en-ZA') } } },
       scales:{
-        x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#555a6e',font:{size:11}} },
-        y:{ position:'left', grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#555a6e',font:{size:11}, callback:v=>(v/1000)+'k'} },
-        y2:{ position:'right', grid:{display:false}, ticks:{color:'#22c55e',font:{size:11}, callback:v=>'R'+(v/1e6).toFixed(1)+'M'} }
+        x:{ grid:{color:'rgba(0,0,0,0.04)'}, ticks:{color:'#8a94a6',font:{size:11,family:'Inter'}} },
+        y:{ position:'left', grid:{color:'rgba(0,0,0,0.04)'}, ticks:{color:'#8a94a6',font:{size:11,family:'Inter'}, callback:v=>(v/1000)+'k'} },
+        y2:{ position:'right', grid:{display:false}, ticks:{color:'#2563eb',font:{size:11,family:'Inter'}, callback:v=>'R'+(v/1e6).toFixed(1)+'M'} }
       }
     }
   });
 
   const util = totalFund > 0 ? (totalCost/totalFund*100).toFixed(1) : '0.0';
-  document.getElementById('dash-balance').innerHTML = `
-    <div class="bstrip-item"><div class="bstrip-label">Total funding</div><div class="bstrip-value">${R(totalFund)}</div></div>
-    <div class="bstrip-divider"></div>
-    <div class="bstrip-item"><div class="bstrip-label">Total deployed</div><div class="bstrip-value">${R(totalCost)}</div></div>
-    <div class="bstrip-divider"></div>
-    <div class="bstrip-item"><div class="bstrip-label">Remaining cash</div><div class="bstrip-value green">${R(cashBal)}</div></div>
-    <div class="bstrip-divider"></div>
-    <div class="bstrip-item"><div class="bstrip-label">Utilisation</div><div class="bstrip-value">${util}%</div></div>
+  document.getElementById('ov-balance').innerHTML = `
+    <div class="bitem"><div class="bitem-label">Total funding</div><div class="bitem-value">${R(totalFund)}</div></div>
+    <div class="bdiv"></div>
+    <div class="bitem"><div class="bitem-label">Total deployed</div><div class="bitem-value">${R(totalCost)}</div></div>
+    <div class="bdiv"></div>
+    <div class="bitem"><div class="bitem-label">Remaining cash</div><div class="bitem-value teal">${R(cashBal)}</div></div>
+    <div class="bdiv"></div>
+    <div class="bitem"><div class="bitem-label">Utilisation</div><div class="bitem-value">${util}%</div></div>
   `;
 }
 
-// ─── Transactions table ───────────────────────────────────────────────────────
+// ── Transactions ──────────────────────────────────────────────────────────────
 function renderTxTable() {
   const trades = getTrades();
   const q = (document.getElementById('tx-search').value || '').toLowerCase();
@@ -789,24 +1027,20 @@ function renderTxTable() {
   ).sort((a,b) => a.date.localeCompare(b.date));
 
   document.getElementById('tx-count').textContent = filtered.length + ' transaction' + (filtered.length!==1?'s':'');
-
   const tbody = document.getElementById('tx-tbody');
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No transactions found</td></tr>';
-    return;
-  }
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No transactions found</td></tr>'; return; }
   tbody.innerHTML = filtered.map(t => `
     <tr>
       <td>${fmtDate(t.date)}</td>
       <td><span class="ticker-pill">${t.ticker}</span></td>
-      <td><span class="status-pill ${t.status}">${t.status === 'traded' ? 'Traded' : 'Above limit'}</span></td>
+      <td><span class="status-pill ${t.status}">${t.status==='traded'?'Traded':'Above limit'}</span></td>
       <td class="num">${t.vol ? N(t.vol) : '—'}</td>
       <td class="num">${t.price ? t.price.toFixed(2) : '—'}</td>
       <td class="num">${t.excl ? R(t.excl) : '—'}</td>
       <td class="num">${t.brok ? R(t.brok) : '—'}</td>
-      <td class="num">${t.stt ? R(t.stt) : '—'}</td>
-      <td class="num">${t.vat ? R(t.vat) : '—'}</td>
-      <td class="num">${t.total ? R(t.total) : '—'}</td>
+      <td class="num">${t.stt  ? R(t.stt)  : '—'}</td>
+      <td class="num">${t.vat  ? R(t.vat)  : '—'}</td>
+      <td class="num">${t.total? R(t.total) : '—'}</td>
       <td><button class="btn-danger" onclick="deleteTrade('${t.id}')">Delete</button></td>
     </tr>
   `).join('');
@@ -814,68 +1048,64 @@ function renderTxTable() {
 
 function deleteTrade(id) {
   if (!confirm('Delete this transaction?')) return;
-  const trades = getTrades().filter(t => t.id !== id);
-  saveTrades(trades);
+  saveTrades(getTrades().filter(t=>t.id!==id));
   renderTxTable();
-  toast('Transaction deleted');
+  showToast('Transaction deleted');
 }
 
 function exportCSV() {
   const trades = getTrades().sort((a,b)=>a.date.localeCompare(b.date));
   const header = ['Date','Ticker','Status','Volume','Avg Price (c)','Trade Value (R)','Brokerage (R)','Strate Fee (R)','Inv Prot Levy (R)','STT (R)','VAT (R)','Total Cost (R)','Notes'];
   const rows = trades.map(t => [t.date,t.ticker,t.status,t.vol,t.price,t.excl,t.brok,t.strate,t.invprot,t.stt,t.vat,t.total,t.notes||'']);
-  const csv = [header, ...rows].map(r => r.join(',')).join('\n');
+  const csv = [header,...rows].map(r=>r.join(',')).join('\n');
   const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
   a.download = 'buyback_transactions.csv';
   a.click();
 }
 
-// ─── Funding ──────────────────────────────────────────────────────────────────
+// ── Funding ───────────────────────────────────────────────────────────────────
 function renderFunding() {
   const funding = getFunding().sort((a,b)=>a.date.localeCompare(b.date));
-  const trades = getTrades();
+  const trades  = getTrades();
   const totalFund = funding.reduce((a,f)=>a+f.amount,0);
-  const totalDep = trades.reduce((a,t)=>a+t.total,0);
+  const totalDep  = trades.reduce((a,t)=>a+t.total,0);
 
-  document.getElementById('fund-grid').innerHTML = funding.map(f => `
+  document.getElementById('fund-grid').innerHTML = funding.map(f=>`
     <div class="fund-card">
       <div class="fund-date">${fmtDate(f.date)}</div>
       <div class="fund-amount">${R(f.amount)}</div>
-      ${f.ref ? `<div style="font-size:12px;color:var(--text3);margin-top:4px;">${f.ref}</div>` : ''}
+      ${f.ref?`<div style="font-size:11px;color:var(--text3);margin-top:3px;">${f.ref}</div>`:''}
       <div class="fund-badge">✓ Allocated to BDA</div>
     </div>
   `).join('');
 
   const cashBal = totalFund - totalDep;
   document.getElementById('fund-balance').innerHTML = `
-    <div class="bstrip-item"><div class="bstrip-label">Total received</div><div class="bstrip-value">${R(totalFund)}</div></div>
-    <div class="bstrip-divider"></div>
-    <div class="bstrip-item"><div class="bstrip-label">Total deployed</div><div class="bstrip-value">${R(totalDep)}</div></div>
-    <div class="bstrip-divider"></div>
-    <div class="bstrip-item"><div class="bstrip-label">Cash balance</div><div class="bstrip-value green">${R(cashBal)}</div></div>
+    <div class="bitem"><div class="bitem-label">Total received</div><div class="bitem-value">${R(totalFund)}</div></div>
+    <div class="bdiv"></div>
+    <div class="bitem"><div class="bitem-label">Total deployed</div><div class="bitem-value">${R(totalDep)}</div></div>
+    <div class="bdiv"></div>
+    <div class="bitem"><div class="bitem-label">Cash balance</div><div class="bitem-value teal">${R(cashBal)}</div></div>
   `;
 }
 
-// ─── Capture form ─────────────────────────────────────────────────────────────
+// ── Capture form ──────────────────────────────────────────────────────────────
 function recalc() {
-  const vol = parseFloat(document.getElementById('c-vol').value) || 0;
-  const price = parseFloat(document.getElementById('c-price').value) || 0;
+  const vol    = parseFloat(document.getElementById('c-vol').value) || 0;
+  const price  = parseFloat(document.getElementById('c-price').value) || 0;
   const strate = parseFloat(document.getElementById('c-strate').value) || 0;
-  const invprot = parseFloat(document.getElementById('c-invprot').value) || 0;
+  const invprot= parseFloat(document.getElementById('c-invprot').value) || 0;
   const status = document.getElementById('c-status').value;
-
-  if (status === 'limit' || (!vol && !price)) {
-    ['c-excl','c-brok','c-stt','c-vat','c-total'].forEach(id => document.getElementById(id).textContent = '—');
+  if (status==='limit'||(!vol&&!price)) {
+    ['c-excl','c-brok','c-stt','c-vat','c-total'].forEach(id=>document.getElementById(id).textContent='—');
     return;
   }
-
-  const excl = vol * price / 100;
-  const brok = excl * 0.001;
-  const stt  = excl * 0.0025;
-  const vat  = brok * 0.15;
-  const total = excl + brok + strate + invprot + stt + vat;
-
+  const excl  = vol*price/100;
+  const brok  = excl*0.001;
+  const stt   = excl*0.0025;
+  const vat   = brok*0.15;
+  const total = excl+brok+strate+invprot+stt+vat;
   document.getElementById('c-excl').textContent  = R(excl);
   document.getElementById('c-brok').textContent  = R(brok);
   document.getElementById('c-stt').textContent   = R(stt);
@@ -884,65 +1114,57 @@ function recalc() {
 }
 
 function saveTrade() {
-  const date   = document.getElementById('c-date').value;
-  const ticker = document.getElementById('c-ticker').value.trim().toUpperCase();
-  const status = document.getElementById('c-status').value;
-  const vol    = parseFloat(document.getElementById('c-vol').value) || 0;
-  const price  = parseFloat(document.getElementById('c-price').value) || 0;
-  const strate = parseFloat(document.getElementById('c-strate').value) || 0;
-  const invprot= parseFloat(document.getElementById('c-invprot').value) || 0;
-  const notes  = document.getElementById('c-notes').value.trim();
-
-  if (!date || !ticker) { toast('Please enter date and ticker', true); return; }
-
-  const excl  = vol * price / 100;
-  const brok  = excl * 0.001;
-  const stt   = excl * 0.0025;
-  const vat   = brok * 0.15;
-  const total = excl + brok + strate + invprot + stt + vat;
-
-  const trade = { id: 't' + Date.now(), date, ticker, status, vol, price, excl, brok, strate, invprot, stt, vat, total, notes };
+  const date    = document.getElementById('c-date').value;
+  const ticker  = document.getElementById('c-ticker').value.trim().toUpperCase();
+  const status  = document.getElementById('c-status').value;
+  const vol     = parseFloat(document.getElementById('c-vol').value)||0;
+  const price   = parseFloat(document.getElementById('c-price').value)||0;
+  const strate  = parseFloat(document.getElementById('c-strate').value)||0;
+  const invprot = parseFloat(document.getElementById('c-invprot').value)||0;
+  const notes   = document.getElementById('c-notes').value.trim();
+  if (!date||!ticker) { showToast('Please enter date and ticker', true); return; }
+  const excl=vol*price/100, brok=excl*0.001, stt=excl*0.0025, vat=brok*0.15, total=excl+brok+strate+invprot+stt+vat;
   const trades = getTrades();
-  trades.push(trade);
+  trades.push({ id:'t'+Date.now(), date, ticker, status, vol, price, excl, brok, strate, invprot, stt, vat, total, notes });
   saveTrades(trades);
   clearForm();
-  toast('Transaction saved ✓');
+  showToast('Transaction saved');
 }
 
 function clearForm() {
-  ['c-date','c-ticker','c-vol','c-price','c-strate','c-invprot','c-notes'].forEach(id => document.getElementById(id).value = '');
-  ['c-excl','c-brok','c-stt','c-vat','c-total'].forEach(id => document.getElementById(id).textContent = '—');
+  ['c-date','c-ticker','c-vol','c-price','c-strate','c-invprot','c-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-date').value = new Date().toISOString().split('T')[0];
+  ['c-excl','c-brok','c-stt','c-vat','c-total'].forEach(id=>document.getElementById(id).textContent='—');
 }
 
-// ─── Funding form ─────────────────────────────────────────────────────────────
+// ── Funding form ──────────────────────────────────────────────────────────────
 function saveFunding() {
   const date   = document.getElementById('f-date').value;
-  const amount = parseFloat(document.getElementById('f-amount').value) || 0;
+  const amount = parseFloat(document.getElementById('f-amount').value)||0;
   const ref    = document.getElementById('f-ref').value.trim();
-
-  if (!date || !amount) { toast('Please enter date and amount', true); return; }
-
+  if (!date||!amount) { showToast('Please enter date and amount', true); return; }
   const funding = getFunding();
   funding.push({ id:'f'+Date.now(), date, amount, ref });
   saveFundingData(funding);
   clearFundForm();
   renderFundTable();
-  toast('Funding recorded ✓');
+  showToast('Funding recorded');
 }
 
 function clearFundForm() {
-  ['f-date','f-amount','f-ref'].forEach(id => document.getElementById(id).value = '');
+  ['f-date','f-amount','f-ref'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
 function renderFundTable() {
   const funding = getFunding().sort((a,b)=>a.date.localeCompare(b.date));
   const tbody = document.getElementById('fund-tbody');
-  if (!funding.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No funding entries</td></tr>'; return; }
-  tbody.innerHTML = funding.map(f => `
+  if (!funding.length) { tbody.innerHTML='<tr><td colspan="4" class="empty-state">No funding entries</td></tr>'; return; }
+  tbody.innerHTML = funding.map(f=>`
     <tr>
       <td>${fmtDate(f.date)}</td>
       <td class="num">${R(f.amount)}</td>
-      <td>${f.ref || '—'}</td>
+      <td>${f.ref||'—'}</td>
       <td><button class="btn-danger" onclick="deleteFunding('${f.id}')">Delete</button></td>
     </tr>
   `).join('');
@@ -952,23 +1174,21 @@ function deleteFunding(id) {
   if (!confirm('Delete this funding entry?')) return;
   saveFundingData(getFunding().filter(f=>f.id!==id));
   renderFundTable();
-  toast('Funding entry deleted');
+  showToast('Funding entry deleted');
 }
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
-function toast(msg, isError) {
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function showToast(msg, isError) {
   const el = document.getElementById('toast');
   el.textContent = msg;
-  el.style.borderColor = isError ? 'var(--red)' : 'var(--green)';
-  el.style.color = isError ? 'var(--red)' : 'var(--green)';
-  el.classList.add('visible');
-  setTimeout(() => el.classList.remove('visible'), 2800);
+  el.className = 'toast' + (isError?' error':'') + ' visible';
+  setTimeout(()=>el.classList.remove('visible'), 2800);
 }
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────────
 document.getElementById('c-date').value = new Date().toISOString().split('T')[0];
 document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-renderDashboard();
+renderOverview();
 </script>
 </body>
 </html>
