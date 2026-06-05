@@ -10,126 +10,92 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    /* Exact spreadsheet series colours */
-    --c-teal:    #01A0C6;
-    --c-teal-dk: #0E7CA8;
-    --c-mint:    #8ADFB6;
-    --c-red:     #ED2A3F;
-    --c-orange:  #F79736;
-    --c-grey:    #988E8A;
-    --c-purple:  #741B81;
-    --c-silver:  #A6A6A6;
-
-    /* Derived light tints for cards/badges */
-    --c-teal-lt:   #e0f5fa;
-    --c-mint-lt:   #e8faf2;
-    --c-red-lt:    #fdeaec;
-    --c-orange-lt: #fef3e6;
-    --c-grey-lt:   #f2f1f0;
-    --c-purple-lt: #f3e8f6;
-    --c-silver-lt: #f5f5f5;
-
-    /* UI chrome */
-    --bg:      #f6f7f8;
-    --surface: #ffffff;
-    --border:  #e2e6ea;
-    --text:    #1a1c1e;
-    --muted:   #6b7280;
-    --header-bg: #0e1c2a;
+    --c-teal:#01A0C6; --c-teal-dk:#0E7CA8; --c-mint:#8ADFB6;
+    --c-red:#ED2A3F; --c-orange:#F79736; --c-grey:#988E8A;
+    --c-purple:#741B81; --c-silver:#A6A6A6;
+    --c-teal-lt:#e0f5fa; --c-mint-lt:#e8faf2; --c-red-lt:#fdeaec;
+    --c-orange-lt:#fef3e6; --c-grey-lt:#f2f1f0; --c-purple-lt:#f3e8f6;
+    --bg:#f6f7f8; --surface:#ffffff; --border:#e2e6ea;
+    --text:#1a1c1e; --muted:#6b7280; --header-bg:#0e1c2a;
   }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; }
+  header { background:var(--header-bg); color:white; padding:2.8rem 2rem 2.2rem; text-align:center; }
+  header h1 { font-family:'Playfair Display',Georgia,serif; font-size:2.2rem; font-weight:500; letter-spacing:-0.02em; margin-bottom:0.4rem; }
+  header p { font-size:0.9rem; opacity:0.55; font-weight:300; letter-spacing:0.05em; }
+  .tab-bar { background:var(--header-bg); display:flex; justify-content:center; border-top:1px solid rgba(255,255,255,0.1); }
+  .tab-btn { background:transparent; border:none; color:rgba(255,255,255,0.5); padding:0.8rem 2.2rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:400; letter-spacing:0.07em; text-transform:uppercase; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
+  .tab-btn.active { color:var(--c-teal); border-bottom-color:var(--c-teal); }
+  .tab-btn:hover:not(.active) { color:rgba(255,255,255,0.85); }
+  .page { display:none; }
+  .page.active { display:block; }
+  .container { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem; }
 
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+  /* Dynamic narrative banner */
+  .narrative {
+    background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--c-teal-dk);
+    border-radius:10px; padding:1.1rem 1.4rem; margin-bottom:1.5rem;
+    font-size:0.92rem; line-height:1.75; color:var(--text);
+  }
+  .narrative .hl {
+    font-weight:500; padding:1px 5px; border-radius:3px;
+    background:rgba(14,124,168,0.10); color:var(--c-teal-dk);
+    white-space:nowrap;
+  }
+  .narrative .hl-mint   { background:rgba(138,223,182,0.18); color:#0a7a50; }
+  .narrative .hl-orange { background:rgba(247,151,54,0.15);  color:#a05010; }
+  .narrative .hl-red    { background:rgba(237,42,63,0.10);   color:#b01020; }
+  .narrative .hl-purple { background:rgba(116,27,129,0.10);  color:#5a1060; }
 
-  header { background: var(--header-bg); color: white; padding: 2.8rem 2rem 2.2rem; text-align: center; }
-  header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
-  header p { font-size: 0.9rem; opacity: 0.55; font-weight: 300; letter-spacing: 0.05em; }
-
-  .tab-bar { background: var(--header-bg); display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); }
-  .tab-btn { background: transparent; border: none; color: rgba(255,255,255,0.5); padding: 0.8rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 400; letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
-  .tab-btn.active { color: var(--c-teal); border-bottom-color: var(--c-teal); }
-  .tab-btn:hover:not(.active) { color: rgba(255,255,255,0.85); }
-
-  .page { display: none; }
-  .page.active { display: block; }
-
-  .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
-
-  .section-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 500; color: var(--text); margin-bottom: 0.3rem; }
-  .section-subtitle { font-size: 0.87rem; color: var(--muted); margin-bottom: 1.8rem; }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-  .card-title { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
-
-  /* Controls */
-  .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
-  .control-group { display: flex; flex-direction: column; gap: 0.35rem; }
-  .control-group label { font-size: 0.77rem; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
-  .control-group input[type="range"] { width: 100%; accent-color: var(--c-teal-dk); height: 4px; cursor: pointer; }
-  .control-val { font-size: 1.05rem; font-weight: 500; color: var(--c-teal-dk); }
-
-  /* Metric cards */
-  .metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 2rem; }
-  .metric { background: #f0f8fc; border-radius: 8px; padding: 0.9rem 1rem; border-left: 3px solid var(--c-teal); }
-  .metric-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
-  .metric-val { font-size: 1.4rem; font-weight: 500; color: var(--text); font-family: 'Playfair Display', serif; }
-  .metric-val.teal { color: var(--c-teal-dk); }
-  .metric-val.mint  { color: #0a8a5a; }
-  .metric-val.orange { color: #c06010; }
-
-  .chart-wrap { position: relative; width: 100%; height: 300px; }
-
-  .legend-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 12px; color: var(--muted); }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
-  /* Scenario table */
-  .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-  .scenario-table th { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border); background: #fafbfc; }
-  .scenario-table th:not(:first-child) { text-align: right; }
-  .scenario-table td { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--border); }
-  .scenario-table td:not(:first-child) { text-align: right; }
-  .scenario-table tr:last-child td { border-bottom: none; }
-  .scenario-table tbody tr:hover { background: #fafbfc; }
-
-  .badge { display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
-  .badge-teal   { background: var(--c-teal-lt);   color: #026a84; }
-  .badge-mint   { background: var(--c-mint-lt);   color: #0a7a50; }
-  .badge-red    { background: var(--c-red-lt);    color: #b01020; }
-  .badge-orange { background: var(--c-orange-lt); color: #a05010; }
-  .badge-grey   { background: var(--c-grey-lt);   color: #5a5250; }
-  .badge-purple { background: var(--c-purple-lt); color: #5a1060; }
-
-  .adv-pos { color: #026a84; font-weight: 500; }
-  .adv-neg { color: #b01020; font-weight: 500; }
-
-  /* Wealth cards */
-  .wealth-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 2rem; }
-  .wealth-card { border-radius: 10px; padding: 1.15rem 1.25rem; border-left: 4px solid; }
-  .wealth-card.base       { background: var(--c-mint-lt);   border-color: var(--c-mint);   }
-  .wealth-card.divid      { background: var(--c-teal-lt);   border-color: var(--c-teal);   }
-  .wealth-card.participate  { background: var(--c-red-lt);    border-color: var(--c-red);    }
-  .wealth-card.noparticipate{ background: var(--c-orange-lt); border-color: var(--c-orange); }
-  .wealth-card .wc-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 0.25rem; color: var(--muted); }
-  .wealth-card .wc-val { font-size: 1.55rem; font-weight: 500; font-family: 'Playfair Display', serif; color: var(--text); margin-bottom: 0.2rem; }
-  .wealth-card .wc-vs { font-size: 0.79rem; color: var(--muted); }
-  .wealth-card.participate .wc-vs .pos  { color: #b01020; font-weight:500; }
-  .wealth-card.noparticipate .wc-vs .pos{ color: #a05010; font-weight:500; }
-  .wealth-card.divid .wc-vs .neg        { color: #b01020; font-weight:500; }
-
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
-
-  .two-thirds { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
-  @media (max-width: 750px) { .two-thirds { grid-template-columns: 1fr; } }
-
-  .info-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.87rem; }
-  .info-row:last-child { border-bottom: none; }
-  .info-row span:first-child { color: var(--muted); }
-  .info-row span:last-child { font-weight: 500; }
-
-  footer { text-align: center; padding: 2rem; font-size: 0.76rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 1rem; }
+  .section-title { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:500; color:var(--text); margin-bottom:0.3rem; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; }
+  .card-title { font-size:0.75rem; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); margin-bottom:1.2rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border); }
+  .controls-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.2rem; margin-bottom:2rem; }
+  .control-group { display:flex; flex-direction:column; gap:0.35rem; }
+  .control-group label { font-size:0.77rem; font-weight:500; color:var(--muted); letter-spacing:0.04em; text-transform:uppercase; }
+  .control-group input[type="range"] { width:100%; accent-color:var(--c-teal-dk); height:4px; cursor:pointer; }
+  .control-val { font-size:1.05rem; font-weight:500; color:var(--c-teal-dk); }
+  .metrics-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:2rem; }
+  .metric { background:#f0f8fc; border-radius:8px; padding:0.9rem 1rem; border-left:3px solid var(--c-teal); }
+  .metric-label { font-size:0.72rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-bottom:0.25rem; }
+  .metric-val { font-size:1.4rem; font-weight:500; color:var(--text); font-family:'Playfair Display',serif; }
+  .metric-val.teal { color:var(--c-teal-dk); }
+  .metric-val.mint  { color:#0a8a5a; }
+  .metric-val.orange { color:#c06010; }
+  .chart-wrap { position:relative; width:100%; height:300px; }
+  .legend-row { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:10px; font-size:12px; color:var(--muted); }
+  .legend-item { display:flex; align-items:center; gap:5px; }
+  .legend-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  .scenario-table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+  .scenario-table th { font-size:0.72rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); text-align:left; padding:0.65rem 0.9rem; border-bottom:1px solid var(--border); background:#fafbfc; }
+  .scenario-table th:not(:first-child) { text-align:right; }
+  .scenario-table td { padding:0.8rem 0.9rem; border-bottom:1px solid var(--border); }
+  .scenario-table td:not(:first-child) { text-align:right; }
+  .scenario-table tr:last-child td { border-bottom:none; }
+  .scenario-table tbody tr:hover { background:#fafbfc; }
+  .badge { display:inline-block; font-size:0.68rem; font-weight:500; letter-spacing:0.04em; padding:2px 7px; border-radius:4px; text-transform:uppercase; }
+  .badge-teal   { background:var(--c-teal-lt);   color:#026a84; }
+  .badge-red    { background:var(--c-red-lt);     color:#b01020; }
+  .badge-grey   { background:var(--c-grey-lt);    color:#5a5250; }
+  .adv-pos { color:#026a84; font-weight:500; }
+  .wealth-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:2rem; }
+  .wealth-card { border-radius:10px; padding:1.15rem 1.25rem; border-left:4px solid; }
+  .wealth-card.base        { background:var(--c-mint-lt);   border-color:var(--c-mint);   }
+  .wealth-card.divid       { background:var(--c-teal-lt);   border-color:var(--c-teal);   }
+  .wealth-card.participate { background:var(--c-red-lt);    border-color:var(--c-red);    }
+  .wealth-card.nopart      { background:var(--c-orange-lt); border-color:var(--c-orange); }
+  .wealth-card .wc-label { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:0.25rem; color:var(--muted); }
+  .wealth-card .wc-val { font-size:1.55rem; font-weight:500; font-family:'Playfair Display',serif; color:var(--text); margin-bottom:0.2rem; }
+  .wealth-card .wc-vs { font-size:0.79rem; color:var(--muted); }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+  @media (max-width:680px) { .two-col { grid-template-columns:1fr; } }
+  .two-thirds { display:grid; grid-template-columns:2fr 1fr; gap:1.5rem; }
+  @media (max-width:750px) { .two-thirds { grid-template-columns:1fr; } }
+  .info-row { display:flex; justify-content:space-between; align-items:baseline; padding:0.55rem 0; border-bottom:1px solid var(--border); font-size:0.87rem; }
+  .info-row:last-child { border-bottom:none; }
+  .info-row span:first-child { color:var(--muted); }
+  .info-row span:last-child { font-weight:500; }
+  footer { text-align:center; padding:2rem; font-size:0.76rem; color:var(--muted); border-top:1px solid var(--border); margin-top:1rem; }
 </style>
 </head>
 <body>
@@ -144,11 +110,11 @@
   <button class="tab-btn" onclick="showPage('wealth',this)">Shareholder Wealth</button>
 </nav>
 
-<!-- PAGE 1: EPS Accretion -->
+<!-- ═══ PAGE 1: EPS Accretion ═══ -->
 <div id="page-accretion" class="page active">
   <div class="container">
-    <div class="section-title">EPS Accretion — Buyback Illustration</div>
-    <div class="section-subtitle">Adjust assumptions to model the share price impact of a one-off buyback over a 5-year holding period</div>
+
+    <div class="narrative" id="acc-narrative"><!-- filled by JS --></div>
 
     <div class="card">
       <div class="card-title">Assumptions</div>
@@ -190,12 +156,13 @@
 
     <div class="two-thirds">
       <div class="card">
-        <div class="card-title">Share Price Trajectory — Base P/E</div>
+        <div class="card-title" id="trajTitle">Share Price Trajectory — Base P/E</div>
         <div class="legend-row" id="trajectoryLegend"></div>
-        <div class="chart-wrap"><canvas id="trajectoryChart" role="img" aria-label="Share price trajectory over holding period for buyback vs no buyback"></canvas></div>
+        <div class="chart-wrap"><canvas id="trajectoryChart" role="img" aria-label="Share price trajectory"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">Year <span id="holdingYrLabel">5</span> — P/E Scenario Outcomes</div>
+        <div class="narrative" id="scenario-narrative" style="margin-bottom:1rem;font-size:0.85rem;"></div>
         <div id="scenarioTable"></div>
       </div>
     </div>
@@ -203,16 +170,17 @@
     <div class="card">
       <div class="card-title">Price Paths Across All P/E Scenarios</div>
       <div class="legend-row" id="allScenariosLegend"></div>
-      <div class="chart-wrap" style="height:340px;"><canvas id="allScenariosChart" role="img" aria-label="Price paths for all scenarios including rerate and derate"></canvas></div>
+      <div class="chart-wrap" style="height:340px;"><canvas id="allScenariosChart" role="img" aria-label="All scenario price paths"></canvas></div>
     </div>
+
   </div>
 </div>
 
-<!-- PAGE 2: Shareholder Wealth -->
+<!-- ═══ PAGE 2: Shareholder Wealth ═══ -->
 <div id="page-wealth" class="page">
   <div class="container">
-    <div class="section-title">Shareholder Value — After-Tax Outcomes</div>
-    <div class="section-subtitle">Client holding: 100,000 shares · full position sold at year-end · South African tax assumptions</div>
+
+    <div class="narrative" id="wealth-narrative"><!-- filled by JS --></div>
 
     <div class="card">
       <div class="card-title">Client & Tax Assumptions</div>
@@ -231,6 +199,11 @@
           <label>Cost Base / Share (R)</label>
           <input type="range" id="costBase" min="1" max="20" step="0.05" value="7.65">
           <div class="control-val">R <span id="costBaseVal">7.65</span></div>
+        </div>
+        <div class="control-group">
+          <label>Holding Period (years)</label>
+          <input type="range" id="wHolding" min="1" max="10" step="1" value="5">
+          <div class="control-val"><span id="wHoldingVal">5</span> yrs</div>
         </div>
         <div class="control-group">
           <label>CGT Inclusion Rate</label>
@@ -257,6 +230,16 @@
           <input type="range" id="wEpsGrowth" min="3" max="30" step="0.5" value="16.5">
           <div class="control-val"><span id="wEpsGrowthVal">16.5</span>%</div>
         </div>
+        <div class="control-group">
+          <label>Buyback % of Shares</label>
+          <input type="range" id="wBuybackPct" min="1" max="30" step="1" value="10">
+          <div class="control-val"><span id="wBuybackPctVal">10</span>%</div>
+        </div>
+        <div class="control-group">
+          <label>Current EPS (R)</label>
+          <input type="range" id="wEps" min="0.5" max="4" step="0.01" value="1.26">
+          <div class="control-val">R <span id="wEpsVal">1.26</span></div>
+        </div>
       </div>
     </div>
 
@@ -264,42 +247,42 @@
 
     <div class="two-col">
       <div class="card">
-        <div class="card-title">After-Tax Value Trajectory (R)</div>
+        <div class="card-title" id="wealthChartTitle">After-Tax Value Trajectory (R)</div>
         <div class="legend-row" id="wealthLegend"></div>
-        <div class="chart-wrap" style="height:320px;"><canvas id="wealthChart" role="img" aria-label="After-tax wealth trajectory across four scenarios over 5 years"></canvas></div>
+        <div class="chart-wrap" style="height:320px;"><canvas id="wealthChart" role="img" aria-label="After-tax wealth trajectory"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">Scenario Breakdown — Year 5</div>
+        <div class="card-title" id="breakdownTitle">Scenario Breakdown</div>
         <div id="wealthBreakdown"></div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">Tax & Mechanics Detail</div>
+      <div class="card-title" id="taxDetailTitle">Tax & Mechanics Detail</div>
       <div id="taxDetail"></div>
     </div>
+
   </div>
 </div>
 
 <footer>TSG Buyback Illustration · For discussion purposes only · Not investment advice</footer>
 
 <script>
-// Exact spreadsheet hex colours
-const C = {
-  teal:   '#01A0C6',
-  tealDk: '#0E7CA8',
-  mint:   '#8ADFB6',
-  red:    '#ED2A3F',
-  orange: '#F79736',
-  grey:   '#988E8A',
-  purple: '#741B81',
-  silver: '#A6A6A6',
-};
+const C={teal:'#01A0C6',tealDk:'#0E7CA8',mint:'#8ADFB6',red:'#ED2A3F',orange:'#F79736',grey:'#988E8A',purple:'#741B81',silver:'#A6A6A6'};
+let trajChart,allChart,wealthChartObj;
 
-let trajChart, allChart, wealthChartObj;
-const R  = n => 'R ' + n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
-const pct = n => (n*100).toFixed(1)+'%';
-const fmt = n => n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const Rfmt = n=>'R '+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pct  = n=>(n*100).toFixed(1)+'%';
+const fmt  = n=>n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const Rk   = n=>'R '+(n/1000).toFixed(0)+'k';
+
+// highlighted span helpers
+const hl  = (v,cls='')=>`<span class="hl ${cls}">${v}</span>`;
+const hlt = v=>hl(v,'');
+const hlm = v=>hl(v,'hl-mint');
+const hlo = v=>hl(v,'hl-orange');
+const hlr = v=>hl(v,'hl-red');
+const hlp = v=>hl(v,'hl-purple');
 
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -311,53 +294,67 @@ function showPage(name,btn){
 // ── ACCRETION ──────────────────────────────────────────────
 function getAccIns(){
   return {
-    sharePrice: +document.getElementById('sharePrice').value,
-    eps:        +document.getElementById('eps').value,
-    buybackPct: +document.getElementById('buybackPct').value/100,
-    peRerate:   +document.getElementById('peRerate').value,
-    peDerate:   +document.getElementById('peDerate').value,
-    holding:    +document.getElementById('holding').value,
+    sharePrice:+document.getElementById('sharePrice').value,
+    eps:       +document.getElementById('eps').value,
+    buybackPct:+document.getElementById('buybackPct').value/100,
+    peRerate:  +document.getElementById('peRerate').value,
+    peDerate:  +document.getElementById('peDerate').value,
+    holding:   +document.getElementById('holding').value,
   };
 }
 
 function calcAcc(i){
-  const pe=i.sharePrice/i.eps, g=1/pe, ul=1/(1-i.buybackPct), postEps=i.eps*ul;
+  const pe=i.sharePrice/i.eps,g=1/pe,ul=1/(1-i.buybackPct),postEps=i.eps*ul;
   const yrs=Array.from({length:i.holding+1},(_,y)=>y);
   const nBBe=yrs.map(y=>i.eps*Math.pow(1+g,y));
   const bBe =yrs.map(y=>postEps*Math.pow(1+g,y));
-  return {
-    pe,g,ul,postEps,yrs,
-    nBBp:  nBBe.map(e=>e*pe),
-    bBp:   bBe .map(e=>e*pe),
-    nBBr:  nBBe.map(e=>e*i.peRerate),
-    nBBd:  nBBe.map(e=>e*i.peDerate),
-    bBr:   bBe .map(e=>e*i.peRerate),
-    bBd:   bBe .map(e=>e*i.peDerate),
+  return {pe,g,ul,postEps,yrs,
+    nBBp:nBBe.map(e=>e*pe), bBp:bBe.map(e=>e*pe),
+    nBBr:nBBe.map(e=>e*i.peRerate), nBBd:nBBe.map(e=>e*i.peDerate),
+    bBr:bBe.map(e=>e*i.peRerate),   bBd:bBe.map(e=>e*i.peDerate),
   };
 }
 
 function renderAcc(){
-  const i=getAccIns(), d=calcAcc(i), yr=i.holding;
+  const i=getAccIns(),d=calcAcc(i),yr=i.holding;
   document.getElementById('holdingYrLabel').textContent=yr;
+  document.getElementById('trajTitle').textContent=`Share Price Trajectory — Base P/E (${d.pe.toFixed(2)}x)`;
 
-  // Metrics — use spreadsheet palette
+  // Dynamic narrative
+  const bbPctDisp=(i.buybackPct*100).toFixed(0);
+  const upliftPct=((d.ul-1)*100).toFixed(1);
+  document.getElementById('acc-narrative').innerHTML=
+    `At a current share price of ${hlt('R'+i.sharePrice.toFixed(2))} and EPS of ${hlt('R'+i.eps.toFixed(2))}, `+
+    `the stock trades on an implied P/E of ${hlt(d.pe.toFixed(2)+'x')}, implying an earnings yield of ${hlt(pct(d.g))} which is used as the EPS growth rate. `+
+    `A one-off buyback of ${hlt(bbPctDisp+'%')} of shares reduces the share count, lifting EPS by ${hlm('+'+upliftPct+'%')} immediately. `+
+    `Over a ${hlt(yr+'-year')} holding period at the base multiple, the buyback scenario reaches ${hlt('R'+d.bBp[yr].toFixed(2))} `+
+    `versus ${hlt('R'+d.nBBp[yr].toFixed(2))} without — a ${hlm('+'+upliftPct+'%')} share price advantage. `+
+    `If the market re-rates to ${hlt(i.peRerate.toFixed(1)+'x')}, the buyback price reaches ${hlt('R'+d.bBr[yr].toFixed(2))}; `+
+    `if it de-rates to ${hlr(i.peDerate.toFixed(1)+'x')}, it falls to ${hlr('R'+d.bBd[yr].toFixed(2))}.`;
+
+  // Scenario narrative
+  document.getElementById('scenario-narrative').innerHTML=
+    `Comparing the ${hlt(yr+'-year')} outcome across three P/E outcomes. `+
+    `The ${hlm('+'+upliftPct+'%')} EPS uplift from the buyback is preserved at every multiple.`;
+
+  // Metrics
   document.getElementById('accretionMetrics').innerHTML=[
-    {l:'Implied P/E',       v:d.pe.toFixed(2)+'x',              cls:'teal'},
-    {l:'EPS Growth p.a.',   v:pct(d.g),                         cls:''},
-    {l:'EPS Uplift Factor', v:'+'+((d.ul-1)*100).toFixed(1)+'%',cls:'mint'},
-    {l:`Yr${yr} Price — No BB`,  v:R(d.nBBp[yr]),               cls:''},
-    {l:`Yr${yr} Price — Buyback`,v:R(d.bBp[yr]),                cls:'teal'},
-    {l:'Buyback Advantage', v:'+'+((d.ul-1)*100).toFixed(1)+'%',cls:'orange'},
+    {l:'Implied P/E',        v:d.pe.toFixed(2)+'x',       cls:'teal'},
+    {l:'EPS Growth p.a.',    v:pct(d.g),                  cls:''},
+    {l:'EPS Uplift',         v:'+'+upliftPct+'%',          cls:'mint'},
+    {l:`Yr${yr} — No BB`,   v:Rfmt(d.nBBp[yr]),           cls:''},
+    {l:`Yr${yr} — Buyback`, v:Rfmt(d.bBp[yr]),            cls:'teal'},
+    {l:'Buyback Advantage',  v:'+'+upliftPct+'%',          cls:'orange'},
   ].map(m=>`<div class="metric"><div class="metric-label">${m.l}</div><div class="metric-val ${m.cls}">${m.v}</div></div>`).join('');
 
-  // Trajectory chart — silver=No Buyback, tealDk=With Buyback (matches spreadsheet bar chart)
+  // Trajectory chart
   const labels=d.yrs.map(y=>'Yr '+y);
   if(trajChart) trajChart.destroy();
   trajChart=new Chart(document.getElementById('trajectoryChart'),{
     type:'line',
     data:{labels,datasets:[
-      {label:'No Buyback',  data:d.nBBp.map(v=>+v.toFixed(2)), borderColor:C.silver, backgroundColor:C.silver+'18', borderWidth:2,   tension:0.3,pointRadius:4,borderDash:[5,4]},
-      {label:'With Buyback',data:d.bBp .map(v=>+v.toFixed(2)), borderColor:C.tealDk,backgroundColor:C.tealDk+'18',borderWidth:2.5,tension:0.3,pointRadius:4},
+      {label:'No Buyback',  data:d.nBBp.map(v=>+v.toFixed(2)),borderColor:C.silver,backgroundColor:C.silver+'18',borderWidth:2,tension:0.3,pointRadius:4,borderDash:[5,4]},
+      {label:'With Buyback',data:d.bBp.map(v=>+v.toFixed(2)), borderColor:C.tealDk,backgroundColor:C.tealDk+'18',borderWidth:2.5,tension:0.3,pointRadius:4},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': R '+c.parsed.y.toFixed(2)}}},
@@ -368,11 +365,11 @@ function renderAcc(){
     {c:C.tealDk,l:'With Buyback'},{c:C.silver,l:'No Buyback'}
   ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
 
-  // Scenario table — teal=rerate, red=base, orange=derate (spreadsheet order)
+  // Scenario table
   const scenarios=[
-    {l:`Re-rate to ${i.peRerate.toFixed(1)}x`, nb:d.nBBr[yr], bb:d.bBr[yr], badge:'badge-teal'},
-    {l:`Base (${d.pe.toFixed(2)}x)`,           nb:d.nBBp[yr], bb:d.bBp[yr], badge:'badge-red'},
-    {l:`De-rate to ${i.peDerate.toFixed(1)}x`, nb:d.nBBd[yr], bb:d.bBd[yr], badge:'badge-grey'},
+    {l:`Re-rate to ${i.peRerate.toFixed(1)}x`,nb:d.nBBr[yr],bb:d.bBr[yr],badge:'badge-teal'},
+    {l:`Base (${d.pe.toFixed(2)}x)`,          nb:d.nBBp[yr],bb:d.bBp[yr],badge:'badge-red'},
+    {l:`De-rate to ${i.peDerate.toFixed(1)}x`,nb:d.nBBd[yr],bb:d.bBd[yr],badge:'badge-grey'},
   ];
   document.getElementById('scenarioTable').innerHTML=
     `<table class="scenario-table"><thead><tr><th>Scenario</th><th>No BB (R)</th><th>Buyback (R)</th><th>Uplift</th></tr></thead><tbody>`+
@@ -381,15 +378,14 @@ function renderAcc(){
       return `<tr><td><span class="badge ${s.badge}">${s.l}</span></td><td>${fmt(s.nb)}</td><td class="adv-pos">${fmt(s.bb)}</td><td class="adv-pos">+${adv.toFixed(1)}%</td></tr>`;
     }).join('')+'</tbody></table>';
 
-  // All-scenarios fan chart — exact spreadsheet colour mapping:
-  // teal=No BB @8x, mint=BB @8x, red=No BB @base, orange=BB @base, grey=No BB @5x, purple=BB @5x
+  // All-scenarios fan chart
   const ds=[
-    {l:`No BB @ ${i.peRerate.toFixed(1)}x`, d:d.nBBr, c:C.teal,   w:1.8, dash:[5,4]},
-    {l:`Buyback @ ${i.peRerate.toFixed(1)}x`, d:d.bBr, c:C.mint,   w:2.5, dash:[]},
-    {l:`No BB @ ${d.pe.toFixed(2)}x`,       d:d.nBBp, c:C.red,    w:1.8, dash:[5,4]},
-    {l:`Buyback @ ${d.pe.toFixed(2)}x`,     d:d.bBp,  c:C.orange, w:2.5, dash:[]},
-    {l:`No BB @ ${i.peDerate.toFixed(1)}x`, d:d.nBBd, c:C.grey,   w:1.8, dash:[5,4]},
-    {l:`Buyback @ ${i.peDerate.toFixed(1)}x`,d:d.bBd, c:C.purple, w:2.5, dash:[]},
+    {l:`No BB @ ${i.peRerate.toFixed(1)}x`,  d:d.nBBr,c:C.teal,  w:1.8,dash:[5,4]},
+    {l:`Buyback @ ${i.peRerate.toFixed(1)}x`,d:d.bBr, c:C.mint,  w:2.5,dash:[]},
+    {l:`No BB @ ${d.pe.toFixed(2)}x`,         d:d.nBBp,c:C.red,   w:1.8,dash:[5,4]},
+    {l:`Buyback @ ${d.pe.toFixed(2)}x`,       d:d.bBp, c:C.orange,w:2.5,dash:[]},
+    {l:`No BB @ ${i.peDerate.toFixed(1)}x`,  d:d.nBBd,c:C.grey,  w:1.8,dash:[5,4]},
+    {l:`Buyback @ ${i.peDerate.toFixed(1)}x`,d:d.bBd, c:C.purple,w:2.5,dash:[]},
   ];
   if(allChart) allChart.destroy();
   allChart=new Chart(document.getElementById('allScenariosChart'),{
@@ -417,17 +413,17 @@ function renderAcc(){
 // ── WEALTH ─────────────────────────────────────────────────
 function getWIns(){
   return {
-    shares:      +document.getElementById('sharesHeld').value,
-    sharePrice:  +document.getElementById('wSharePrice').value,
-    costBase:    +document.getElementById('costBase').value,
-    cgtInc:      +document.getElementById('cgtInclusion').value/100,
-    margTax:     +document.getElementById('marginalTax').value/100,
-    divTax:      +document.getElementById('divTax').value/100,
-    reinvRet:    +document.getElementById('reinvestReturn').value/100,
-    epsGrowth:   +document.getElementById('wEpsGrowth').value/100,
-    eps:         +document.getElementById('eps').value,
-    buybackPct:  +document.getElementById('buybackPct').value/100,
-    holding:     +document.getElementById('holding').value,
+    shares:    +document.getElementById('sharesHeld').value,
+    sharePrice:+document.getElementById('wSharePrice').value,
+    costBase:  +document.getElementById('costBase').value,
+    holding:   +document.getElementById('wHolding').value,
+    cgtInc:    +document.getElementById('cgtInclusion').value/100,
+    margTax:   +document.getElementById('marginalTax').value/100,
+    divTax:    +document.getElementById('divTax').value/100,
+    reinvRet:  +document.getElementById('reinvestReturn').value/100,
+    epsGrowth: +document.getElementById('wEpsGrowth').value/100,
+    eps:       +document.getElementById('wEps').value,
+    buybackPct:+document.getElementById('wBuybackPct').value/100,
   };
 }
 
@@ -435,84 +431,87 @@ function calcWealth(i){
   const pe=i.sharePrice/i.eps, cgt=i.cgtInc*i.margTax;
   const ul=1/(1-i.buybackPct), postEps=i.eps*ul;
   const yr=i.holding, g=i.epsGrowth;
-
   const nBBe_yr=i.eps*Math.pow(1+g,yr), bBe_yr=postEps*Math.pow(1+g,yr);
   const p5NB=nBBe_yr*pe, p5BB=bBe_yr*pe;
   const divPS=i.sharePrice*i.buybackPct;
   const exPE=(i.sharePrice-divPS)/i.eps;
   const p5Ex=nBBe_yr*exPE;
-
   const sh=i.shares, shBB=sh*(1-i.buybackPct), cashBB=sh*i.buybackPct*i.sharePrice;
 
-  function netProceeds(gross,sharesUsed){
+  function net(gross,sharesUsed){
     const gain=gross-sharesUsed*i.costBase;
     return gross-Math.max(0,gain)*cgt;
   }
 
-  const baseGross=sh*p5NB,   baseNet=netProceeds(baseGross,sh),   baseCGT=baseGross-baseNet;
-  const divGross=sh*p5Ex,    divNet=netProceeds(divGross,sh),      divCGT=divGross-divNet;
-  const divCash=sh*divPS, divTaxPaid=divCash*i.divTax, divNetCash=divCash-divTaxPaid;
-  const divReinv=divNetCash*Math.pow(1+i.reinvRet,yr), divTotal=divNet+divReinv;
-
-  const bpGross=shBB*p5BB,   bpNet=netProceeds(bpGross,shBB),    bpCGT=bpGross-bpNet;
-  const bpCash=cashBB, bpReinv=bpCash*Math.pow(1+i.reinvRet,yr), bpTotal=bpNet+bpReinv;
-
-  const bnGross=sh*p5BB, bnNet=netProceeds(bnGross,sh), bnCGT=bnGross-bnNet;
+  const baseGross=sh*p5NB,   baseNet=net(baseGross,sh),   baseCGT=baseGross-baseNet;
+  const divGross=sh*p5Ex,    divNetSh=net(divGross,sh),    divCGT=divGross-divNetSh;
+  const divCash=sh*divPS, divTaxPd=divCash*i.divTax, divNetCash=divCash-divTaxPd;
+  const divReinv=divNetCash*Math.pow(1+i.reinvRet,yr), divTotal=divNetSh+divReinv;
+  const bpGross=shBB*p5BB,   bpNetSh=net(bpGross,shBB),   bpCGT=bpGross-bpNetSh;
+  const bpCash=cashBB, bpReinv=bpCash*Math.pow(1+i.reinvRet,yr), bpTotal=bpNetSh+bpReinv;
+  const bnGross=sh*p5BB, bnNet=net(bnGross,sh), bnCGT=bnGross-bnNet;
 
   const yrs=Array.from({length:yr+1},(_,y)=>y);
-  function tBase(y){
-    const e=i.eps*Math.pow(1+g,y),p=e*pe,gr=sh*p;
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt;
-  }
-  function tDiv(y){
-    const e=i.eps*Math.pow(1+g,y),p=e*exPE,gr=sh*p;
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt+divNetCash*Math.pow(1+i.reinvRet,y);
-  }
-  function tBBPart(y){
-    const e=postEps*Math.pow(1+g,y),p=e*pe,gr=shBB*p;
-    return gr-Math.max(0,gr-shBB*i.costBase)*cgt+bpCash*Math.pow(1+i.reinvRet,y);
-  }
-  function tBBNo(y){
-    const e=postEps*Math.pow(1+g,y),p=e*pe,gr=sh*p;
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt;
-  }
+  function tBase(y){ const e=i.eps*Math.pow(1+g,y),p=e*pe,gr=sh*p; return gr-Math.max(0,gr-sh*i.costBase)*cgt; }
+  function tDiv(y){ const e=i.eps*Math.pow(1+g,y),p=e*exPE,gr=sh*p; return gr-Math.max(0,gr-sh*i.costBase)*cgt+divNetCash*Math.pow(1+i.reinvRet,y); }
+  function tBBP(y){ const e=postEps*Math.pow(1+g,y),p=e*pe,gr=shBB*p; return gr-Math.max(0,gr-shBB*i.costBase)*cgt+bpCash*Math.pow(1+i.reinvRet,y); }
+  function tBBN(y){ const e=postEps*Math.pow(1+g,y),p=e*pe,gr=sh*p; return gr-Math.max(0,gr-sh*i.costBase)*cgt; }
 
-  return {
-    pe,cgt,yr,p5NB,p5BB,p5Ex,divPS,
+  return {pe,cgt,yr,p5NB,p5BB,p5Ex,divPS,ul,
     baseGross,baseCGT,baseNet,
-    divGross,divCGT,divCash,divTaxPaid,divNetCash,divReinv,divTotal,
-    bpGross,bpCGT,bpCash,bpReinv,bpTotal,bpNet,
+    divGross,divCGT:divCGT,divCash,divTaxPd,divNetCash,divReinv,divTotal,divNetSh,
+    bpGross,bpCGT,bpCash,bpReinv,bpTotal,bpNetSh,
     bnGross,bnCGT,bnNet,
-    yrs,
-    baseT:yrs.map(tBase), divT:yrs.map(tDiv), bpT:yrs.map(tBBPart), bnT:yrs.map(tBBNo),
+    yrs,baseT:yrs.map(tBase),divT:yrs.map(tDiv),bpT:yrs.map(tBBP),bnT:yrs.map(tBBN),
   };
 }
 
 function renderWealth(){
   const i=getWIns(), d=calcWealth(i);
+  const bbPctDisp=(i.buybackPct*100).toFixed(0);
+  const upliftPct=((d.ul-1)*100).toFixed(1);
+  const gainAbs=d.bnNet-d.baseNet, gainPct=((gainAbs/d.baseNet)*100).toFixed(1);
+  const bestLabel=d.bnNet>=d.bpTotal?'No Participation':'Participates';
+  const bestVal=Math.max(d.bnNet,d.bpTotal);
 
-  // Wealth cards — mint=base, teal=special div, red=participates, orange=no participation
+  // Dynamic narrative
+  document.getElementById('wealth-narrative').innerHTML=
+    `A client holding ${hlt(i.shares.toLocaleString()+' shares')} at a current price of ${hlt('R'+i.sharePrice.toFixed(2))} `+
+    `(cost base ${hlt('R'+i.costBase.toFixed(2))}) will exit their full position at the end of year ${hlt(i.holding)}. `+
+    `The company conducts a one-off buyback of ${hlt(bbPctDisp+'%')} of shares at today's price, `+
+    `lifting EPS by ${hlm('+'+upliftPct+'%')} for shareholders who don't sell. `+
+    `Using a marginal tax rate of ${hlt((i.margTax*100).toFixed(0)+'%')}, CGT inclusion of ${hlt((i.cgtInc*100).toFixed(0)+'%')} `+
+    `(effective CGT ${hlt((d.cgt*100).toFixed(1)+'%')}), and dividends tax of ${hlt((i.divTax*100).toFixed(0)+'%')}, `+
+    `the best after-tax outcome at year ${hlt(i.holding)} is ${hlm('Buyback — '+bestLabel)} at ${hlm(Rfmt(bestVal))}, `+
+    `ahead of the base case by ${hlm('+'+gainPct+'%')} if the client doesn't participate.`;
+
+  // Card titles
+  document.getElementById('breakdownTitle').textContent=`Scenario Breakdown — Year ${d.yr}`;
+  document.getElementById('taxDetailTitle').textContent=`Tax & Mechanics Detail — ${i.holding}-Year Horizon`;
+  document.getElementById('wealthChartTitle').textContent=`After-Tax Value Trajectory over ${i.holding} Years (R)`;
+
+  // Wealth cards
   const cards=[
-    {cls:'base',        label:'Base — No Buyback',         val:d.baseNet, vs:0},
-    {cls:'divid',       label:'Special Dividend',           val:d.divTotal,vs:d.divTotal-d.baseNet},
-    {cls:'participate', label:'Buyback — Participates',     val:d.bpTotal, vs:d.bpTotal-d.baseNet},
-    {cls:'noparticipate',label:'Buyback — No Participation',val:d.bnNet,   vs:d.bnNet-d.baseNet},
+    {cls:'base',        label:'Base — No Buyback',          val:d.baseNet, vs:0},
+    {cls:'divid',       label:'Special Dividend',            val:d.divTotal,vs:d.divTotal-d.baseNet},
+    {cls:'participate', label:'Buyback — Participates',      val:d.bpTotal, vs:d.bpTotal-d.baseNet},
+    {cls:'nopart',      label:'Buyback — No Participation',  val:d.bnNet,   vs:d.bnNet-d.baseNet},
   ];
   document.getElementById('wealthCards').innerHTML=cards.map(c=>{
-    const vpct=c.vs===0?'':((c.vs/d.baseNet)*100).toFixed(1);
+    const vp=c.vs===0?'':((c.vs/d.baseNet)*100).toFixed(1);
     const vsHtml=c.vs===0?'Base case':
-      c.vs>0?`<span class="pos">+R ${fmt(c.vs)} (+${vpct}%)</span> vs base`:
-             `<span class="neg">−R ${fmt(Math.abs(c.vs))} (${vpct}%)</span> vs base`;
-    return `<div class="wealth-card ${c.cls}"><div class="wc-label">${c.label}</div><div class="wc-val">R ${fmt(c.val)}</div><div class="wc-vs">${vsHtml}</div></div>`;
+      c.vs>0?`+R ${fmt(c.vs)} (+${vp}%) vs base`:`−R ${fmt(Math.abs(c.vs))} (${vp}%) vs base`;
+    const vsCol=c.vs>0?'color:#0a7a50':c.vs<0?'color:#b01020':'color:var(--muted)';
+    return `<div class="wealth-card ${c.cls}"><div class="wc-label">${c.label}</div><div class="wc-val">R ${fmt(c.val)}</div><div class="wc-vs" style="${vsCol}">${vsHtml}</div></div>`;
   }).join('');
 
-  // Wealth chart — teal=Special Div, mint=Base, red=Participates, orange=No Participation
+  // Wealth chart
   const labels=d.yrs.map(y=>'Yr '+y);
   if(wealthChartObj) wealthChartObj.destroy();
   const wDs=[
-    {label:'Special Dividend',         data:d.divT, c:C.teal},
-    {label:'Base — No Buyback',        data:d.baseT,c:C.mint},
-    {label:'Buyback — Participates',   data:d.bpT,  c:C.red},
+    {label:'Special Dividend',          data:d.divT,c:C.teal},
+    {label:'Base — No Buyback',         data:d.baseT,c:C.mint},
+    {label:'Buyback — Participates',    data:d.bpT,  c:C.red},
     {label:'Buyback — No Participation',data:d.bnT,  c:C.orange},
   ];
   wealthChartObj=new Chart(document.getElementById('wealthChart'),{
@@ -527,48 +526,53 @@ function renderWealth(){
     `<span class="legend-item"><span class="legend-dot" style="background:${s.c}"></span>${s.label}</span>`
   ).join('');
 
-  // Breakdown
+  // Breakdown panel
   document.getElementById('wealthBreakdown').innerHTML=`
-    <div class="info-row"><span>Yr${d.yr} Price — No Buyback</span><span>${R(d.p5NB)}</span></div>
-    <div class="info-row"><span>Yr${d.yr} Price — With Buyback</span><span style="color:${C.tealDk}">${R(d.p5BB)}</span></div>
-    <div class="info-row"><span>Yr${d.yr} Price — Ex-Div</span><span>${R(d.p5Ex)}</span></div>
-    <div class="info-row"><span>Cash per share (buyback/div)</span><span>${R(d.divPS)}</span></div>
+    <div class="info-row"><span>Yr${d.yr} Price — No Buyback</span><span>${Rfmt(d.p5NB)}</span></div>
+    <div class="info-row"><span>Yr${d.yr} Price — With Buyback</span><span style="color:${C.tealDk}">${Rfmt(d.p5BB)}</span></div>
+    <div class="info-row"><span>Yr${d.yr} Price — Ex-Div</span><span>${Rfmt(d.p5Ex)}</span></div>
+    <div class="info-row"><span>Cash per share (buyback/div)</span><span>${Rfmt(d.divPS)}</span></div>
     <div class="info-row"><span>Effective CGT rate</span><span>${(d.cgt*100).toFixed(1)}%</span></div>
-    <div class="info-row"><span>Best outcome</span><span style="color:${C.orange};font-weight:500">${d.bnNet>=d.bpTotal?'No Participation':'Participates'}</span></div>`;
+    <div class="info-row"><span>Best outcome</span><span style="color:${C.orange};font-weight:500">${bestLabel}</span></div>`;
 
   // Tax table
   const rows=[
     ['','Base','Special Div','BB Participates','BB No Part.'],
-    ['Shares at Yr5',i.shares.toLocaleString(),i.shares.toLocaleString(),Math.round(i.shares*(1-i.buybackPct)).toLocaleString(),i.shares.toLocaleString()],
-    ['Gross share value',R(d.baseGross),R(d.divGross),R(d.bpGross),R(d.bnGross)],
-    ['CGT paid',R(d.baseCGT),R(d.divCGT),R(d.bpCGT),R(d.bnCGT)],
-    ['Net share proceeds',R(d.baseNet),R(d.divGross-d.divCGT),R(d.bpGross-d.bpCGT),R(d.bnNet)],
-    ['Cash received now','—',R(d.divCash),R(d.bpCash),'—'],
-    ['Tax on cash','—',R(d.divTaxPaid),'—','—'],
-    ['Cash reinvested → Yr5','—',R(d.divReinv),R(d.bpReinv),'—'],
-    ['TOTAL Yr5 after-tax',R(d.baseNet),R(d.divTotal),R(d.bpTotal),R(d.bnNet)],
+    ['Shares at Yr'+d.yr, i.shares.toLocaleString(), i.shares.toLocaleString(), Math.round(i.shares*(1-i.buybackPct)).toLocaleString(), i.shares.toLocaleString()],
+    ['Gross share value',  Rfmt(d.baseGross),  Rfmt(d.divGross),            Rfmt(d.bpGross),  Rfmt(d.bnGross)],
+    ['CGT paid',           Rfmt(d.baseCGT),    Rfmt(d.divCGT),              Rfmt(d.bpCGT),    Rfmt(d.bnCGT)],
+    ['Net share proceeds', Rfmt(d.baseNet),    Rfmt(d.divGross-d.divCGT),   Rfmt(d.bpGross-d.bpCGT), Rfmt(d.bnNet)],
+    ['Cash received now',  '—',                Rfmt(d.divCash),             Rfmt(d.bpCash),   '—'],
+    ['Tax on cash',        '—',                Rfmt(d.divTaxPd),            '—',              '—'],
+    ['Cash reinvested → Yr'+d.yr,'—',          Rfmt(d.divReinv),            Rfmt(d.bpReinv),  '—'],
+    ['TOTAL Yr'+d.yr+' after-tax', Rfmt(d.baseNet), Rfmt(d.divTotal),       Rfmt(d.bpTotal),  Rfmt(d.bnNet)],
   ];
-  // colour header cells with series colours
   const hCols=['',C.mint,C.teal,C.red,C.orange];
   document.getElementById('taxDetail').innerHTML=
     `<div style="overflow-x:auto"><table class="scenario-table">
-      <thead><tr>${rows[0].map((h,i)=>`<th style="${i>0?'text-align:right;border-top:3px solid '+hCols[i]:''};">${h}</th>`).join('')}</tr></thead>
-      <tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,i)=>`<td style="${i>0?'text-align:right':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody>
+      <thead><tr>${rows[0].map((h,ci)=>`<th style="${ci>0?'text-align:right;border-top:3px solid '+hCols[ci]:''}">${h}</th>`).join('')}</tr></thead>
+      <tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,ci)=>`<td style="${ci>0?'text-align:right':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody>
     </table></div>`;
 }
 
-['sharesHeld','wSharePrice','costBase','cgtInclusion','marginalTax','divTax','reinvestReturn','wEpsGrowth'].forEach(id=>{
-  const map={sharesHeld:'sharesHeldVal',wSharePrice:'wSharePriceVal',costBase:'costBaseVal',cgtInclusion:'cgtInclusionVal',marginalTax:'marginalTaxVal',divTax:'divTaxVal',reinvestReturn:'reinvestReturnVal',wEpsGrowth:'wEpsGrowthVal'};
-  const f={sharesHeld:v=>(+v).toLocaleString('en-ZA'),wSharePrice:v=>parseFloat(v).toFixed(2),costBase:v=>parseFloat(v).toFixed(2),cgtInclusion:v=>v,marginalTax:v=>v,divTax:v=>v,reinvestReturn:v=>v,wEpsGrowth:v=>parseFloat(v).toFixed(1)};
+// Wire up wealth controls (all independent now)
+[['sharesHeld','sharesHeldVal',v=>(+v).toLocaleString('en-ZA')],
+ ['wSharePrice','wSharePriceVal',v=>parseFloat(v).toFixed(2)],
+ ['costBase','costBaseVal',v=>parseFloat(v).toFixed(2)],
+ ['wHolding','wHoldingVal',v=>v],
+ ['cgtInclusion','cgtInclusionVal',v=>v],
+ ['marginalTax','marginalTaxVal',v=>v],
+ ['divTax','divTaxVal',v=>v],
+ ['reinvestReturn','reinvestReturnVal',v=>v],
+ ['wEpsGrowth','wEpsGrowthVal',v=>parseFloat(v).toFixed(1)],
+ ['wBuybackPct','wBuybackPctVal',v=>v],
+ ['wEps','wEpsVal',v=>parseFloat(v).toFixed(2)],
+].forEach(([id,valId,fmt])=>{
   document.getElementById(id).addEventListener('input',e=>{
-    document.getElementById(map[id]).textContent=f[id](e.target.value);
+    document.getElementById(valId).textContent=fmt(e.target.value);
     renderWealth();
   });
 });
-
-document.getElementById('eps').addEventListener('input',renderWealth);
-document.getElementById('buybackPct').addEventListener('input',renderWealth);
-document.getElementById('holding').addEventListener('input',renderWealth);
 
 renderAcc();
 renderWealth();
