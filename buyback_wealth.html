@@ -1,136 +1,356 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
+<html lang="en" data-theme="dark"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TSG — Share Buyback Illustrator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>/* cyrillic-ext */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek-ext */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek-ext */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek-ext */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek-ext */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek-ext */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-/* ── COLOUR SYSTEM ── */
-:root {
+:root{
   --c-teal:#01A0C6; --c-tealdk:#0E7CA8; --c-mint:#8ADFB6;
   --c-red:#ED2A3F;  --c-orange:#F79736; --c-grey:#988E8A;
   --c-purple:#741B81; --c-silver:#A6A6A6;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 
-  --bg:#f4f6f9; --bg2:#ffffff; --bg3:#eef1f6;
-  --surface:#ffffff; --surface2:#f0f3f8; --surface3:#e6eaf2;
-  --border:#dde2ec; --border2:#c8cfe0;
-  --text:#0f1923; --text2:#3d4b5c; --muted:#6b7a90;
-  --header:#0a1628; --tab-active:#ffffff;
-  --glow:rgba(1,160,198,0.15);
-  --card-shadow:0 2px 12px rgba(0,0,0,0.07);
-  --card-shadow-hover:0 6px 24px rgba(0,0,0,0.12);
+  --bg:#eef1f6; --bg2:#ffffff; --bg3:#e7ebf2;
+  --surface:#ffffff; --surface2:#f5f7fb; --surface3:#eaeef6;
+  --border:#e3e8f1; --border2:#cdd6e6;
+  --text:#0c141f; --text2:#43536a; --muted:#7a8aa0;
+  --header:#0a1424; --navbar:rgba(255,255,255,0.82); --track:rgba(12,32,64,0.12);
+  --card-shadow:0 1px 2px rgba(16,32,64,0.05),0 6px 22px rgba(16,32,64,0.07);
+  --card-shadow-hover:0 2px 5px rgba(16,32,64,0.07),0 16px 40px rgba(16,32,64,0.13);
+  --glow:rgba(1,160,198,0.18); --glow2:rgba(116,27,129,0.10);
+  --ring:rgba(1,160,198,0.30);
 }
-[data-theme="dark"] {
-  --bg:#0d1117; --bg2:#161b27; --bg3:#1e2535;
-  --surface:#161b27; --surface2:#1e2535; --surface3:#252d40;
-  --border:#2a3347; --border2:#3a4560;
-  --text:#e8edf5; --text2:#a8b4c8; --muted:#6b7a90;
-  --header:#080d17; --tab-active:#e8edf5;
-  --glow:rgba(1,160,198,0.25);
-  --card-shadow:0 2px 16px rgba(0,0,0,0.4);
-  --card-shadow-hover:0 6px 28px rgba(0,0,0,0.6);
+[data-theme="dark"]{
+  --bg:#070a11; --bg2:#0b0f18; --bg3:#11161f;
+  --surface:#0f141d; --surface2:#141a26; --surface3:#1b2332;
+  --border:rgba(255,255,255,0.065); --border2:rgba(255,255,255,0.13);
+  --text:#e9eef6; --text2:#a6b3c6; --muted:#647488;
+  --header:#05070c; --navbar:rgba(8,11,18,0.80); --track:rgba(255,255,255,0.11);
+  --card-shadow:inset 0 1px 0 rgba(255,255,255,0.035),0 10px 34px rgba(0,0,0,0.55);
+  --card-shadow-hover:inset 0 1px 0 rgba(255,255,255,0.06),0 18px 50px rgba(0,0,0,0.72);
+  --glow:rgba(1,160,198,0.20); --glow2:rgba(116,27,129,0.13);
+  --ring:rgba(1,160,198,0.40);
 }
 
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;transition:background 0.3s,color 0.3s}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;
+  background:var(--bg);
+  background-image:radial-gradient(1100px 560px at 8% -10%,var(--glow),transparent 58%),
+                   radial-gradient(1000px 620px at 102% -4%,var(--glow2),transparent 55%);
+  background-attachment:fixed;
+  transition:background .4s,color .4s;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+::selection{background:var(--ring)}
+
+/* ── AMBIENT DRIFTING GLOW (always-on background motion) ── */
+body::before{content:'';position:fixed;inset:-25% -12% -25% -12%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side at 18% 28%, var(--glow), transparent 70%),
+             radial-gradient(closest-side at 84% 20%, var(--glow2), transparent 72%),
+             radial-gradient(closest-side at 62% 88%, rgba(1,160,198,0.12), transparent 70%);
+  filter:blur(26px);animation:ambientDrift 24s ease-in-out infinite alternate;will-change:transform}
+@keyframes ambientDrift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(-4%,3%,0) scale(1.1)}
+  100%{transform:translate3d(4%,-3%,0) scale(1.05)}
+}
+.hstat-val,.metric-val,.wc-val,.control-val,.company-meta,
+.scenario-table td:not(:first-child),.scenario-table th:not(:first-child),
+.info-row span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:8px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box}
 
 /* ── HEADER ── */
-header{background:var(--header);color:white;padding:0;position:relative;overflow:hidden}
-.header-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:200px;background:radial-gradient(ellipse,rgba(1,160,198,0.3) 0%,transparent 70%);pointer-events:none}
-.header-inner{position:relative;z-index:1;padding:2.2rem 2rem 0;text-align:center}
-.header-badge{display:inline-block;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-teal);background:rgba(1,160,198,0.15);border:1px solid rgba(1,160,198,0.3);border-radius:20px;padding:3px 12px;margin-bottom:0.8rem}
-header h1{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;letter-spacing:-0.02em;margin-bottom:0.3rem;background:linear-gradient(135deg,#ffffff 0%,#a8d8ea 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-header p{font-size:0.82rem;color:rgba(255,255,255,0.45);letter-spacing:0.04em;margin-bottom:1.5rem}
-.header-stats{display:flex;justify-content:center;gap:2rem;padding:0.9rem 2rem;border-top:1px solid rgba(255,255,255,0.08);flex-wrap:wrap}
-.hstat{text-align:center}
-.hstat-val{font-size:1.05rem;font-weight:600;color:var(--c-teal)}
-.hstat-lbl{font-size:0.65rem;color:rgba(255,255,255,0.4);letter-spacing:0.06em;text-transform:uppercase;margin-top:1px}
+header{background:
+   linear-gradient(180deg,var(--header) 0%,#081020 100%);
+   color:white;padding:0;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.06)}
+header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+   background:linear-gradient(90deg,transparent,rgba(1,160,198,0.5),transparent)}
+.header-glow{position:absolute;top:-90px;left:50%;transform:translateX(-50%);width:760px;height:300px;
+   background:radial-gradient(ellipse,rgba(1,160,198,0.32) 0%,transparent 70%);pointer-events:none;filter:blur(6px)}
+.header-inner{position:relative;z-index:1;padding:2.4rem 2rem 0;text-align:center;animation:riseIn .6s cubic-bezier(.16,.84,.44,1) both}
+.header-badge{display:inline-block;font-size:0.64rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+   color:#7fe0f6;background:rgba(1,160,198,0.13);border:1px solid rgba(1,160,198,0.32);border-radius:30px;padding:4px 14px;margin-bottom:0.95rem;
+   backdrop-filter:blur(4px)}
+header h1{font-family:'Playfair Display',Georgia,serif;font-size:2.35rem;font-weight:600;letter-spacing:-0.015em;margin-bottom:0.35rem;line-height:1.05;
+   background:linear-gradient(135deg,#ffffff 0%,#9fd4ea 96%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{font-size:0.76rem;color:rgba(255,255,255,0.42);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:1.5rem}
+.header-stats{display:flex;justify-content:center;gap:0;padding:0.5rem 2rem 1rem;border-top:1px solid rgba(255,255,255,0.07);flex-wrap:wrap}
+.hstat{text-align:center;padding:0.45rem 1.6rem;position:relative}
+.hstat+.hstat::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:26px;background:rgba(255,255,255,0.09)}
+.hstat-val{font-size:1.12rem;font-weight:600;color:#36c6ea;letter-spacing:-0.01em}
+.hstat-lbl{font-size:0.6rem;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;margin-top:3px}
 
-/* ── DARK MODE TOGGLE ── */
-.dm-toggle{position:absolute;top:1.1rem;right:1.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:0.75rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;transition:all 0.2s;z-index:10}
-.dm-toggle:hover{background:rgba(255,255,255,0.15)}
+.dm-toggle{position:absolute;top:1.3rem;right:1.4rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:30px;
+   padding:6px 14px;cursor:pointer;font-size:0.72rem;font-weight:500;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:6px;
+   transition:all 0.2s;z-index:10;backdrop-filter:blur(6px)}
+.dm-toggle:hover{background:rgba(255,255,255,0.16);transform:translateY(-1px);color:#fff}
 
-/* ── TABS ── */
-.tab-bar{background:var(--header);display:flex;justify-content:center;gap:0;border-top:1px solid rgba(255,255,255,0.06);padding:0 1rem}
-.tab-btn{background:transparent;border:none;color:rgba(255,255,255,0.4);padding:0.75rem 1.6rem;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
-.tab-btn.active{color:var(--c-teal);border-bottom-color:var(--c-teal)}
-.tab-btn:hover:not(.active){color:rgba(255,255,255,0.8)}
-.page{display:none}.page.active{display:block}
+/* ── TABS (sticky) ── */
+.tab-bar{position:sticky;top:0;z-index:60;background:var(--navbar);backdrop-filter:saturate(160%) blur(16px);
+   display:flex;justify-content:center;gap:2px;border-bottom:1px solid var(--border);padding:0 1rem;flex-wrap:wrap}
+.tab-btn{background:transparent;border:none;color:var(--muted);padding:0.85rem 1.35rem;font-family:'Inter',sans-serif;font-size:0.71rem;font-weight:600;
+   letter-spacing:0.09em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:color .22s,background .22s;
+   white-space:nowrap;display:flex;align-items:center;gap:7px;position:relative}
+.tab-btn.active{color:var(--c-teal)}
+.tab-btn:hover:not(.active){color:var(--text);background:var(--surface2)}
+.tab-num{font-size:0.62rem;opacity:0.55;font-weight:700;font-family:var(--mono)}
+.tab-indicator{position:absolute;bottom:0;left:0;height:3px;width:0;border-radius:3px;
+   background:linear-gradient(90deg,var(--c-teal),var(--c-mint));box-shadow:0 0 18px rgba(1,160,198,0.7),0 0 4px rgba(1,160,198,0.5);
+   transition:transform .4s cubic-bezier(.55,0,.1,1),width .4s cubic-bezier(.55,0,.1,1);pointer-events:none}
+
+.page{display:none}
+.page.active{display:block;animation:pageIn .5s cubic-bezier(.22,.61,.36,1)}
+.page.active .container>*{animation:riseIn .68s cubic-bezier(.16,.84,.44,1) backwards}
+.page.active .container>*:nth-child(1){animation-delay:.03s}
+.page.active .container>*:nth-child(2){animation-delay:.07s}
+.page.active .container>*:nth-child(3){animation-delay:.11s}
+.page.active .container>*:nth-child(4){animation-delay:.15s}
+.page.active .container>*:nth-child(5){animation-delay:.19s}
+.page.active .container>*:nth-child(6){animation-delay:.23s}
+.page.active .container>*:nth-child(7){animation-delay:.27s}
+.page.active .container>*:nth-child(8){animation-delay:.31s}
+.page.active .container>*:nth-child(9){animation-delay:.35s}
+.page.active .container>*:nth-child(10){animation-delay:.39s}
+.page.active .container>*:nth-child(11){animation-delay:.43s}
+.page.active .container>*:nth-child(12){animation-delay:.47s}
+.page.active .container>*:nth-child(n+13){animation-delay:.5s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pageIn{from{opacity:0;transform:translateX(46px) scale(.992)}to{opacity:1;transform:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(32px) scale(.984)}to{opacity:1;transform:none}}
 
 /* ── LAYOUT ── */
-.container{max-width:1140px;margin:0 auto;padding:2rem 1.4rem}
+.container{max-width:1180px;margin:0 auto;padding:2.4rem 1.5rem 1rem}
 
-/* ── NARRATIVE BANNER ── */
-.narrative{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--c-teal);border-radius:10px;padding:1rem 1.3rem;margin-bottom:1.5rem;font-size:0.87rem;line-height:1.8;color:var(--text2);box-shadow:var(--card-shadow)}
-.hl{font-weight:600;padding:1px 6px;border-radius:3px;white-space:nowrap}
-.hl-teal  {background:rgba(1,160,198,0.12);color:var(--c-tealdk)}
+.page-intro{margin-bottom:1.8rem}
+.page-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--c-teal);margin-bottom:0.5rem;
+   display:flex;align-items:center;gap:9px}
+.page-eyebrow::before{content:'';width:22px;height:2px;background:var(--c-teal);border-radius:2px;opacity:.7}
+.page-heading{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:var(--text);margin-bottom:0.5rem;letter-spacing:-0.015em;line-height:1.1}
+.page-sub{font-size:0.88rem;color:var(--muted);max-width:720px;line-height:1.65}
+
+.readonly-link{display:inline-flex;align-items:center;gap:7px;font-size:0.74rem;font-weight:600;color:var(--c-teal);
+   background:color-mix(in srgb,var(--c-teal) 9%,transparent);border:1px solid color-mix(in srgb,var(--c-teal) 28%,transparent);
+   border-radius:30px;padding:7px 15px;cursor:pointer;transition:all 0.2s;margin-bottom:1.5rem}
+.readonly-link:hover{background:color-mix(in srgb,var(--c-teal) 16%,transparent);transform:translateY(-1px);box-shadow:0 4px 14px var(--glow)}
+
+/* ── NARRATIVE ── */
+.narrative{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--c-teal);border-radius:14px;
+   padding:1.15rem 1.45rem;margin-bottom:1.7rem;font-size:0.89rem;line-height:1.85;color:var(--text2);box-shadow:var(--card-shadow);
+   position:relative;overflow:hidden}
+.narrative::before{content:'';position:absolute;inset:0 0 0 0;background:linear-gradient(120deg,var(--glow),transparent 38%);opacity:.5;pointer-events:none}
+.hl{font-weight:600;padding:1px 7px;border-radius:5px;white-space:nowrap;font-family:var(--mono);font-size:0.86em}
+.hl-teal  {background:rgba(1,160,198,0.13);color:var(--c-tealdk)}
 .hl-mint  {background:rgba(138,223,182,0.18);color:#07845a}
 .hl-orange{background:rgba(247,151,54,0.15);color:#c06010}
 .hl-red   {background:rgba(237,42,63,0.12);color:#b01020}
-.hl-grey  {background:rgba(152,142,138,0.15);color:#6a6260}
-[data-theme="dark"] .hl-teal  {color:#5ecfec}
-[data-theme="dark"] .hl-mint  {color:#5ddba0}
-[data-theme="dark"] .hl-orange{color:#f4a94e}
-[data-theme="dark"] .hl-red   {color:#f06070}
-[data-theme="dark"] .hl-grey  {color:#a8a0a0}
+.hl-grey  {background:rgba(152,142,138,0.16);color:#6a6260}
+.hl-purple{background:rgba(116,27,129,0.12);color:var(--c-purple)}
+[data-theme="dark"] .hl-teal  {background:rgba(1,160,198,0.16);color:#5ecfec}
+[data-theme="dark"] .hl-mint  {background:rgba(138,223,182,0.15);color:#5ddba0}
+[data-theme="dark"] .hl-orange{background:rgba(247,151,54,0.15);color:#f4a94e}
+[data-theme="dark"] .hl-red   {background:rgba(237,42,63,0.16);color:#f06070}
+[data-theme="dark"] .hl-grey  {background:rgba(152,142,138,0.18);color:#a8a0a0}
+[data-theme="dark"] .hl-purple{background:rgba(116,27,129,0.22);color:#c878d6}
 
 /* ── CARDS ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin-bottom:1.4rem;box-shadow:var(--card-shadow);transition:box-shadow 0.2s}
-.card:hover{box-shadow:var(--card-shadow-hover)}
-.card-title{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.1rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.card-title-dot{width:6px;height:6px;border-radius:50%;background:var(--c-teal);flex-shrink:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;
+   box-shadow:var(--card-shadow);transition:transform .22s cubic-bezier(.16,.84,.44,1),box-shadow .22s,border-color .22s;position:relative}
+.card:hover{box-shadow:var(--card-shadow-hover);border-color:var(--border2)}
+.card-title{font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;
+   padding-bottom:0.8rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.card-title-dot{width:7px;height:7px;border-radius:50%;background:var(--c-teal);flex-shrink:0;box-shadow:0 0 0 3px color-mix(in srgb,var(--c-teal) 18%,transparent)}
 
 /* ── CONTROLS ── */
-.controls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1.1rem;margin-bottom:1.8rem}
-.control-group{display:flex;flex-direction:column;gap:0.3rem}
-.control-group label{font-size:0.69rem;font-weight:500;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase}
-.control-group input[type="range"]{width:100%;height:3px;cursor:pointer;accent-color:var(--c-teal);background:var(--border2);border-radius:2px}
-.control-val{font-size:1.1rem;font-weight:600;color:var(--c-tealdk);font-variant-numeric:tabular-nums}
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.3rem 1.2rem;margin-bottom:1.9rem}
+.control-group{display:flex;flex-direction:column;gap:0.5rem}
+.control-group label{font-size:0.67rem;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+.control-group input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:6px;cursor:pointer;outline:none;
+   background:linear-gradient(to right,var(--c-teal) 0%,var(--c-teal) var(--fill,0%),var(--track) var(--fill,0%),var(--track) 100%);transition:background .03s linear}
+.control-group input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:17px;height:17px;border-radius:50%;
+   background:#fff;border:3px solid var(--c-teal);box-shadow:0 2px 6px rgba(0,0,0,0.35);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.control-group input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.2);box-shadow:0 0 0 7px var(--glow)}
+.control-group input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.28);box-shadow:0 0 0 9px var(--glow)}
+.control-group input[type="range"]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--c-teal);
+   box-shadow:0 2px 6px rgba(0,0,0,0.35);cursor:pointer}
+.control-group input[type="range"]::-moz-range-track{height:5px;border-radius:6px;background:transparent}
+.control-val{font-size:1.18rem;font-weight:600;color:var(--c-tealdk)}
+[data-theme="dark"] .control-val{color:#5ecfec}
 
-/* ── METRICS ROW ── */
-.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.6rem}
-.metric{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;position:relative;overflow:hidden;transition:transform 0.15s}
-.metric:hover{transform:translateY(-2px)}
+/* ── TOGGLE ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.85rem 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:0.85rem;color:var(--text2);font-weight:500}
+.toggle-label small{display:block;font-size:0.72rem;color:var(--muted);margin-top:2px;font-weight:400}
+.switch{position:relative;display:inline-block;width:46px;height:25px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch-slider{position:absolute;cursor:pointer;inset:0;background:var(--track);border-radius:25px;transition:0.28s;border:1px solid var(--border2)}
+.switch-slider::before{content:'';position:absolute;height:19px;width:19px;left:3px;bottom:2px;background:#fff;border-radius:50%;transition:0.28s;box-shadow:0 1px 4px rgba(0,0,0,0.35)}
+.switch input:checked + .switch-slider{background:var(--c-teal);border-color:var(--c-teal);box-shadow:0 0 14px var(--glow)}
+.switch input:checked + .switch-slider::before{transform:translateX(21px)}
+
+/* ── ENTITY SELECTOR ── */
+.entity-selector{display:flex;gap:12px;margin-bottom:1.3rem;flex-wrap:wrap}
+.entity-btn{flex:1;min-width:140px;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 0.9rem;cursor:pointer;
+   text-align:center;transition:all 0.22s cubic-bezier(.16,.84,.44,1)}
+.entity-btn:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--card-shadow-hover)}
+.entity-btn.active{transform:translateY(-3px);box-shadow:var(--card-shadow-hover)}
+.entity-btn.eb-individual.active{border-color:var(--c-teal);background:color-mix(in srgb,var(--c-teal) 9%,var(--surface2))}
+.entity-btn.eb-company.active  {border-color:var(--c-orange);background:color-mix(in srgb,var(--c-orange) 9%,var(--surface2))}
+.entity-btn.eb-trust.active    {border-color:var(--c-purple);background:color-mix(in srgb,var(--c-purple) 11%,var(--surface2))}
+.entity-icon{font-size:1.6rem;margin-bottom:0.4rem;display:block;filter:saturate(1.1)}
+.entity-name{font-size:0.86rem;font-weight:700;color:var(--text);display:block;margin-bottom:0.25rem}
+.entity-subtitle{font-size:0.64rem;color:var(--muted);display:block;font-family:var(--mono);letter-spacing:-0.01em}
+.entity-btn.eb-individual.active .entity-name{color:var(--c-tealdk)}
+.entity-btn.eb-company.active   .entity-name{color:#c06010}
+.entity-btn.eb-trust.active     .entity-name{color:var(--c-purple)}
+[data-theme="dark"] .entity-btn.eb-individual.active .entity-name{color:#5ecfec}
+[data-theme="dark"] .entity-btn.eb-company.active .entity-name{color:#f4a94e}
+[data-theme="dark"] .entity-btn.eb-trust.active   .entity-name{color:#c878d6}
+
+/* ── COMPANY SELECTOR ── */
+.company-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-bottom:1.1rem}
+.company-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 0.9rem;cursor:pointer;text-align:left;
+   transition:all 0.18s cubic-bezier(.16,.84,.44,1)}
+.company-btn:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--card-shadow-hover)}
+.company-btn.active{border-color:var(--c-mint);background:color-mix(in srgb,var(--c-mint) 12%,var(--surface2));transform:translateY(-2px);box-shadow:var(--card-shadow-hover)}
+.company-ticker{font-size:0.82rem;font-weight:700;color:var(--text);letter-spacing:0.02em;display:block;font-family:var(--mono)}
+.company-btn.active .company-ticker{color:#07845a}
+[data-theme="dark"] .company-btn.active .company-ticker{color:#5ddba0}
+.company-name{font-size:0.66rem;color:var(--muted);display:block;margin-top:2px;line-height:1.3}
+.company-meta{font-size:0.78rem;color:var(--muted);padding-top:0.8rem;border-top:1px solid var(--border);line-height:1.7}
+.company-meta strong{color:var(--text);font-weight:600}
+
+.tax-badges{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:1.3rem}
+.tax-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.72rem;font-weight:600;padding:5px 12px;border-radius:9px;border:1px solid;letter-spacing:0.01em}
+.tax-badge strong{font-family:var(--mono)}
+.tax-badge-lbl{opacity:0.72;font-weight:500}
+.tb-income {background:rgba(1,160,198,0.10); border-color:rgba(1,160,198,0.28); color:var(--c-tealdk)}
+.tb-cgt    {background:rgba(247,151,54,0.10); border-color:rgba(247,151,54,0.28); color:#c06010}
+.tb-div    {background:rgba(116,27,129,0.10); border-color:rgba(116,27,129,0.28); color:var(--c-purple)}
+[data-theme="dark"] .tb-income{color:#5ecfec}
+[data-theme="dark"] .tb-cgt   {color:#f4a94e}
+[data-theme="dark"] .tb-div   {color:#c878d6}
+
+/* ── METRICS ── */
+.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:11px;margin-bottom:1.8rem}
+.metric{background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:0.95rem 1.05rem;position:relative;overflow:hidden;
+   transition:transform .18s cubic-bezier(.16,.84,.44,1),box-shadow .18s,border-color .18s}
+.metric:hover{transform:translateY(-3px);box-shadow:var(--card-shadow-hover);border-color:var(--border2)}
 .metric::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c-teal)}
 .metric.m-mint::before{background:var(--c-mint)}
 .metric.m-orange::before{background:var(--c-orange)}
 .metric.m-red::before{background:var(--c-red)}
 .metric.m-grey::before{background:var(--c-grey)}
-.metric-label{font-size:0.65rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem}
-.metric-val{font-size:1.35rem;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.metric.m-purple::before{background:var(--c-purple)}
+.metric.m-teal::before{background:var(--c-teal)}
+.metric-label{font-size:0.63rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+.metric-val{font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
 .metric-val.teal{color:var(--c-tealdk)}
 .metric-val.mint{color:#07845a}
 .metric-val.orange{color:#c06010}
+.metric-val.purple{color:var(--c-purple)}
 [data-theme="dark"] .metric-val.teal{color:#5ecfec}
 [data-theme="dark"] .metric-val.mint{color:#5ddba0}
 [data-theme="dark"] .metric-val.orange{color:#f4a94e}
+[data-theme="dark"] .metric-val.purple{color:#c878d6}
 
 /* ── CHARTS ── */
 .chart-wrap{position:relative;width:100%;height:290px}
-.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--muted)}
-.legend-item{display:flex;align-items:center;gap:5px;cursor:default}
-.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
-.legend-line{width:14px;height:2px;flex-shrink:0;border-radius:1px}
+.legend-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;font-size:11px;color:var(--muted);font-weight:500}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.legend-line{width:15px;height:2.5px;flex-shrink:0;border-radius:2px}
 
 /* ── TABLES ── */
-.scenario-table{width:100%;border-collapse:collapse;font-size:0.82rem}
-.scenario-table th{font-size:0.66rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0.6rem 0.85rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+.scenario-table{width:100%;border-collapse:collapse;font-size:0.83rem}
+.scenario-table th{font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-align:left;
+   padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+.scenario-table th:first-child{border-top-left-radius:9px}
+.scenario-table th:last-child{border-top-right-radius:9px}
 .scenario-table th:not(:first-child){text-align:right}
-.scenario-table td{padding:0.75rem 0.85rem;border-bottom:1px solid var(--border);color:var(--text2)}
-.scenario-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.scenario-table td{padding:0.78rem 0.9rem;border-bottom:1px solid var(--border);color:var(--text2)}
+.scenario-table td:not(:first-child){text-align:right}
 .scenario-table tr:last-child td{border-bottom:none}
-.scenario-table tbody tr{transition:background 0.1s}
+.scenario-table tbody tr{transition:background .15s}
 .scenario-table tbody tr:hover{background:var(--surface2)}
 
-/* ── BADGES ── */
-.badge{display:inline-block;font-size:0.64rem;font-weight:600;letter-spacing:0.04em;padding:2px 8px;border-radius:4px;text-transform:uppercase}
-.badge-teal  {background:rgba(1,160,198,0.12);  color:#026a84}
-.badge-red   {background:rgba(237,42,63,0.1);   color:#b01020}
-.badge-grey  {background:rgba(152,142,138,0.12);color:#5a5250}
-.badge-orange{background:rgba(247,151,54,0.12); color:#a05010}
+.badge{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.05em;padding:3px 9px;border-radius:6px;text-transform:uppercase}
+.badge-teal  {background:rgba(1,160,198,0.13);  color:#026a84}
+.badge-red   {background:rgba(237,42,63,0.11);   color:#b01020}
+.badge-grey  {background:rgba(152,142,138,0.14);color:#5a5250}
+.badge-orange{background:rgba(247,151,54,0.13); color:#a05010}
 [data-theme="dark"] .badge-teal  {color:#5ecfec}
 [data-theme="dark"] .badge-red   {color:#f06070}
 [data-theme="dark"] .badge-grey  {color:#b0a8a8}
@@ -139,130 +359,237 @@ header p{font-size:0.82rem;color:rgba(255,255,255,0.45);letter-spacing:0.04em;ma
 [data-theme="dark"] .adv-pos{color:#5ecfec}
 
 /* ── WEALTH CARDS ── */
-.wealth-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;margin-bottom:1.6rem}
-.wealth-card{border-radius:12px;padding:1.1rem 1.2rem;border:1px solid;position:relative;overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;cursor:default}
-.wealth-card:hover{transform:translateY(-3px);box-shadow:var(--card-shadow-hover)}
+.wealth-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:13px;margin-bottom:1.8rem}
+.wealth-card{border-radius:15px;padding:1.25rem 1.3rem;border:1px solid;position:relative;overflow:hidden;
+   transition:transform .2s cubic-bezier(.16,.84,.44,1),box-shadow .2s}
+.wealth-card:hover{transform:translateY(-4px);box-shadow:var(--card-shadow-hover)}
 .wealth-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
-.wealth-card.wc-base  {background:rgba(138,223,182,0.08);border-color:rgba(138,223,182,0.3)}.wealth-card.wc-base::after{background:var(--c-mint)}
-.wealth-card.wc-div   {background:rgba(1,160,198,0.08);  border-color:rgba(1,160,198,0.3)}.wealth-card.wc-div::after{background:var(--c-teal)}
-.wealth-card.wc-part  {background:rgba(237,42,63,0.07);  border-color:rgba(237,42,63,0.25)}.wealth-card.wc-part::after{background:var(--c-red)}
-.wealth-card.wc-nopart{background:rgba(247,151,54,0.08); border-color:rgba(247,151,54,0.3)}.wealth-card.wc-nopart::after{background:var(--c-orange)}
-.wc-label{font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;color:var(--muted)}
-.wc-val{font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:0.2rem;font-variant-numeric:tabular-nums}
+.wealth-card.wc-base  {background:color-mix(in srgb,var(--c-mint) 8%,var(--surface));border-color:color-mix(in srgb,var(--c-mint) 32%,transparent)}.wealth-card.wc-base::after{background:var(--c-mint)}
+.wealth-card.wc-div   {background:color-mix(in srgb,var(--c-teal) 8%,var(--surface));border-color:color-mix(in srgb,var(--c-teal) 30%,transparent)}.wealth-card.wc-div::after{background:var(--c-teal)}
+.wealth-card.wc-part  {background:color-mix(in srgb,var(--c-red) 7%,var(--surface));border-color:color-mix(in srgb,var(--c-red) 26%,transparent)}.wealth-card.wc-part::after{background:var(--c-red)}
+.wealth-card.wc-nopart{background:color-mix(in srgb,var(--c-orange) 8%,var(--surface));border-color:color-mix(in srgb,var(--c-orange) 30%,transparent)}.wealth-card.wc-nopart::after{background:var(--c-orange)}
+.wealth-card.wc-grey  {background:color-mix(in srgb,var(--c-grey) 9%,var(--surface));border-color:color-mix(in srgb,var(--c-grey) 30%,transparent)}.wealth-card.wc-grey::after{background:var(--c-grey)}
+.wealth-card.wc-teal  {background:color-mix(in srgb,var(--c-teal) 8%,var(--surface));border-color:color-mix(in srgb,var(--c-teal) 30%,transparent)}.wealth-card.wc-teal::after{background:var(--c-teal)}
+.wealth-card.wc-orange{background:color-mix(in srgb,var(--c-orange) 8%,var(--surface));border-color:color-mix(in srgb,var(--c-orange) 30%,transparent)}.wealth-card.wc-orange::after{background:var(--c-orange)}
+.wc-label{font-size:0.64rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:0.5rem;color:var(--muted)}
+.wc-val{font-size:1.55rem;font-weight:600;color:var(--text);margin-bottom:0.3rem;letter-spacing:-0.01em}
 .wc-vs{font-size:0.75rem;color:var(--muted)}
 .wc-vs .pos{color:#07845a;font-weight:600}
 .wc-vs .neg{color:#b01020;font-weight:600}
 [data-theme="dark"] .wc-vs .pos{color:#5ddba0}
 [data-theme="dark"] .wc-vs .neg{color:#f06070}
 
-/* ── WACC SPECIFIC ── */
-.wacc-caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:1.6rem}
-.wacc-cap{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;text-align:center}
-.wacc-cap-lbl{font-size:0.63rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem}
-.wacc-cap-val{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}
-.wacc-cap-sub{font-size:0.7rem;color:var(--muted);margin-top:2px}
-.wacc-comparison{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.6rem}
-.wacc-box{border-radius:12px;padding:1.1rem 1.2rem;border:1px solid;text-align:center;position:relative;overflow:hidden}
-.wacc-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
-.wacc-box.wb-curr  {background:rgba(152,142,138,0.08);border-color:rgba(152,142,138,0.3)}.wacc-box.wb-curr::after{background:var(--c-grey)}
-.wacc-box.wb-debt  {background:rgba(1,160,198,0.08);  border-color:rgba(1,160,198,0.3)}.wacc-box.wb-debt::after{background:var(--c-teal)}
-.wacc-box.wb-cash  {background:rgba(247,151,54,0.08); border-color:rgba(247,151,54,0.3)}.wacc-box.wb-cash::after{background:var(--c-orange)}
-.wb-lbl{font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
-.wb-wacc{font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums}
-.wb-wacc.grey  {color:var(--c-grey)}
-.wb-wacc.teal  {color:var(--c-tealdk)}
-.wb-wacc.orange{color:#c06010}
-[data-theme="dark"] .wb-wacc.teal  {color:#5ecfec}
-[data-theme="dark"] .wb-wacc.orange{color:#f4a94e}
-.wb-delta{font-size:0.78rem;font-weight:600;margin-top:4px}
-.wb-delta.neg{color:#07845a}
-[data-theme="dark"] .wb-delta.neg{color:#5ddba0}
-
 /* ── INFO ROWS ── */
-.info-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.84rem}
+.info-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.85rem;transition:padding .15s}
 .info-row:last-child{border-bottom:none}
 .info-row span:first-child{color:var(--muted)}
-.info-row span:last-child{font-weight:500;font-variant-numeric:tabular-nums}
+.info-row span:last-child{font-weight:600}
 
 /* ── LAYOUTS ── */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
-.two-thirds{display:grid;grid-template-columns:2fr 1fr;gap:1.4rem}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.two-thirds{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem}
 @media(max-width:750px){.two-col,.two-thirds,.three-col{grid-template-columns:1fr}}
 
-.section-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:500;color:var(--text);margin-bottom:0.25rem}
-.section-sub{font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem}
+footer{text-align:center;padding:2.2rem;font-size:0.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:1rem;letter-spacing:0.03em}
 
-footer{text-align:center;padding:1.8rem;font-size:0.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:0.5rem}
+.funding-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:1.1rem;align-items:center;margin-bottom:1.7rem}
+.funding-vs{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--muted);text-align:center}
+@media(max-width:680px){.funding-compare{grid-template-columns:1fr}}
 
-/* ── ANIMATED UNDERLINE ON METRICS ── */
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-.updating{animation:pulse 0.3s ease}
+details summary{font-size:0.73rem;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;padding:0.5rem 0;
+   user-select:none;list-style:none;transition:color .18s}
+details summary:hover{color:var(--c-teal)}
+details summary::-webkit-details-marker{display:none}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
 
+
+
 <header>
   <div class="header-glow"></div>
-  <button class="dm-toggle" onclick="toggleDark()" id="dmBtn">☀ Light</button>
+  <button class="dm-toggle" onclick="toggleDark()" id="dmBtn">🌙 Dark</button>
   <div class="header-inner">
-    <div class="header-badge">TSG · Interactive Analysis</div>
+    <div class="header-badge" id="hs-badge">TSG · Avior Universe</div>
     <h1>Share Buyback Illustrator</h1>
-    <p>EPS Accretion · Shareholder Wealth · Cost of Capital</p>
+    <p>EPS Accretion · ROE · Shareholder Wealth · Funding · Cost of Capital</p>
   </div>
   <div class="header-stats">
     <div class="hstat"><div class="hstat-val" id="hs-price">R7.65</div><div class="hstat-lbl">Share Price</div></div>
     <div class="hstat"><div class="hstat-val" id="hs-pe">6.07x</div><div class="hstat-lbl">Implied P/E</div></div>
-    <div class="hstat"><div class="hstat-val" id="hs-eps">R1.26</div><div class="hstat-lbl">EPS (FY2026)</div></div>
+    <div class="hstat"><div class="hstat-val" id="hs-eps">R1.26</div><div class="hstat-lbl">EPS</div></div>
     <div class="hstat"><div class="hstat-val" id="hs-bb">5%</div><div class="hstat-lbl">Buyback %</div></div>
-    <div class="hstat"><div class="hstat-val" id="hs-wacc">11.91%</div><div class="hstat-lbl">Current WACC</div></div>
+    <div class="hstat"><div class="hstat-val" id="hs-wacc">11.91%</div><div class="hstat-lbl">WACC</div></div>
+    <div class="hstat"><div class="hstat-val" id="hs-entity">Individual</div><div class="hstat-lbl">Entity</div></div>
   </div>
 </header>
 
 <nav class="tab-bar">
-  <button class="tab-btn active" onclick="showPage('accretion',this)">EPS Accretion</button>
-  <button class="tab-btn" onclick="showPage('wealth',this)">Shareholder Wealth</button>
-  <button class="tab-btn" onclick="showPage('wacc',this)">WACC Impact</button>
-  <button class="tab-btn" onclick="showPage('keydata',this)">Key Figures</button>
+  <button class="tab-btn active" onclick="showPage('assumptions',this)"><span class="tab-num">00</span>Assumptions</button>
+  <button class="tab-btn" onclick="showPage('accretion',this)"><span class="tab-num">01</span>EPS Accretion</button>
+  <button class="tab-btn" onclick="showPage('roe',this)"><span class="tab-num">02</span>ROE Effect</button>
+  <button class="tab-btn" onclick="showPage('wealth',this)"><span class="tab-num">03</span>Shareholder Wealth</button>
+  <button class="tab-btn" onclick="showPage('funding',this)"><span class="tab-num">04</span>Funding Method</button>
+  <button class="tab-btn" onclick="showPage('wacc',this)"><span class="tab-num">05</span>WACC Impact</button>
+  <span class="tab-indicator" id="tabIndicator"></span>
 </nav>
 
-<!-- ═══ PAGE 1: EPS ACCRETION ═══ -->
-<div id="page-accretion" class="page active">
+<!-- PAGES INSERTED HERE -->
+<div id="page-assumptions" class="page active">
 <div class="container">
-  <div class="narrative" id="acc-narrative"></div>
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 00</div>
+    <div class="page-heading">Assumptions &amp; Inputs</div>
+    <div class="page-sub">Pick a company to load its actual financials, then adjust any assumption below. The five effect pages are read-only views that update live from these inputs.</div>
+  </div>
+
+  <!-- COMPANY SELECTOR -->
   <div class="card">
-    <div class="card-title"><span class="card-title-dot"></span>Assumptions</div>
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>Company</div>
+    <div class="company-selector" id="companySelector"></div>
+    <div class="company-meta" id="companyMeta"></div>
+  </div>
+
+  <!-- ENTITY SELECTOR -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot"></span>Investor / Entity Type</div>
+    <div class="entity-selector">
+      <button class="entity-btn eb-individual active" onclick="setEntity('individual',this)">
+        <span class="entity-icon">👤</span>
+        <span class="entity-name">Individual</span>
+        <span class="entity-subtitle">IT 45% · CGT 40% · DWT 20%</span>
+      </button>
+      <button class="entity-btn eb-company" onclick="setEntity('company',this)">
+        <span class="entity-icon">🏢</span>
+        <span class="entity-name">Company</span>
+        <span class="entity-subtitle">IT 27% · CGT 80% · DWT 0%</span>
+      </button>
+      <button class="entity-btn eb-trust" onclick="setEntity('trust',this)">
+        <span class="entity-icon">⚖️</span>
+        <span class="entity-name">Trust</span>
+        <span class="entity-subtitle">IT 45% · CGT 80% · DWT 20%</span>
+      </button>
+    </div>
+    <div class="tax-badges" id="taxBadges">
+      <span class="tax-badge tb-income"><span class="tax-badge-lbl">Income Tax</span> <strong id="badge-it">45%</strong></span>
+      <span class="tax-badge tb-cgt"><span class="tax-badge-lbl">CGT Inclusion</span> <strong id="badge-cgt">40%</strong></span>
+      <span class="tax-badge tb-cgt" style="opacity:0.75"><span class="tax-badge-lbl">Effective CGT</span> <strong id="badge-ecgt">18.0%</strong></span>
+      <span class="tax-badge tb-div"><span class="tax-badge-lbl">Dividends Tax</span> <strong id="badge-dwt">20%</strong></span>
+      <span class="tax-badge tb-income" style="opacity:0.75"><span class="tax-badge-lbl">After-tax Reinvest</span> <strong id="badge-reinv">5.5%</strong></span>
+    </div>
+    <details>
+      <summary>▸ Override entity tax rates manually</summary>
+      <div class="controls-grid" style="margin-top:1rem;margin-bottom:0">
+        <div class="control-group"><label>Marginal Tax Rate</label><input type="range" id="in-margTax" min="0" max="60" step="1" value="45"><div class="control-val"><span id="in-margTaxVal">45</span>%</div></div>
+        <div class="control-group"><label>CGT Inclusion Rate</label><input type="range" id="in-cgtInc" min="0" max="100" step="5" value="40"><div class="control-val"><span id="in-cgtIncVal">40</span>%</div></div>
+        <div class="control-group"><label>Dividends Tax Rate</label><input type="range" id="in-divTax" min="0" max="40" step="1" value="20"><div class="control-val"><span id="in-divTaxVal">20</span>%</div></div>
+      </div>
+    </details>
+  </div>
+
+  <!-- CORE MARKET & BUYBACK ASSUMPTIONS -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot"></span>Market &amp; Buyback Assumptions</div>
     <div class="controls-grid">
-      <div class="control-group"><label>Share Price (R)</label><input type="range" id="sharePrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="sharePriceVal">7.65</span></div></div>
-      <div class="control-group"><label>Current EPS (R)</label><input type="range" id="eps" min="0.5" max="4" step="0.01" value="1.26"><div class="control-val">R <span id="epsVal">1.26</span></div></div>
-      <div class="control-group"><label>EPS Growth p.a.</label><input type="range" id="epsGrowth" min="2" max="30" step="0.5" value="8"><div class="control-val"><span id="epsGrowthVal">8.0</span>%</div></div>
-      <div class="control-group"><label>Buyback % of Shares</label><input type="range" id="buybackPct" min="1" max="30" step="1" value="5"><div class="control-val"><span id="buybackPctVal">5</span>%</div></div>
-      <div class="control-group"><label>P/E Re-rate (up)</label><input type="range" id="peRerate" min="6" max="20" step="0.5" value="8"><div class="control-val"><span id="peRerateVal">8.0</span>x</div></div>
-      <div class="control-group"><label>P/E De-rate (down)</label><input type="range" id="peDerate" min="2" max="10" step="0.5" value="5"><div class="control-val"><span id="peDeRateVal">5.0</span>x</div></div>
-      <div class="control-group"><label>Holding Period (years)</label><input type="range" id="holding" min="1" max="10" step="1" value="5"><div class="control-val"><span id="holdingVal">5</span> yrs</div></div>
+      <div class="control-group"><label>Share Price (R)</label><input type="range" id="in-sharePrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="in-sharePriceVal">7.65</span></div></div>
+      <div class="control-group"><label>Current EPS (R)</label><input type="range" id="in-eps" min="0.5" max="4" step="0.01" value="1.26"><div class="control-val">R <span id="in-epsVal">1.26</span></div></div>
+      <div class="control-group"><label>EPS / Price Growth p.a.</label><input type="range" id="in-epsGrowth" min="2" max="30" step="0.5" value="8"><div class="control-val"><span id="in-epsGrowthVal">8.0</span>%</div></div>
+      <div class="control-group"><label>Buyback % of Shares</label><input type="range" id="in-buybackPct" min="1" max="30" step="1" value="5"><div class="control-val"><span id="in-buybackPctVal">5</span>%</div></div>
+      <div class="control-group"><label>Shares Outstanding (m)</label><input type="range" id="in-shares" min="500" max="2000" step="10" value="1026"><div class="control-val"><span id="in-sharesVal">1,026</span>m</div></div>
+      <div class="control-group"><label>Holding Period (years)</label><input type="range" id="in-holding" min="1" max="10" step="1" value="5"><div class="control-val"><span id="in-holdingVal">5</span> yrs</div></div>
+      <div class="control-group"><label>P/E Re-rate target (up)</label><input type="range" id="in-peRerate" min="6" max="20" step="0.5" value="8"><div class="control-val"><span id="in-peRerateVal">8.0</span>x</div></div>
+      <div class="control-group"><label>P/E De-rate target (down)</label><input type="range" id="in-peDerate" min="2" max="10" step="0.5" value="5"><div class="control-val"><span id="in-peDerateVal">5.0</span>x</div></div>
     </div>
   </div>
 
-  <div class="metrics-row" id="accretionMetrics"></div>
+  <!-- SHAREHOLDER / CLIENT ASSUMPTIONS -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>Client Holding &amp; Reinvestment</div>
+    <div class="controls-grid">
+      <div class="control-group"><label>Client Shares Held</label><input type="range" id="in-clientShares" min="10000" max="1000000" step="10000" value="100000"><div class="control-val"><span id="in-clientSharesVal">100,000</span></div></div>
+      <div class="control-group"><label>Cost Base / Share (R)</label><input type="range" id="in-costBase" min="1" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="in-costBaseVal">7.65</span></div></div>
+      <div class="control-group"><label>Reinvest Return p.a. (gross)</label><input type="range" id="in-reinvRet" min="2" max="20" step="1" value="10"><div class="control-val"><span id="in-reinvRetVal">10</span>%</div></div>
+    </div>
+  </div>
 
-  <!-- ROE SECTION -->
+  <!-- BALANCE SHEET / WACC / ROE ASSUMPTIONS -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-purple)"></span>Balance Sheet, WACC &amp; ROE Assumptions</div>
+    <div class="controls-grid">
+      <div class="control-group"><label>Total Debt (Rm)</label><input type="range" id="in-debt" min="1000" max="20000" step="50" value="6910"><div class="control-val">R <span id="in-debtVal">6,910</span>m</div></div>
+      <div class="control-group"><label>Cash &amp; Equivalents (Rm)</label><input type="range" id="in-cash" min="0" max="5000" step="50" value="470"><div class="control-val">R <span id="in-cashVal">470</span>m</div></div>
+      <div class="control-group"><label>Net Income FY2026 (Rm)</label><input type="range" id="in-netIncome" min="500" max="5000" step="10" value="1295"><div class="control-val">R <span id="in-netIncomeVal">1,295</span>m</div></div>
+      <div class="control-group"><label>Total Equity FY2026 (Rm)</label><input type="range" id="in-equity" min="1000" max="20000" step="50" value="5458"><div class="control-val">R <span id="in-equityVal">5,458</span>m</div></div>
+      <div class="control-group"><label>Interest Expense (Rm)</label><input type="range" id="in-interest" min="100" max="2000" step="10" value="603"><div class="control-val">R <span id="in-interestVal">603</span>m</div></div>
+      <div class="control-group"><label>Effective Tax Rate</label><input type="range" id="in-waccTax" min="15" max="45" step="0.01" value="31.13"><div class="control-val"><span id="in-waccTaxVal">31.13</span>%</div></div>
+      <div class="control-group"><label>Risk-Free Rate, Rf</label><input type="range" id="in-rf" min="4" max="15" step="0.1" value="10.5"><div class="control-val"><span id="in-rfVal">10.5</span>%</div></div>
+      <div class="control-group"><label>Beta, β</label><input type="range" id="in-beta" min="0.5" max="2.5" step="0.05" value="1.1"><div class="control-val"><span id="in-betaVal">1.10</span></div></div>
+      <div class="control-group"><label>Equity Risk Premium</label><input type="range" id="in-erp" min="2" max="12" step="0.25" value="6"><div class="control-val"><span id="in-erpVal">6.0</span>%</div></div>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-label">Interest on buyback debt is tax-deductible<small>Applies only to interest on the NEW debt raised for the buyback — existing debt's interest is always deductible. Toggles off to show the WACC/EPS impact if the buyback-debt interest loses its shield.</small></div>
+      <label class="switch"><input type="checkbox" id="in-interestDeductible" checked="" onchange="onInputChange()"><span class="switch-slider"></span></label>
+    </div>
+  </div>
+
+  <!-- FUNDING METHOD -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-red)"></span>Buyback Funding Method</div>
+    <div class="toggle-row">
+      <div class="toggle-label">Fund the buyback with new debt<small>Off = funded from existing cash reserves (no new interest cost)</small></div>
+      <label class="switch"><input type="checkbox" id="in-fundingDebt" checked="" onchange="onInputChange()"><span class="switch-slider"></span></label>
+    </div>
+  </div>
+
+  <!-- DERIVED SUMMARY -->
+  <div class="metrics-row" id="assumptionsSummary"></div>
+
+  <!-- HISTORICAL REFERENCE DATA -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span>Historical Key Metrics — Reference (FY2023–FY2026)</div>
+    <div id="kd-historical"></div>
+  </div>
+
   <div class="two-col">
     <div class="card">
-      <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>ROE Build — Effect of Buyback</div>
-      <div class="controls-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:1rem">
-        <div class="control-group"><label>Net Income (Rm)</label><input type="range" id="roeNetIncome" min="500" max="5000" step="10" value="1295"><div class="control-val">R <span id="roeNetIncomeVal">1,295</span>m</div></div>
-        <div class="control-group"><label>Total Equity (Rm)</label><input type="range" id="roeEquity" min="1000" max="20000" step="50" value="5458"><div class="control-val">R <span id="roeEquityVal">5,458</span>m</div></div>
-        <div class="control-group"><label>Buyback Price (R)</label><input type="range" id="roeBBPrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="roeBBPriceVal">7.65</span></div></div>
-        <div class="control-group"><label>Shares Outstanding (m)</label><input type="range" id="roeShares" min="500" max="2000" step="10" value="1026"><div class="control-val"><span id="roeSharesVal">1,026</span>m</div></div>
-      </div>
-      <div id="roeMetrics" class="metrics-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:0"></div>
+      <div class="card-title"><span class="card-title-dot"></span>Income Statement — FY2026</div>
+      <div id="kd-income"></div>
     </div>
     <div class="card">
-      <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>ROE &amp; EPS Accretion by Buyback Size</div>
-      <div class="legend-row" id="roeLegend"></div>
-      <div class="chart-wrap" style="height:240px"><canvas id="roeChart"></canvas></div>
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>Valuation &amp; Market Data</div>
+      <div id="kd-valuation"></div>
     </div>
   </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>Balance Sheet — FY2026</div>
+      <div id="kd-balance"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-purple)"></span>Cash Flow — FY2026</div>
+      <div id="kd-cashflow"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div id="page-accretion" class="page">
+<div class="container">
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 01</div>
+    <div class="page-heading">EPS Accretion</div>
+    <div class="page-sub">How the buyback mechanically lifts earnings per share, and how that uplift plays out across P/E re-rating and de-rating scenarios.</div>
+  </div>
+  <button class="readonly-link" onclick="showPage('assumptions',document.querySelector('[onclick*=assumptions]'))">✎ Edit assumptions</button>
+
+  <div class="narrative" id="acc-narrative"></div>
+
+  <div class="metrics-row" id="accretionMetrics"></div>
 
   <div class="two-thirds">
     <div class="card">
@@ -285,26 +612,48 @@ footer{text-align:center;padding:1.8rem;font-size:0.72rem;color:var(--muted);bor
 </div>
 </div>
 
-<!-- ═══ PAGE 2: SHAREHOLDER WEALTH ═══ -->
-<div id="page-wealth" class="page">
+<div id="page-roe" class="page">
 <div class="container">
-  <div class="narrative" id="wealth-narrative"></div>
-  <div class="card">
-    <div class="card-title"><span class="card-title-dot"></span>Client & Tax Assumptions</div>
-    <div class="controls-grid">
-      <div class="control-group"><label>Shares Held</label><input type="range" id="sharesHeld" min="10000" max="1000000" step="10000" value="100000"><div class="control-val"><span id="sharesHeldVal">100,000</span></div></div>
-      <div class="control-group"><label>Share Price (R)</label><input type="range" id="wSharePrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="wSharePriceVal">7.65</span></div></div>
-      <div class="control-group"><label>Cost Base / Share (R)</label><input type="range" id="costBase" min="1" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="costBaseVal">7.65</span></div></div>
-      <div class="control-group"><label>Holding Period (years)</label><input type="range" id="wHolding" min="1" max="10" step="1" value="5"><div class="control-val"><span id="wHoldingVal">5</span> yrs</div></div>
-      <div class="control-group"><label>EPS (R)</label><input type="range" id="wEps" min="0.5" max="4" step="0.01" value="1.26"><div class="control-val">R <span id="wEpsVal">1.26</span></div></div>
-      <div class="control-group"><label>EPS Growth p.a.</label><input type="range" id="wEpsGrowth" min="2" max="30" step="0.5" value="8"><div class="control-val"><span id="wEpsGrowthVal">8.0</span>%</div></div>
-      <div class="control-group"><label>Buyback % of Shares</label><input type="range" id="wBuybackPct" min="1" max="30" step="1" value="5"><div class="control-val"><span id="wBuybackPctVal">5</span>%</div></div>
-      <div class="control-group"><label>CGT Inclusion Rate</label><input type="range" id="cgtInclusion" min="10" max="80" step="5" value="40"><div class="control-val"><span id="cgtInclusionVal">40</span>%</div></div>
-      <div class="control-group"><label>Marginal Tax Rate</label><input type="range" id="marginalTax" min="20" max="60" step="5" value="45"><div class="control-val"><span id="marginalTaxVal">45</span>%</div></div>
-      <div class="control-group"><label>Dividends Tax Rate</label><input type="range" id="divTax" min="5" max="40" step="5" value="20"><div class="control-val"><span id="divTaxVal">20</span>%</div></div>
-      <div class="control-group"><label>Reinvest Return p.a. (gross)</label><input type="range" id="reinvestReturn" min="2" max="20" step="1" value="10"><div class="control-val"><span id="reinvestReturnVal">10</span>%</div></div>
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 02</div>
+    <div class="page-heading">ROE Effect</div>
+    <div class="page-sub">Buying back shares with cash or debt shrinks the equity base, mechanically lifting return on equity even before any operational improvement.</div>
+  </div>
+  <button class="readonly-link" onclick="showPage('assumptions',document.querySelector('[onclick*=assumptions]'))">✎ Edit assumptions</button>
+
+  <div class="narrative" id="roe-narrative"></div>
+
+  <div class="metrics-row" id="roeMetrics"></div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>ROE Build</div>
+      <div id="roeBuild"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>ROE &amp; EPS Accretion by Buyback Size</div>
+      <div class="legend-row" id="roeLegend"></div>
+      <div class="chart-wrap" style="height:280px"><canvas id="roeChart"></canvas></div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span>Sensitivity — ROE Across Buyback Sizes</div>
+    <div id="roeSensTable"></div>
+  </div>
+</div>
+</div>
+
+<div id="page-wealth" class="page">
+<div class="container">
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 03</div>
+    <div class="page-heading">Shareholder Wealth</div>
+    <div class="page-sub">After-tax outcomes for an individual shareholder across four scenarios: doing nothing, receiving a special dividend, participating in the buyback, or holding through it.</div>
+  </div>
+  <button class="readonly-link" onclick="showPage('assumptions',document.querySelector('[onclick*=assumptions]'))">✎ Edit assumptions</button>
+
+  <div class="narrative" id="wealth-narrative"></div>
 
   <div class="wealth-cards" id="wealthCards"></div>
 
@@ -321,47 +670,84 @@ footer{text-align:center;padding:1.8rem;font-size:0.72rem;color:var(--muted);bor
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span><span id="taxDetailTitle">Tax & Mechanics Detail</span></div>
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span><span id="taxDetailTitle">Tax &amp; Mechanics Detail</span></div>
     <div id="taxDetail"></div>
   </div>
 </div>
 </div>
 
-<!-- ═══ PAGE 3: WACC ═══ -->
-<div id="page-wacc" class="page">
+<div id="page-funding" class="page">
 <div class="container">
-  <div class="narrative" id="wacc-narrative"></div>
-  <div class="card">
-    <div class="card-title"><span class="card-title-dot"></span>Capital Structure & Cost Assumptions</div>
-    <div class="controls-grid">
-      <div class="control-group"><label>Share Price (R)</label><input type="range" id="waccPrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="waccPriceVal">7.65</span></div></div>
-      <div class="control-group"><label>Shares Outstanding (m)</label><input type="range" id="waccShares" min="500" max="2000" step="10" value="1026"><div class="control-val"><span id="waccSharesVal">1,026</span>m</div></div>
-      <div class="control-group"><label>Total Debt (Rm)</label><input type="range" id="waccDebt" min="1000" max="20000" step="50" value="6910"><div class="control-val">R <span id="waccDebtVal">6,910</span>m</div></div>
-      <div class="control-group"><label>Cash & Equivalents (Rm)</label><input type="range" id="waccCash" min="0" max="5000" step="50" value="470"><div class="control-val">R <span id="waccCashVal">470</span>m</div></div>
-      <div class="control-group"><label>Risk-Free Rate, Rf</label><input type="range" id="waccRf" min="4" max="15" step="0.1" value="10.5"><div class="control-val"><span id="waccRfVal">10.5</span>%</div></div>
-      <div class="control-group"><label>Beta, β</label><input type="range" id="waccBeta" min="0.5" max="2.5" step="0.05" value="1.1"><div class="control-val"><span id="waccBetaVal">1.10</span></div></div>
-      <div class="control-group"><label>Equity Risk Premium</label><input type="range" id="waccErp" min="2" max="12" step="0.25" value="6"><div class="control-val"><span id="waccErpVal">6.0</span>%</div></div>
-      <div class="control-group"><label>Interest Expense (Rm)</label><input type="range" id="waccInt" min="100" max="2000" step="10" value="603"><div class="control-val">R <span id="waccIntVal">603</span>m</div></div>
-      <div class="control-group"><label>Tax Rate</label><input type="range" id="waccTax" min="15" max="45" step="0.5" value="31.1"><div class="control-val"><span id="waccTaxVal">31.1</span>%</div></div>
-      <div class="control-group"><label>Buyback % of Equity</label><input type="range" id="waccBBpct" min="1" max="25" step="1" value="5"><div class="control-val"><span id="waccBBpctVal">5</span>%</div></div>
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 04</div>
+    <div class="page-heading">Funding Method</div>
+    <div class="page-sub">A buyback funded with new debt carries an after-tax interest cost that drags on earnings — a cash-funded buyback doesn't. This page isolates that difference.</div>
+  </div>
+  <button class="readonly-link" onclick="showPage('assumptions',document.querySelector('[onclick*=assumptions]'))">✎ Edit assumptions</button>
+
+  <div class="narrative" id="funding-narrative"></div>
+
+  <div class="metrics-row" id="fundingMetrics"></div>
+
+  <div class="funding-compare">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-teal)"></span>Debt-Funded</div>
+      <div id="fundingDebtDetail"></div>
+    </div>
+    <div class="funding-vs">vs</div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>Cash-Funded</div>
+      <div id="fundingCashDetail"></div>
     </div>
   </div>
 
-  <div class="wacc-comparison" id="waccBoxes"></div>
+  <div style="height:1.4rem"></div>
 
-  <div class="wacc-caps" id="waccCaps"></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>EPS Uplift Factor — Debt vs Cash Funded</div>
+      <div class="legend-row" id="fundingChartLegend"></div>
+      <div class="chart-wrap" style="height:280px"><canvas id="fundingChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span>Earnings Drag Detail</div>
+      <div id="fundingDragDetail"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="page-wacc" class="page">
+<div class="container">
+  <div class="page-intro">
+    <div class="page-eyebrow">Step 05</div>
+    <div class="page-heading">WACC Impact</div>
+    <div class="page-sub">A buyback replaces equity with debt in the capital structure. Since debt is cheaper — especially with the interest tax shield — WACC falls.</div>
+  </div>
+  <button class="readonly-link" onclick="showPage('assumptions',document.querySelector('[onclick*=assumptions]'))">✎ Edit assumptions</button>
+
+  <div class="narrative" id="wacc-narrative"></div>
+
+  <div class="wealth-cards" id="waccBoxes"></div>
+
+  <div class="metrics-row" id="waccCaps"></div>
 
   <div class="two-col">
     <div class="card">
       <div class="card-title"><span class="card-title-dot"></span>WACC vs Cost of Equity (Ke sensitivity)</div>
       <div class="legend-row" id="waccKeLegend"></div>
-      <div class="chart-wrap" style="height:300px"><canvas id="waccKeChart"></canvas></div>
+      <div class="chart-wrap" style="height:290px"><canvas id="waccKeChart"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>WACC vs Buyback Size</div>
       <div class="legend-row" id="waccBBLegend"></div>
-      <div class="chart-wrap" style="height:300px"><canvas id="waccBBChart"></canvas></div>
+      <div class="chart-wrap" style="height:290px"><canvas id="waccBBChart"></canvas></div>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="card-title-dot" style="background:var(--c-red)"></span>Tax Deductibility of Interest — Impact on WACC</div>
+    <div id="waccTaxDeductDetail"></div>
   </div>
 
   <div class="two-col">
@@ -377,102 +763,280 @@ footer{text-align:center;padding:1.8rem;font-size:0.72rem;color:var(--muted);bor
 </div>
 </div>
 
-<!-- ═══ PAGE 4: KEY FIGURES ═══ -->
-<div id="page-keydata" class="page">
-<div class="container">
-  <div class="narrative" id="keydata-narrative">These are the headline financial figures from the TSG model (FY2026). All values are editable and flow through into the other tabs when you update the sliders there directly — use this page as a reference and quick sanity-check.</div>
-
-  <!-- INCOME & VALUATION -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title"><span class="card-title-dot"></span>Income Statement — FY2026</div>
-      <div id="kd-income"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="card-title-dot" style="background:var(--c-orange)"></span>Valuation & Market Data</div>
-      <div id="kd-valuation"></div>
-    </div>
-  </div>
-
-  <!-- BALANCE SHEET & CAPITAL -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title"><span class="card-title-dot" style="background:var(--c-mint)"></span>Balance Sheet — FY2026</div>
-      <div id="kd-balance"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="card-title-dot" style="background:var(--c-purple)"></span>Cash Flow — FY2026</div>
-      <div id="kd-cashflow"></div>
-    </div>
-  </div>
-
-  <!-- HISTORICAL TREND -->
-  <div class="card">
-    <div class="card-title"><span class="card-title-dot" style="background:var(--c-grey)"></span>Historical Key Metrics (FY2023–FY2026)</div>
-    <div id="kd-historical"></div>
-  </div>
-
-  <!-- EDITABLE MODEL INPUTS -->
-  <div class="card">
-    <div class="card-title"><span class="card-title-dot" style="background:var(--c-red)"></span>Editable Model Inputs — sync across all tabs</div>
-    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.2rem">Adjust these to change the assumptions used across the EPS Accretion, Shareholder Wealth and WACC tabs simultaneously.</p>
-    <div class="controls-grid">
-      <div class="control-group"><label>Share Price (R)</label><input type="range" id="kd-sharePrice" min="4" max="20" step="0.05" value="7.65"><div class="control-val">R <span id="kd-sharePriceVal">7.65</span></div></div>
-      <div class="control-group"><label>EPS — FY2026 (R)</label><input type="range" id="kd-eps" min="0.5" max="4" step="0.01" value="1.26"><div class="control-val">R <span id="kd-epsVal">1.26</span></div></div>
-      <div class="control-group"><label>EPS Growth p.a.</label><input type="range" id="kd-epsGrowth" min="2" max="30" step="0.5" value="8"><div class="control-val"><span id="kd-epsGrowthVal">8.0</span>%</div></div>
-      <div class="control-group"><label>Buyback % of Shares</label><input type="range" id="kd-buybackPct" min="1" max="30" step="1" value="5"><div class="control-val"><span id="kd-buybackPctVal">5</span>%</div></div>
-      <div class="control-group"><label>Shares Outstanding (m)</label><input type="range" id="kd-shares" min="500" max="2000" step="10" value="1026"><div class="control-val"><span id="kd-sharesVal">1,026</span>m</div></div>
-      <div class="control-group"><label>Net Income (Rm)</label><input type="range" id="kd-netIncome" min="500" max="5000" step="10" value="1295"><div class="control-val">R <span id="kd-netIncomeVal">1,295</span>m</div></div>
-      <div class="control-group"><label>Total Equity (Rm)</label><input type="range" id="kd-equity" min="1000" max="20000" step="50" value="5458"><div class="control-val">R <span id="kd-equityVal">5,458</span>m</div></div>
-      <div class="control-group"><label>Total Debt (Rm)</label><input type="range" id="kd-debt" min="1000" max="20000" step="50" value="6910"><div class="control-val">R <span id="kd-debtVal">6,910</span>m</div></div>
-      <div class="control-group"><label>Cash (Rm)</label><input type="range" id="kd-cash" min="0" max="5000" step="50" value="470"><div class="control-val">R <span id="kd-cashVal">470</span>m</div></div>
-      <div class="control-group"><label>Revenue (Rm)</label><input type="range" id="kd-revenue" min="5000" max="20000" step="50" value="10841"><div class="control-val">R <span id="kd-revenueVal">10,841</span>m</div></div>
-      <div class="control-group"><label>EBITDA (Rm)</label><input type="range" id="kd-ebitda" min="500" max="8000" step="50" value="3173"><div class="control-val">R <span id="kd-ebitdaVal">3,173</span>m</div></div>
-      <div class="control-group"><label>Free Cash Flow (Rm)</label><input type="range" id="kd-fcf" min="0" max="5000" step="50" value="1599"><div class="control-val">R <span id="kd-fcfVal">1,599</span>m</div></div>
-    </div>
-    <div id="kd-derived" style="margin-top:1.2rem"></div>
-  </div>
-</div>
-</div>
 
 <footer>TSG Buyback Illustration · For discussion purposes only · Not investment advice · FY2026 data</footer>
 
 <script>
-// ── COLOUR PALETTE (exact spreadsheet) ──
-const C={teal:'#01A0C6',tealDk:'#0E7CA8',mint:'#8ADFB6',red:'#ED2A3F',orange:'#F79736',grey:'#988E8A',purple:'#741B81',silver:'#A6A6A6'};
+// ════════════════════════════════════════════════════════════════
+// GLOBAL STATE — single source of truth for all pages
+// ════════════════════════════════════════════════════════════════
+const STATE = {
+  sharePrice: 7.65,
+  eps: 1.26,
+  epsGrowth: 0.08,
+  buybackPct: 0.05,
+  peRerate: 8.0,
+  peDerate: 5.0,
+  holding: 5,
+  shares: 1026,           // shares outstanding (m)
+  clientShares: 100000,   // shareholder wealth client holding
+  costBase: 7.65,
+  entity: 'individual',
+  margTax: 0.45,
+  cgtInc: 0.40,
+  divTax: 0.20,
+  reinvRet: 0.10,
+  debt: 6910,
+  cash: 470,
+  rf: 0.105,
+  beta: 1.1,
+  erp: 0.06,
+  interest: 603,
+  waccTaxRate: 0.311311,
+  interestDeductible: true,
+  netIncome: 1295,
+  equity: 5458,
+  fundingDebt: true,      // true = debt-funded buyback, false = cash-funded
+};
 
-let charts={traj:null,all:null,wealth:null,waccKe:null,waccBB:null};
+const COMPANIES = {
+  TSG: {
+    name:'Tsogo Sun Gaming', fyEnd:'FY2026 (Mar)',
+    sharePrice:7.65, eps:1.26, epsGrowth:0.08, buybackPct:0.05,
+    shares:1026, netIncome:1295, equity:5458, debt:6910, cash:470,
+    interest:603, waccTaxRate:0.311311, costBase:7.65,
+  },
+  CMH: {
+    name:'Combined Motor Holdings', fyEnd:'FY2026 (Feb)',
+    sharePrice:40.0, eps:5.25, epsGrowth:0.08, buybackPct:0.05,
+    shares:73.65, netIncome:390.95, equity:1470.42, debt:2132.63, cash:1145.42,
+    interest:282.18, waccTaxRate:0.260634, costBase:40.0,
+  },
+  HCI: {
+    name:'Hosken Consolidated Investments', fyEnd:'FY2026 (Mar)',
+    sharePrice:165.04, eps:31.95, epsGrowth:0.08, buybackPct:0.05,
+    shares:79.02, netIncome:2538.49, equity:39549.87, debt:13216.68, cash:2566.04,
+    interest:1187.75, waccTaxRate:0.231976, costBase:165.04,
+  },
+  JSEJF: {
+    name:'JSE Limited', fyEnd:'FY2025 (Dec)',
+    sharePrice:130.56, eps:12.9, epsGrowth:0.08, buybackPct:0.05,
+    shares:4.86, netIncome:1063.4, equity:5029.26, debt:183.56, cash:3149.78,
+    interest:70.45, waccTaxRate:0.262588, costBase:130.56,
+  },
+  MTH: {
+    name:'Motus Holdings', fyEnd:'FY2025 (Jun)',
+    sharePrice:94.06, eps:14.17, epsGrowth:0.08, buybackPct:0.05,
+    shares:167, netIncome:2451, equity:20107, debt:25693, cash:2666,
+    interest:2011, waccTaxRate:0.2506, costBase:94.06,
+  },
+  MDI: {
+    name:'Master Drilling Group', fyEnd:'FY2025 (Dec)',
+    sharePrice:0.96, eps:0.22, epsGrowth:0.08, buybackPct:0.05,
+    shares:150.54, netIncome:30.48, equity:241.85, debt:69.63, cash:39.88,
+    interest:5.93, waccTaxRate:0.264897, costBase:0.96,
+  },
+  HDC: {
+    name:'Hudaco Industries', fyEnd:'FY2025 (Nov)',
+    sharePrice:180.19, eps:19.82, epsGrowth:0.08, buybackPct:0.05,
+    shares:28.39, netIncome:575, equity:3900, debt:1695, cash:352,
+    interest:128, waccTaxRate:0.284116, costBase:180.19,
+  },
+  HAR: {
+    name:'Harmony Gold Mining', fyEnd:'FY2025 (Jun)',
+    sharePrice:244.82, eps:22.88, epsGrowth:0.08, buybackPct:0.05,
+    shares:628.67, netIncome:14384, equity:48512, debt:2229, cash:13101,
+    interest:698, waccTaxRate:0.313968, costBase:244.82,
+  },
+  LHC: {
+    name:'Life Healthcare Group', fyEnd:'FY2025 (Sep)',
+    sharePrice:11.57, eps:2.66, epsGrowth:0.08, buybackPct:0.05,
+    shares:1435.97, netIncome:3864, equity:12142, debt:3951, cash:3810,
+    interest:345, waccTaxRate:0.3, costBase:11.57,
+  },
+  ITE: {
+    name:'Italtile', fyEnd:'FY2025 (Jun)',
+    sharePrice:10.0, eps:1.26, epsGrowth:0.08, buybackPct:0.05,
+    shares:1190, netIncome:1494, equity:8388, debt:936, cash:2169,
+    interest:76, waccTaxRate:0.271267, costBase:10.0,
+  },
+  DCP: {
+    name:'Dis-Chem Pharmacies', fyEnd:'FY2026 (Feb)',
+    sharePrice:37.00, eps:1.14, epsGrowth:0.08, buybackPct:0.05,
+    shares:857.01, netIncome:978.89, equity:5694.23, debt:6637.53, cash:499.76,
+    interest:695.58, waccTaxRate:0.257476, costBase:37.00,
+  },
+  LEW: {
+    name:'Lewis Group', fyEnd:'FY2026 (Mar)',
+    sharePrice:76.16, eps:15.87, epsGrowth:0.08, buybackPct:0.05,
+    shares:53.80, netIncome:853.80, equity:5485.60, debt:2355.30, cash:161.20,
+    interest:224.70, waccTaxRate:0.247687, costBase:76.16,
+  },
+  RLO: {
+    name:'Reunert', fyEnd:'FY2025 (Sep)',
+    sharePrice:50.88, eps:5.58, epsGrowth:0.08, buybackPct:0.05,
+    shares:166.00, netIncome:926.00, equity:8208.00, debt:1824.00, cash:1754.00,
+    interest:183.00, waccTaxRate:0.268884, costBase:50.88,
+  },
+  CLS: {
+    name:'Clicks Group', fyEnd:'FY2025 (Aug)',
+    sharePrice:370.38, eps:13.63, epsGrowth:0.08, buybackPct:0.05,
+    shares:237.51, netIncome:3236.33, equity:6857.59, debt:4042.48, cash:3255.77,
+    interest:363.96, waccTaxRate:0.270017, costBase:370.38,
+  },
+  ADH: {
+    name:'ADvTECH', fyEnd:'FY2025 (Dec)',
+    sharePrice:37.00, eps:2.33, epsGrowth:0.08, buybackPct:0.05,
+    shares:552.80, netIncome:1288.00, equity:6725.00, debt:2994.00, cash:344.80,
+    interest:214.20, waccTaxRate:0.276584, costBase:37.00,
+  },
+  BVT: {
+    name:'Bidvest Group', fyEnd:'FY2025 (Jun)',
+    sharePrice:233.13, eps:17.83, epsGrowth:0.08, buybackPct:0.05,
+    shares:340.45, netIncome:6068.54, equity:41414.56, debt:44507.60, cash:6193.64,
+    interest:2935.48, waccTaxRate:0.233026, costBase:233.13,
+  },
+  BID: {
+    name:'Bid Corporation', fyEnd:'FY2025 (Jun)',
+    sharePrice:465.77, eps:24.27, epsGrowth:0.08, buybackPct:0.05,
+    shares:336.85, netIncome:8174.17, equity:47672.67, debt:26206.40, cash:11768.59,
+    interest:1414.16, waccTaxRate:0.264291, costBase:465.77,
+  },
+};
+
+let currentCompany = 'TSG';
+
+const ENTITY_PRESETS = {
+  individual: { margTax:0.45, cgtInc:0.40, divTax:0.20, label:'Individual' },
+  company:    { margTax:0.27, cgtInc:0.80, divTax:0.00, label:'Company'    },
+  trust:      { margTax:0.45, cgtInc:0.80, divTax:0.20, label:'Trust'      },
+};
+
+const C={teal:'#01A0C6',tealDk:'#0E7CA8',mint:'#8ADFB6',red:'#ED2A3F',orange:'#F79736',grey:'#988E8A',purple:'#741B81',silver:'#A6A6A6'};
+let charts={};
 
 // ── UTILS ──
 const Rf  = n=>'R '+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
-const Rfm = n=>'R '+n.toLocaleString('en-ZA',{minimumFractionDigits:0,maximumFractionDigits:0})+'m';
 const pctFmt = n=>(n*100).toFixed(2)+'%';
 const pct1 = n=>(n*100).toFixed(1)+'%';
 const fmt2 = n=>n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
-const bps  = n=>(n*10000).toFixed(1)+' bps';
 const hl   = (v,cls='hl-teal')=>`<span class="hl ${cls}">${v}</span>`;
 
 function isDark(){return document.documentElement.getAttribute('data-theme')==='dark'}
-function chartColors(){return{grid:isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)',tick:isDark()?'#6b7a90':'#6b7a90'}}
+function chartColors(){return{grid:isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)',tick:'#6b7a90'}}
 
 function toggleDark(){
   const d=document.documentElement;
   const dark=d.getAttribute('data-theme')!=='dark';
   d.setAttribute('data-theme',dark?'dark':'light');
   document.getElementById('dmBtn').textContent=dark?'☀ Light':'🌙 Dark';
-  // re-render all charts
-  renderAcc();renderWealth();renderWACC();
+  renderAll();
 }
 
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  btn.classList.add('active');
+  if(btn) btn.classList.add('active');
+  positionTabIndicator();
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('#page-'+name+' canvas').forEach(c=>{
+      const ch = window.Chart && Chart.getChart(c);
+      if(ch){ ch.resize(); ch.reset(); ch.update(); }  // replay the draw-in / run-up
+    });
+    countUpPage(name);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// ════════════════════════════════════════════════════════════════
+// MOTION LAYER — count-up numbers, slider fill, sliding tab indicator
+// ════════════════════════════════════════════════════════════════
+const ANIM_SELECTOR = '.hstat-val, .metric-val, .wc-val';
+const __animRAF = new WeakMap();
+const __reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function parseNumStr(str){
+  if(str==null) return null;
+  const m = String(str).match(/-?[\d\s\u00a0.,]*\d/);
+  if(!m) return null;
+  const raw = m[0], start = String(str).indexOf(raw);
+  const prefix = String(str).slice(0,start), suffix = String(str).slice(start+raw.length);
+  let norm = raw.replace(/[\s\u00a0]/g,'');
+  const lc = norm.lastIndexOf(','), ld = norm.lastIndexOf('.');
+  let decSep = lc>ld ? ',' : (ld>lc ? '.' : null);
+  if(decSep===','){ norm = norm.replace(/\./g,'').replace(',', '.'); }
+  else { norm = norm.replace(/,/g,''); }
+  const val = parseFloat(norm);
+  if(isNaN(val)) return null;
+  let groupSep = /[\s\u00a0]/.test(raw) ? ' ' : (decSep===',' ? (/,\d/.test(raw)&&/\.\d{3}/.test(raw)?'.':'') : (/,\d{3}/.test(raw)?',':''));
+  let dec = 0;
+  if(decSep){ const after = raw.split(decSep).pop().replace(/[\s\u00a0]/g,''); dec = after.length; }
+  return {prefix,suffix,val,decSep:decSep||'.',groupSep,dec};
+}
+function fmtLike(v, info){
+  let s = v.toFixed(info.dec);
+  let neg = s.startsWith('-'); if(neg) s = s.slice(1);
+  let [ip, fp] = s.split('.');
+  if(info.groupSep) ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g, info.groupSep);
+  let out = ip + (info.dec>0 ? info.decSep+fp : '');
+  return info.prefix + (neg?'-':'') + out + info.suffix;
+}
+function countUpEl(el, startStr, targetStr, dur){
+  const target = parseNumStr(targetStr);
+  if(!target || __reduceMotion){ el.textContent = targetStr; return; }
+  const startInfo = parseNumStr(startStr);
+  const startVal = startInfo ? startInfo.val : 0;
+  if(Math.abs(startVal - target.val) < 1e-9){ el.textContent = targetStr; return; }
+  if(__animRAF.has(el)) cancelAnimationFrame(__animRAF.get(el));
+  const t0 = performance.now();
+  function frame(now){
+    let p = Math.min(1,(now-t0)/dur);
+    const e = 1 - Math.pow(1-p,4); // easeOutQuart — punchy
+    if(p>=1){ el.textContent = targetStr; __animRAF.delete(el); return; }
+    el.textContent = fmtLike(startVal + (target.val-startVal)*e, target);
+    __animRAF.set(el, requestAnimationFrame(frame));
+  }
+  el.textContent = fmtLike(startVal, target);
+  __animRAF.set(el, requestAnimationFrame(frame));
+}
+function animateNumbers(prevMap, doAnimate){
+  if(__reduceMotion || !doAnimate) return;
+  document.querySelectorAll(ANIM_SELECTOR).forEach(el=>{
+    countUpEl(el, prevMap.get(el), el.textContent, 1150);
+  });
+}
+// Count every headline number on a page up from zero, staggered — fired on each tab visit.
+function countUpPage(name){
+  if(__reduceMotion) return;
+  document.querySelectorAll('#page-'+name+' .metric-val, #page-'+name+' .wc-val').forEach((el,i)=>{
+    const targetStr = el.textContent;
+    const z = parseNumStr(targetStr);
+    if(z) el.textContent = fmtLike(0, z); // show zero immediately — no blank flash
+    setTimeout(()=>countUpEl(el, null, targetStr, 1050), 120 + i*60);
+  });
+}
+function refreshAllFills(){
+  document.querySelectorAll('.control-group input[type="range"]').forEach(el=>{
+    const min=+el.min, max=+el.max, v=+el.value;
+    const pct = max>min ? ((v-min)/(max-min))*100 : 0;
+    el.style.setProperty('--fill', pct+'%');
+  });
+}
+function positionTabIndicator(){
+  const bar=document.querySelector('.tab-bar');
+  const btn=document.querySelector('.tab-btn.active');
+  const ind=document.getElementById('tabIndicator');
+  if(!bar||!btn||!ind) return;
+  const b=btn.getBoundingClientRect(), p=bar.getBoundingClientRect();
+  ind.style.width=b.width+'px';
+  ind.style.transform='translateX('+(b.left-p.left+bar.scrollLeft)+'px)';
+}
+window.addEventListener('resize',()=>{ positionTabIndicator(); });
 
 function mkChart(id,config){
   const el=document.getElementById(id);
+  if(!el) return null;
   const existing=Chart.getChart(el);
   if(existing)existing.destroy();
   return new Chart(el,config);
@@ -488,42 +1052,200 @@ function chartOpts(yFmt){
   };
 }
 
-// ── HEADER STATS UPDATE ──
-function updateHeaderStats(price,pe,eps,bbPct,wacc){
-  document.getElementById('hs-price').textContent='R'+price.toFixed(2);
-  document.getElementById('hs-pe').textContent=pe.toFixed(2)+'x';
-  document.getElementById('hs-eps').textContent='R'+eps.toFixed(2);
-  document.getElementById('hs-bb').textContent=bbPct+'%';
-  document.getElementById('hs-wacc').textContent=wacc.toFixed(2)+'%';
+// ════════════════════════════════════════════════════════════════
+// COMPANY SELECTOR
+// ════════════════════════════════════════════════════════════════
+function niceMax(v){
+  // Round up to a friendly slider ceiling (roughly 2.2x the value, snapped to a clean step)
+  const target = v * 2.5;
+  if (target <= 0) return 10;
+  const mag = Math.pow(10, Math.floor(Math.log10(target)));
+  return Math.ceil(target / mag) * mag;
+}
+function niceStep(maxVal){
+  const mag = Math.pow(10, Math.floor(Math.log10(maxVal || 1)) - 2);
+  return mag > 0 ? mag : 0.01;
+}
+function rescaleSlider(id, value, opts={}){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const max = opts.max !== undefined ? opts.max : niceMax(Math.abs(value));
+  const min = opts.min !== undefined ? opts.min : 0;
+  const step = opts.step !== undefined ? opts.step : niceStep(max);
+  el.min = min; el.max = max; el.step = step;
+  el.value = value;
 }
 
-// ════════════════════════════════════════
-// ── EPS ACCRETION ──
-// ════════════════════════════════════════
-function getAccIns(){return{
-  sharePrice:+document.getElementById('sharePrice').value,
-  eps:       +document.getElementById('eps').value,
-  g:         +document.getElementById('epsGrowth').value/100,
-  buybackPct:+document.getElementById('buybackPct').value/100,
-  peRerate:  +document.getElementById('peRerate').value,
-  peDerate:  +document.getElementById('peDerate').value,
-  holding:   +document.getElementById('holding').value,
-}}
+function renderCompanySelector(){
+  const html = Object.keys(COMPANIES).map(ticker=>{
+    const c = COMPANIES[ticker];
+    const active = ticker===currentCompany ? ' active' : '';
+    return `<button class="company-btn${active}" onclick="setCompany('${ticker}',this)">
+      <span class="company-ticker">${ticker}</span>
+      <span class="company-name">${c.name}</span>
+    </button>`;
+  }).join('');
+  document.getElementById('companySelector').innerHTML = html;
+  updateCompanyMeta();
+}
 
-function calcAcc(i){
-  const pe=i.sharePrice/i.eps, ul=1/(1-i.buybackPct), postEps=i.eps*ul;
-  const yrs=Array.from({length:i.holding+1},(_,y)=>y);
-  // Year 0: both series start at current EPS/price (buyback happens at Yr0 but
-  // EPS uplift is first reflected in Year 1 earnings — same as spreadsheet)
-  const nBBe=yrs.map(y=>i.eps*Math.pow(1+i.g,y));
-  const bBe =yrs.map(y=>y===0 ? i.eps : postEps*Math.pow(1+i.g,y));
+function updateCompanyMeta(){
+  const c = COMPANIES[currentCompany];
+  document.getElementById('companyMeta').innerHTML =
+    `<strong>${c.name}</strong> (${currentCompany}) — ${c.fyEnd} · Share price R${c.sharePrice.toFixed(2)} · `+
+    `${c.shares.toLocaleString()}m shares · Net income R${c.netIncome.toLocaleString()}m · Equity R${c.equity.toLocaleString()}m`;
+}
 
-  // P/E glides linearly from current PE to target over the holding period,
-  // so every line starts at the same current share price at Yr 0
-  const n=i.holding;
-  const peGlideR=yrs.map(y=>pe+(i.peRerate-pe)*(y/n));
-  const peGlideD=yrs.map(y=>pe+(i.peDerate-pe)*(y/n));
+function setCompany(ticker, btn){
+  currentCompany = ticker;
+  document.querySelectorAll('.company-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
 
+  const c = COMPANIES[ticker];
+
+  // Rescale every slider to sensible ranges for this company's scale, then set the value
+  rescaleSlider('in-sharePrice', c.sharePrice, {min:0});
+  rescaleSlider('in-eps', c.eps, {min: c.eps<0?niceMax(Math.abs(c.eps))*-1:0});
+  rescaleSlider('in-shares', c.shares, {min:0});
+  rescaleSlider('in-costBase', c.sharePrice, {min:0});
+  rescaleSlider('in-debt', c.debt, {min:0});
+  rescaleSlider('in-cash', c.cash, {min:0});
+  rescaleSlider('in-netIncome', c.netIncome, {min: c.netIncome<0?niceMax(Math.abs(c.netIncome))*-1:0});
+  rescaleSlider('in-equity', c.equity, {min:0});
+  rescaleSlider('in-interest', c.interest, {min:0});
+  document.getElementById('in-waccTax').value = (c.waccTaxRate*100).toFixed(2);
+  document.getElementById('in-epsGrowth').value = (c.epsGrowth*100);
+  document.getElementById('in-buybackPct').value = (c.buybackPct*100);
+
+  // Reset client holding to a sensible fraction of shares outstanding for smaller companies
+  const sensibleClientShares = Math.max(1000, Math.round(c.shares*1e6*0.0001/1000)*1000);
+  document.getElementById('in-clientShares').value = Math.min(100000, sensibleClientShares) || 100000;
+
+  // Update all the little "Val" label spans to match
+  const syncIds = ['in-sharePrice','in-eps','in-shares','in-costBase','in-debt','in-cash','in-netIncome','in-equity','in-interest','in-waccTax','in-epsGrowth','in-buybackPct','in-clientShares'];
+  syncIds.forEach(id=>{
+    const el = document.getElementById(id);
+    const valEl = document.getElementById(id+'Val');
+    if(el && valEl && SLIDER_LABELS[id]) valEl.textContent = SLIDER_LABELS[id](el.value);
+  });
+
+  updateCompanyMeta();
+  onInputChange();
+}
+
+// ════════════════════════════════════════════════════════════════
+// ENTITY SELECTOR
+// ════════════════════════════════════════════════════════════════
+function setEntity(type, btn) {
+  STATE.entity = type;
+  document.querySelectorAll('.entity-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const p = ENTITY_PRESETS[type];
+  STATE.margTax = p.margTax; STATE.cgtInc = p.cgtInc; STATE.divTax = p.divTax;
+  document.getElementById('in-margTax').value = p.margTax * 100;
+  document.getElementById('in-cgtInc').value  = p.cgtInc  * 100;
+  document.getElementById('in-divTax').value  = p.divTax  * 100;
+  document.getElementById('in-margTaxVal').textContent = (p.margTax*100).toFixed(0);
+  document.getElementById('in-cgtIncVal').textContent  = (p.cgtInc *100).toFixed(0);
+  document.getElementById('in-divTaxVal').textContent  = (p.divTax *100).toFixed(0);
+  renderAll();
+}
+
+function updateTaxBadges() {
+  const cgt = STATE.margTax * STATE.cgtInc;
+  const reinvAT = STATE.reinvRet * (1 - STATE.margTax);
+  document.getElementById('badge-it').textContent   = pct1(STATE.margTax);
+  document.getElementById('badge-cgt').textContent  = pct1(STATE.cgtInc);
+  document.getElementById('badge-ecgt').textContent = (cgt*100).toFixed(1)+'%';
+  document.getElementById('badge-dwt').textContent  = pct1(STATE.divTax);
+  document.getElementById('badge-reinv').textContent= (reinvAT*100).toFixed(2)+'%';
+}
+
+// ════════════════════════════════════════════════════════════════
+// INPUT WIRING — reads all sliders into STATE, triggers re-render
+// ════════════════════════════════════════════════════════════════
+function onInputChange(){
+  STATE.sharePrice    = +document.getElementById('in-sharePrice').value;
+  STATE.eps           = +document.getElementById('in-eps').value;
+  STATE.epsGrowth     = +document.getElementById('in-epsGrowth').value/100;
+  STATE.buybackPct    = +document.getElementById('in-buybackPct').value/100;
+  STATE.shares        = +document.getElementById('in-shares').value;
+  STATE.holding       = +document.getElementById('in-holding').value;
+  STATE.peRerate      = +document.getElementById('in-peRerate').value;
+  STATE.peDerate      = +document.getElementById('in-peDerate').value;
+  STATE.clientShares  = +document.getElementById('in-clientShares').value;
+  STATE.costBase      = +document.getElementById('in-costBase').value;
+  STATE.reinvRet      = +document.getElementById('in-reinvRet').value/100;
+  STATE.debt          = +document.getElementById('in-debt').value;
+  STATE.cash          = +document.getElementById('in-cash').value;
+  STATE.netIncome     = +document.getElementById('in-netIncome').value;
+  STATE.equity        = +document.getElementById('in-equity').value;
+  STATE.interest      = +document.getElementById('in-interest').value;
+  STATE.waccTaxRate   = +document.getElementById('in-waccTax').value/100;
+  STATE.rf            = +document.getElementById('in-rf').value/100;
+  STATE.beta          = +document.getElementById('in-beta').value;
+  STATE.erp           = +document.getElementById('in-erp').value/100;
+  STATE.margTax       = +document.getElementById('in-margTax').value/100;
+  STATE.cgtInc        = +document.getElementById('in-cgtInc').value/100;
+  STATE.divTax        = +document.getElementById('in-divTax').value/100;
+  STATE.interestDeductible = document.getElementById('in-interestDeductible').checked;
+  STATE.fundingDebt        = document.getElementById('in-fundingDebt').checked;
+  renderAll();
+}
+
+// Wire up every slider/input with the same handler + live label update
+const SLIDER_LABELS = {
+  'in-sharePrice':v=>parseFloat(v).toFixed(2), 'in-eps':v=>parseFloat(v).toFixed(2),
+  'in-epsGrowth':v=>parseFloat(v).toFixed(1), 'in-buybackPct':v=>v,
+  'in-shares':v=>(+v).toLocaleString('en-ZA'), 'in-holding':v=>v,
+  'in-peRerate':v=>parseFloat(v).toFixed(1), 'in-peDerate':v=>parseFloat(v).toFixed(1),
+  'in-clientShares':v=>(+v).toLocaleString('en-ZA'), 'in-costBase':v=>parseFloat(v).toFixed(2),
+  'in-reinvRet':v=>v, 'in-debt':v=>(+v).toLocaleString('en-ZA'), 'in-cash':v=>(+v).toLocaleString('en-ZA'),
+  'in-netIncome':v=>(+v).toLocaleString('en-ZA'), 'in-equity':v=>(+v).toLocaleString('en-ZA'),
+  'in-interest':v=>(+v).toLocaleString('en-ZA'), 'in-waccTax':v=>parseFloat(v).toFixed(1),
+  'in-rf':v=>parseFloat(v).toFixed(1), 'in-beta':v=>parseFloat(v).toFixed(2), 'in-erp':v=>parseFloat(v).toFixed(1),
+  'in-margTax':v=>v, 'in-cgtInc':v=>v, 'in-divTax':v=>v,
+};
+Object.keys(SLIDER_LABELS).forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('input',e=>{
+    const valEl=document.getElementById(id+'Val');
+    if(valEl) valEl.textContent=SLIDER_LABELS[id](e.target.value);
+    onInputChange();
+  });
+});
+
+// ════════════════════════════════════════════════════════════════
+// HEADER STATS
+// ════════════════════════════════════════════════════════════════
+function updateHeader(waccCurr){
+  const pe = STATE.sharePrice/STATE.eps;
+  document.getElementById('hs-price').textContent='R'+STATE.sharePrice.toFixed(2);
+  document.getElementById('hs-pe').textContent=pe.toFixed(2)+'x';
+  document.getElementById('hs-eps').textContent='R'+STATE.eps.toFixed(2);
+  document.getElementById('hs-bb').textContent=(STATE.buybackPct*100).toFixed(0)+'%';
+  document.getElementById('hs-wacc').textContent=pctFmt(waccCurr);
+  document.getElementById('hs-entity').textContent=ENTITY_PRESETS[STATE.entity].label;
+  const badgeEl = document.getElementById('hs-badge');
+  if(badgeEl) badgeEl.textContent = currentCompany+' · '+COMPANIES[currentCompany].name;
+}
+
+
+
+// ════════════════════════════════════════════════════════════════
+// CALCULATION ENGINE — pure functions reading from STATE
+// ════════════════════════════════════════════════════════════════
+
+function calcAccretion(){
+  const s=STATE;
+  const pe=s.sharePrice/s.eps, ul=1/(1-s.buybackPct), postEps=s.eps*ul;
+  const yrs=Array.from({length:s.holding+1},(_,y)=>y);
+  const nBBe=yrs.map(y=>s.eps*Math.pow(1+s.epsGrowth,y));
+  const bBe =yrs.map(y=>y===0 ? s.eps : postEps*Math.pow(1+s.epsGrowth,y));
+  const n=s.holding;
+  const peGlideR = yrs.map(y => pe + (s.peRerate - pe) * (y / n));
+  const peGlideD = yrs.map(y => pe + (s.peDerate - pe) * (y / n));
   return{pe,ul,postEps,yrs,
     nBBp:nBBe.map(e=>e*pe),   bBp:bBe.map(e=>e*pe),
     nBBr:nBBe.map((e,y)=>e*peGlideR[y]), bBr:bBe.map((e,y)=>e*peGlideR[y]),
@@ -531,26 +1253,199 @@ function calcAcc(i){
   };
 }
 
-function renderAcc(){
-  const i=getAccIns(),d=calcAcc(i),yr=i.holding;
+function calcROE(){
+  const s=STATE;
+  const roeBase = s.netIncome / s.equity;
+  const sharesRepurch = s.shares * s.buybackPct;
+  const bbCost = sharesRepurch * s.sharePrice;
+  const equityAfter = s.equity - bbCost;
+  const roeAfter = s.netIncome / equityAfter;
+  const roeUplift = roeAfter - roeBase;
+  const bbSizes = [0, 0.05, 0.10, 0.15, 0.20, 0.25];
+  const sens = bbSizes.map(pct => {
+    const cost = s.shares * pct * s.sharePrice;
+    const eq   = s.equity - cost;
+    const roe  = s.netIncome / eq;
+    const epsAcc = pct === 0 ? 0 : pct / (1 - pct);
+    return { pct, roe, epsAcc, cost, eq };
+  });
+  return { roeBase, roeAfter, roeUplift, sharesRepurch, bbCost, equityAfter, sens };
+}
+
+function calcWealth(){
+  const s=STATE;
+  const pe=s.sharePrice/s.eps, cgt=s.cgtInc*s.margTax;
+  const ul=1/(1-s.buybackPct), postEps=s.eps*ul;
+  const yr=s.holding, g=s.epsGrowth;
+  const reinvRetAT = s.reinvRet * (1 - s.margTax);
+
+  const nBBe_yr=s.eps*Math.pow(1+g,yr), bBe_yr=postEps*Math.pow(1+g,yr);
+  const p5NB=nBBe_yr*pe, p5BB=bBe_yr*pe;
+  const divPS=s.sharePrice*s.buybackPct;
+  const exPE=(s.sharePrice-divPS)/s.eps;
+  const p5Ex=nBBe_yr*exPE;
+  const sh=s.clientShares, shBB=sh*(1-s.buybackPct), cashBB=sh*s.buybackPct*s.sharePrice;
+
+  function net(gross,sharesUsed){const gain=gross-sharesUsed*s.costBase;return gross-Math.max(0,gain)*cgt;}
+
+  const baseGross=sh*p5NB,   baseNet=net(baseGross,sh),   baseCGT=baseGross-baseNet;
+  const divGross=sh*p5Ex,    divNetSh=net(divGross,sh),    divCGT=divGross-divNetSh;
+
+  const divCash=sh*divPS, divTaxPd=divCash*s.divTax, divNetCash=divCash-divTaxPd;
+  const divReinv=divNetCash*Math.pow(1+reinvRetAT,yr), divTotal=divNetSh+divReinv;
+
+  const bpGross=shBB*p5BB, bpNetSh=net(bpGross,shBB), bpCGT=bpGross-bpNetSh;
+  const bpGrossProceeds=cashBB;
+  const bpCGTonProceeds=Math.max(0,(s.sharePrice-s.costBase)*sh*s.buybackPct)*cgt;
+  const bpCashNet=bpGrossProceeds-bpCGTonProceeds;
+  const bpReinv=bpCashNet*Math.pow(1+reinvRetAT,yr), bpTotal=bpNetSh+bpReinv;
+
+  const bnGross=sh*p5BB, bnNet=net(bnGross,sh), bnCGT=bnGross-bnNet;
+
+  const yrs=Array.from({length:yr+1},(_,y)=>y);
+  const tBase=y=>{const e=s.eps*Math.pow(1+g,y), p=e*pe, gr=sh*p; return gr-Math.max(0,gr-sh*s.costBase)*cgt;};
+  const tDiv=y=>{const e=s.eps*Math.pow(1+g,y), p=e*exPE, gr=sh*p; return gr-Math.max(0,gr-sh*s.costBase)*cgt + divNetCash*Math.pow(1+reinvRetAT,y);};
+  const tBBP=y=>{const epsY = y===0 ? s.eps : postEps*Math.pow(1+g,y); const p=epsY*pe, gr=shBB*p; return gr-Math.max(0,gr-shBB*s.costBase)*cgt + bpCashNet*Math.pow(1+reinvRetAT,y);};
+  const tBBN=y=>{const epsY = y===0 ? s.eps : postEps*Math.pow(1+g,y); const p=epsY*pe, gr=sh*p; return gr-Math.max(0,gr-sh*s.costBase)*cgt;};
+
+  return{pe,cgt,reinvRetAT,yr,p5NB,p5BB,p5Ex,divPS,ul,
+    baseGross,baseCGT,baseNet,
+    divGross,divCGT,divCash,divTaxPd,divNetCash,divReinv,divTotal,divNetSh,
+    bpGross,bpCGT,bpGrossProceeds,bpCGTonProceeds,bpCashNet,bpReinv,bpTotal,bpNetSh,
+    bnGross,bnCGT,bnNet,
+    yrs,baseT:yrs.map(tBase),divT:yrs.map(tDiv),bpT:yrs.map(tBBP),bnT:yrs.map(tBBN),
+  };
+}
+
+function calcFunding(){
+  const s=STATE;
+  const bbCost = s.shares * s.buybackPct * s.sharePrice; // Rm
+  const Kd_pretax = s.interest / s.debt;
+  const pretaxInterestOnBBDebt = bbCost * Kd_pretax;
+  // Deductibility toggle applies ONLY to the interest on the debt raised for the buyback —
+  // existing debt's interest is a separate, unrelated question and isn't modeled here.
+  // If not deductible, the full pre-tax interest is the drag (no shield reduces it).
+  const afterTaxDrag = pretaxInterestOnBBDebt * (s.interestDeductible ? (1 - s.waccTaxRate) : 1);
+  const sharesAfterBB = s.shares * (1 - s.buybackPct);
+  const epsBase = s.netIncome / s.shares;
+
+  // Debt-funded: net income reduced by the buyback-debt interest drag (after-tax if deductible, full if not)
+  const adjustedNetIncomeDebt = s.netIncome - afterTaxDrag;
+  const epsDebtFunded = adjustedNetIncomeDebt / sharesAfterBB;
+  const upliftFactorDebt = epsDebtFunded / epsBase;
+
+  // Cash-funded: no new debt raised, so the deductibility toggle has no bearing here —
+  // no interest drag (assuming cash was earning ~0 or below-WACC return — simple model: no drag)
+  const epsCashFunded = s.netIncome / sharesAfterBB;
+  const upliftFactorCash = epsCashFunded / epsBase;
+
+  const dragPctOfNI = afterTaxDrag / s.netIncome;
+
+  // Sensitivity across buyback sizes
+  const bbSizes=[0,0.05,0.10,0.15,0.20,0.25];
+  const sens = bbSizes.map(pct=>{
+    const cost = s.shares*pct*s.sharePrice;
+    const interestOnDebt = cost*Kd_pretax;
+    const drag = interestOnDebt*(s.interestDeductible ? (1-s.waccTaxRate) : 1);
+    const sharesAfter = s.shares*(1-pct);
+    const upliftDebt = pct===0 ? 1 : ((s.netIncome-drag)/sharesAfter)/epsBase;
+    const upliftCash = pct===0 ? 1 : (s.netIncome/sharesAfter)/epsBase;
+    return {pct, upliftDebt, upliftCash};
+  });
+
+  return {bbCost,Kd_pretax,pretaxInterestOnBBDebt,afterTaxDrag,sharesAfterBB,epsBase,
+    epsDebtFunded,upliftFactorDebt,epsCashFunded,upliftFactorCash,dragPctOfNI,sens};
+}
+
+function calcWACC(){
+  const s=STATE;
+  const E=s.sharePrice*s.shares, D=s.debt, V=E+D;
+  const ke=s.rf+s.beta*s.erp;
+  const kdPre=s.interest/D;
+  // Existing debt's interest is always tax-deductible — that's not in question and is
+  // unaffected by the toggle. Only the BUYBACK-INCREMENTAL debt's deductibility is controlled
+  // by interestDeductible, so its effective Kd is computed separately below.
+  const kdPostExisting = kdPre*(1-s.waccTaxRate);
+  const kdPostBBDebt = s.interestDeductible ? kdPre*(1-s.waccTaxRate) : kdPre;
+  const kdPost = kdPostExisting; // kept for backward-compat display (existing-debt effective Kd)
+
+  // Baseline (no buyback yet): unaffected by toggle — there's no buyback debt in this scenario
+  const wE=E/V, wD=D/V;
+  const waccCurr=wE*ke+wD*kdPostExisting;
+
+  // Debt-funded buyback: split the debt-weighted term into the pre-existing debt piece
+  // (always deductible) and the new buyback-incremental debt piece (toggle-controlled)
+  const bbAmt=E*s.buybackPct;
+  const Ed=E-bbAmt, Dd=D+bbAmt, Vd=Ed+Dd;
+  const waccDebt=(Ed/Vd)*ke + (D/Vd)*kdPostExisting + (bbAmt/Vd)*kdPostBBDebt;
+
+  // Cash-funded buyback: no new debt raised, so the toggle has no effect here either —
+  // only the pre-existing debt's (always-deductible) interest is in the mix
+  const Ec=E-bbAmt, Dc=D, Vc=Ec+Dc;
+  const waccCash=(Ec/Vc)*ke+(Dc/Vc)*kdPostExisting;
+
+  const keRange=[0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.20,0.21];
+  const keSens=keRange.map(ke2=>{
+    const waccC=wE*ke2+wD*kdPostExisting;
+    const waccD=(Ed/Vd)*ke2 + (D/Vd)*kdPostExisting + (bbAmt/Vd)*kdPostBBDebt;
+    const waccCa=(Ec/Vc)*ke2+(Dc/Vc)*kdPostExisting;
+    return{ke:ke2,curr:waccC,debt:waccD,cash:waccCa};
+  });
+
+  const bbRange=[0,0.05,0.10,0.15,0.20,0.25];
+  const bbSens=bbRange.map(pct=>{
+    const bbA=E*pct;
+    const EdB=E-bbA, DdB=D+bbA, VdB=EdB+DdB;
+    const EcB=E-bbA, DcB=D, VcB=EcB+DcB;
+    return{pct,
+      debt:(EdB/VdB)*ke + (D/VdB)*kdPostExisting + (bbA/VdB)*kdPostBBDebt,
+      cash:(EcB/VcB)*ke+(DcB/VcB)*kdPostExisting};
+  });
+
+  // Tax deductibility comparison — current/cash scenarios are invariant to the toggle since
+  // they carry no buyback-incremental debt; only the debt-funded scenario differs.
+  const kdPostBBDebtDeductible = kdPre*(1-s.waccTaxRate);
+  const kdPostBBDebtNotDeductible = kdPre;
+  const waccCurrDeductible = waccCurr;
+  const waccCurrNotDeductible = waccCurr;
+  const waccDebtDeductible = (Ed/Vd)*ke + (D/Vd)*kdPostExisting + (bbAmt/Vd)*kdPostBBDebtDeductible;
+  const waccDebtNotDeductible = (Ed/Vd)*ke + (D/Vd)*kdPostExisting + (bbAmt/Vd)*kdPostBBDebtNotDeductible;
+  const waccCashDeductible = waccCash;
+  const waccCashNotDeductible = waccCash;
+
+  return{E,D,V,ke,kdPre,kdPost,kdPostExisting,kdPostBBDebt,wE,wD,waccCurr,
+    bbAmt,Ed,Dd,Vd,Ec,Dc,Vc,waccDebt,waccCash,
+    deltaBps_debt:(waccDebt-waccCurr)*10000,
+    deltaBps_cash:(waccCash-waccCurr)*10000,
+    keSens,bbSens,
+    waccCurrDeductible,waccCurrNotDeductible,waccDebtDeductible,waccDebtNotDeductible,
+    waccCashDeductible,waccCashNotDeductible,
+  };
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: EPS ACCRETION PAGE
+// ════════════════════════════════════════════════════════════════
+function renderAccretion(){
+  const s=STATE, d=calcAccretion(), yr=s.holding;
   document.getElementById('holdingYrLabel').textContent=yr;
   document.getElementById('trajTitle').textContent=`Share Price Trajectory — Base P/E (${d.pe.toFixed(2)}x)`;
 
-  const bbPctDisp=(i.buybackPct*100).toFixed(0);
+  const bbPctDisp=(s.buybackPct*100).toFixed(0);
   const upliftPct=((d.ul-1)*100).toFixed(1);
 
   document.getElementById('acc-narrative').innerHTML=
-    `At ${hl('R'+i.sharePrice.toFixed(2))} per share and EPS of ${hl('R'+i.eps.toFixed(2))}, the stock trades at an implied P/E of ${hl(d.pe.toFixed(2)+'x')}. `+
-    `With EPS growing at ${hl(pct1(i.g),'hl-mint')} p.a., a one-off ${hl(bbPctDisp+'%','hl-teal')} buyback immediately lifts EPS by ${hl('+'+upliftPct+'%','hl-mint')} for remaining shareholders. `+
+    `At ${hl('R'+s.sharePrice.toFixed(2))} per share and EPS of ${hl('R'+s.eps.toFixed(2))}, the stock trades at an implied P/E of ${hl(d.pe.toFixed(2)+'x')}. `+
+    `With EPS growing at ${hl(pct1(s.epsGrowth),'hl-mint')} p.a., a one-off ${hl(bbPctDisp+'%','hl-teal')} buyback immediately lifts EPS by ${hl('+'+upliftPct+'%','hl-mint')} for remaining shareholders. `+
     `At the base multiple after ${hl(yr+' years','hl-teal')}, the buyback delivers ${hl('R'+d.bBp[yr].toFixed(2))} vs ${hl('R'+d.nBBp[yr].toFixed(2))} without — every P/E scenario benefits by the same ${hl('+'+upliftPct+'%','hl-mint')} uplift. `+
-    `A re-rate to ${hl(i.peRerate.toFixed(1)+'x','hl-mint')} reaches ${hl('R'+d.bBr[yr].toFixed(2),'hl-mint')}; a de-rate to ${hl(i.peDerate.toFixed(1)+'x','hl-red')} gives ${hl('R'+d.bBd[yr].toFixed(2),'hl-red')}.`;
+    `A re-rate to ${hl(s.peRerate.toFixed(1)+'x','hl-mint')} reaches ${hl('R'+d.bBr[yr].toFixed(2),'hl-mint')}; a de-rate to ${hl(s.peDerate.toFixed(1)+'x','hl-red')} gives ${hl('R'+d.bBd[yr].toFixed(2),'hl-red')}.`;
 
   document.getElementById('scenario-narrative').innerHTML=
     `The ${hl('+'+upliftPct+'%','hl-mint')} EPS uplift is a mechanical result of buying back ${hl(bbPctDisp+'%')} of shares — it applies identically at all P/E outcomes.`;
 
   document.getElementById('accretionMetrics').innerHTML=[
     {l:'Implied P/E',    v:d.pe.toFixed(2)+'x',  cls:'teal', mc:''},
-    {l:'EPS Growth p.a.',v:pct1(i.g),             cls:'',     mc:'m-mint'},
+    {l:'EPS Growth p.a.',v:pct1(s.epsGrowth),     cls:'',     mc:'m-mint'},
     {l:'EPS Uplift',     v:'+'+upliftPct+'%',     cls:'mint', mc:'m-mint'},
     {l:`Yr${yr} — No BB`,v:Rf(d.nBBp[yr]),        cls:'',     mc:'m-grey'},
     {l:`Yr${yr} — Buyback`,v:Rf(d.bBp[yr]),       cls:'teal', mc:''},
@@ -572,429 +1467,68 @@ function renderAcc(){
   ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
 
   const scens=[
-    {l:`Re-rate to ${i.peRerate.toFixed(1)}x`,nb:d.nBBr[yr],bb:d.bBr[yr],badge:'badge-teal'},
+    {l:`Re-rate to ${s.peRerate.toFixed(1)}x`,nb:d.nBBr[yr],bb:d.bBr[yr],badge:'badge-teal'},
     {l:`Base (${d.pe.toFixed(2)}x)`,          nb:d.nBBp[yr],bb:d.bBp[yr],badge:'badge-red'},
-    {l:`De-rate to ${i.peDerate.toFixed(1)}x`,nb:d.nBBd[yr],bb:d.bBd[yr],badge:'badge-grey'},
+    {l:`De-rate to ${s.peDerate.toFixed(1)}x`,nb:d.nBBd[yr],bb:d.bBd[yr],badge:'badge-grey'},
   ];
   document.getElementById('scenarioTable').innerHTML=
     `<table class="scenario-table"><thead><tr><th>Scenario</th><th>No BB</th><th>Buyback</th><th>Uplift</th></tr></thead><tbody>`+
-    scens.map(s=>`<tr><td><span class="badge ${s.badge}">${s.l}</span></td><td>R${fmt2(s.nb)}</td><td class="adv-pos">R${fmt2(s.bb)}</td><td class="adv-pos">+${((s.bb/s.nb-1)*100).toFixed(1)}%</td></tr>`).join('')+
+    scens.map(sc=>`<tr><td><span class="badge ${sc.badge}">${sc.l}</span></td><td>R${fmt2(sc.nb)}</td><td class="adv-pos">R${fmt2(sc.bb)}</td><td class="adv-pos">+${((sc.bb/sc.nb-1)*100).toFixed(1)}%</td></tr>`).join('')+
     `</tbody></table>`;
 
   const ds=[
-    {l:`No BB @ ${i.peRerate.toFixed(1)}x`,  d:d.nBBr,c:C.teal,  w:1.8,dash:[5,4]},
-    {l:`Buyback @ ${i.peRerate.toFixed(1)}x`,d:d.bBr, c:C.mint,  w:2.5,dash:[]},
+    {l:`No BB @ ${s.peRerate.toFixed(1)}x`,  d:d.nBBr,c:C.teal,  w:1.8,dash:[5,4]},
+    {l:`Buyback @ ${s.peRerate.toFixed(1)}x`,d:d.bBr, c:C.mint,  w:2.5,dash:[]},
     {l:`No BB @ ${d.pe.toFixed(2)}x`,         d:d.nBBp,c:C.red,   w:1.8,dash:[5,4]},
     {l:`Buyback @ ${d.pe.toFixed(2)}x`,       d:d.bBp, c:C.orange,w:2.5,dash:[]},
-    {l:`No BB @ ${i.peDerate.toFixed(1)}x`,  d:d.nBBd,c:C.grey,  w:1.8,dash:[5,4]},
-    {l:`Buyback @ ${i.peDerate.toFixed(1)}x`,d:d.bBd, c:C.purple,w:2.5,dash:[]},
+    {l:`No BB @ ${s.peDerate.toFixed(1)}x`,  d:d.nBBd,c:C.grey,  w:1.8,dash:[5,4]},
+    {l:`Buyback @ ${s.peDerate.toFixed(1)}x`,d:d.bBd, c:C.purple,w:2.5,dash:[]},
   ];
   const opts2=chartOpts(v=>'R'+v.toFixed(2));
   opts2.scales.y.ticks.callback=v=>'R'+v.toFixed(1);
   charts.all=mkChart('allScenariosChart',{type:'line',
-    data:{labels,datasets:ds.map(s=>({label:s.l,data:s.d.map(v=>+v.toFixed(3)),borderColor:s.c,backgroundColor:s.c+'10',borderWidth:s.w,tension:0.3,pointRadius:3,pointHoverRadius:5,borderDash:s.dash}))},
+    data:{labels,datasets:ds.map(sc=>({label:sc.l,data:sc.d.map(v=>+v.toFixed(3)),borderColor:sc.c,backgroundColor:sc.c+'10',borderWidth:sc.w,tension:0.3,pointRadius:3,pointHoverRadius:5,borderDash:sc.dash}))},
     options:opts2});
 
-  document.getElementById('allScenariosLegend').innerHTML=ds.map(s=>
-    `<span class="legend-item"><span class="legend-line" style="background:${s.c}"></span>${s.l}</span>`).join('');
+  document.getElementById('allScenariosLegend').innerHTML=ds.map(sc=>
+    `<span class="legend-item"><span class="legend-line" style="background:${sc.c}"></span>${sc.l}</span>`).join('');
+
+  return d;
 }
 
-['sharePrice','eps','epsGrowth','buybackPct','peRerate','peDerate','holding'].forEach(id=>{
-  const map={sharePrice:'sharePriceVal',eps:'epsVal',epsGrowth:'epsGrowthVal',buybackPct:'buybackPctVal',peRerate:'peRerateVal',peDerate:'peDeRateVal',holding:'holdingVal'};
-  const f={sharePrice:v=>parseFloat(v).toFixed(2),eps:v=>parseFloat(v).toFixed(2),epsGrowth:v=>parseFloat(v).toFixed(1),buybackPct:v=>v,peRerate:v=>parseFloat(v).toFixed(1),peDerate:v=>parseFloat(v).toFixed(1),holding:v=>v};
-  document.getElementById(id).addEventListener('input',e=>{document.getElementById(map[id]).textContent=f[id](e.target.value);renderAcc();syncHeader();});
-});
-
-// ════════════════════════════════════════
-// ── SHAREHOLDER WEALTH ──
-// ════════════════════════════════════════
-function getWIns(){return{
-  shares:    +document.getElementById('sharesHeld').value,
-  sharePrice:+document.getElementById('wSharePrice').value,
-  costBase:  +document.getElementById('costBase').value,
-  holding:   +document.getElementById('wHolding').value,
-  eps:       +document.getElementById('wEps').value,
-  g:         +document.getElementById('wEpsGrowth').value/100,
-  buybackPct:+document.getElementById('wBuybackPct').value/100,
-  cgtInc:    +document.getElementById('cgtInclusion').value/100,
-  margTax:   +document.getElementById('marginalTax').value/100,
-  divTax:    +document.getElementById('divTax').value/100,
-  reinvRet:  +document.getElementById('reinvestReturn').value/100,
-}}
-
-function calcWealth(i){
-  const pe=i.sharePrice/i.eps, cgt=i.cgtInc*i.margTax;
-  const ul=1/(1-i.buybackPct), postEps=i.eps*ul;
-  const yr=i.holding, g=i.g;
-  const nBBe_yr=i.eps*Math.pow(1+g,yr), bBe_yr=postEps*Math.pow(1+g,yr);
-  const p5NB=nBBe_yr*pe, p5BB=bBe_yr*pe;
-  const divPS=i.sharePrice*i.buybackPct;
-  const exPE=(i.sharePrice-divPS)/i.eps;
-  const p5Ex=nBBe_yr*exPE;
-  const sh=i.shares, shBB=sh*(1-i.buybackPct), cashBB=sh*i.buybackPct*i.sharePrice;
-
-  // ── AFTER-TAX REINVESTMENT RATE ──────────────────────────────────────────
-  // reinvRet is the gross pre-tax return (e.g. money-market / bond yield).
-  // Returns on reinvested cash are taxed annually at the marginal income tax rate.
-  const reinvRetAT = i.reinvRet * (1 - i.margTax);
-
-  function net(gross,sharesUsed){const gain=gross-sharesUsed*i.costBase;return gross-Math.max(0,gain)*cgt;}
-
-  const baseGross=sh*p5NB,   baseNet=net(baseGross,sh),   baseCGT=baseGross-baseNet;
-  const divGross=sh*p5Ex,    divNetSh=net(divGross,sh),    divCGT=divGross-divNetSh;
-
-  // Special dividend: cash received, dividend tax deducted, remainder reinvested at after-tax rate
-  const divCash=sh*divPS, divTaxPd=divCash*i.divTax, divNetCash=divCash-divTaxPd;
-  const divReinv=divNetCash*Math.pow(1+reinvRetAT,yr), divTotal=divNetSh+divReinv;
-
-  // Buyback participates: shareholder sells buybackPct of their shares back at current price.
-  // This is a CGT event — deduct CGT on the gain (price − costBase) before reinvesting.
-  const bpGross=shBB*p5BB, bpNetSh=net(bpGross,shBB), bpCGT=bpGross-bpNetSh;
-  const bpGrossProceeds=cashBB;
-  const bpCGTonProceeds=Math.max(0,(i.sharePrice-i.costBase)*sh*i.buybackPct)*cgt;
-  const bpCashNet=bpGrossProceeds-bpCGTonProceeds;  // net after CGT on buyback proceeds
-  const bpReinv=bpCashNet*Math.pow(1+reinvRetAT,yr), bpTotal=bpNetSh+bpReinv;
-
-  const bnGross=sh*p5BB, bnNet=net(bnGross,sh), bnCGT=bnGross-bnNet;
-
-  const yrs=Array.from({length:yr+1},(_,y)=>y);
-  // Year 0: buyback/div cash goes out at Yr0 but EPS uplift only appears in Yr1 earnings.
-  // Base & BB-NoPartic & BB-Partic all start at current share price × shares.
-  // Special Div starts at ex-div price × shares + after-tax reinvested cash.
-  const tBase=y=>{
-    const e=i.eps*Math.pow(1+g,y), p=e*pe, gr=sh*p;
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt;
-  };
-  const tDiv=y=>{
-    const e=i.eps*Math.pow(1+g,y), p=e*exPE, gr=sh*p;
-    // divNetCash reinvested at after-tax rate
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt + divNetCash*Math.pow(1+reinvRetAT,y);
-  };
-  const tBBP=y=>{
-    const epsY = y===0 ? i.eps : postEps*Math.pow(1+g,y);
-    const p=epsY*pe, gr=shBB*p;
-    // bpCashNet (after CGT on proceeds) reinvested at after-tax rate
-    return gr-Math.max(0,gr-shBB*i.costBase)*cgt + bpCashNet*Math.pow(1+reinvRetAT,y);
-  };
-  const tBBN=y=>{
-    const epsY = y===0 ? i.eps : postEps*Math.pow(1+g,y);
-    const p=epsY*pe, gr=sh*p;
-    return gr-Math.max(0,gr-sh*i.costBase)*cgt;
-  };
-
-  return{pe,cgt,reinvRetAT,yr,p5NB,p5BB,p5Ex,divPS,ul,
-    baseGross,baseCGT,baseNet,
-    divGross,divCGT,divCash,divTaxPd,divNetCash,divReinv,divTotal,divNetSh,
-    bpGross,bpCGT,bpGrossProceeds,bpCGTonProceeds,bpCashNet,bpReinv,bpTotal,bpNetSh,
-    bnGross,bnCGT,bnNet,
-    yrs,baseT:yrs.map(tBase),divT:yrs.map(tDiv),bpT:yrs.map(tBBP),bnT:yrs.map(tBBN),
-  };
-}
-
-function renderWealth(){
-  const i=getWIns(),d=calcWealth(i);
-  const bbPctDisp=(i.buybackPct*100).toFixed(0);
-  const upliftPct=((d.ul-1)*100).toFixed(1);
-  const bestVal=Math.max(d.bnNet,d.bpTotal,d.divTotal);
-  const bestLabel=bestVal===d.bnNet?'No Participation':bestVal===d.bpTotal?'Participates':'Special Dividend';
-  const bestGain=(bestVal/d.baseNet-1)*100;
-
-  document.getElementById('wealth-narrative').innerHTML=
-    `A client holding ${hl(i.shares.toLocaleString()+' shares')} at ${hl('R'+i.sharePrice.toFixed(2))} (cost base ${hl('R'+i.costBase.toFixed(2))}) exits the full position at year ${hl(i.holding)}. `+
-    `A ${hl(bbPctDisp+'%','hl-teal')} buyback lifts EPS by ${hl('+'+upliftPct+'%','hl-mint')} — growing at ${hl(pct1(i.g),'hl-mint')} p.a. `+
-    `Effective CGT of ${hl((d.cgt*100).toFixed(1)+'%','hl-grey')} (${hl((i.cgtInc*100).toFixed(0)+'%','hl-grey')} inclusion × ${hl((i.margTax*100).toFixed(0)+'%','hl-grey')} tax) and dividends tax of ${hl((i.divTax*100).toFixed(0)+'%','hl-grey')} apply. `+
-    `Cash received (dividend or buyback proceeds) is reinvested at a gross return of ${hl(pct1(i.reinvRet),'hl-teal')}, taxed annually at ${hl((i.margTax*100).toFixed(0)+'%','hl-grey')}, giving an after-tax reinvestment rate of ${hl(pct1(d.reinvRetAT),'hl-mint')}. `+
-    `Best outcome: ${hl('Buyback — '+bestLabel,'hl-mint')} at ${hl(Rf(bestVal),'hl-mint')}, ahead of the base case by ${hl('+'+bestGain.toFixed(1)+'%','hl-mint')}.`;
-
-  document.getElementById('breakdownTitle').textContent=`Scenario Breakdown — Year ${d.yr}`;
-  document.getElementById('taxDetailTitle').textContent=`Tax & Mechanics — ${i.holding}-Year Horizon`;
-  document.getElementById('wealthChartTitle').textContent=`After-Tax Value Trajectory — ${i.holding} Years`;
-
-  const cards=[
-    {cls:'wc-base', label:'Base — No Buyback',          val:d.baseNet, vs:0},
-    {cls:'wc-div',  label:'Special Dividend',            val:d.divTotal,vs:d.divTotal-d.baseNet},
-    {cls:'wc-part', label:'Buyback — Participates',      val:d.bpTotal, vs:d.bpTotal-d.baseNet},
-    {cls:'wc-nopart',label:'Buyback — No Participation', val:d.bnNet,   vs:d.bnNet-d.baseNet},
-  ];
-  document.getElementById('wealthCards').innerHTML=cards.map(c=>{
-    const vp=((Math.abs(c.vs)/d.baseNet)*100).toFixed(1);
-    const vsHtml=c.vs===0?'Base case':c.vs>0
-      ?`<span class="pos">+R ${fmt2(c.vs)} (+${vp}%) vs base</span>`
-      :`<span class="neg">−R ${fmt2(Math.abs(c.vs))} (−${vp}%) vs base</span>`;
-    return `<div class="wealth-card ${c.cls}"><div class="wc-label">${c.label}</div><div class="wc-val">R ${fmt2(c.val)}</div><div class="wc-vs">${vsHtml}</div></div>`;
-  }).join('');
-
-  const labels=d.yrs.map(y=>'Yr '+y);
-  const wDs=[
-    {label:'Special Dividend',          data:d.divT, c:C.teal},
-    {label:'Base — No Buyback',         data:d.baseT,c:C.mint},
-    {label:'Buyback — Participates',    data:d.bpT,  c:C.red},
-    {label:'Buyback — No Participation',data:d.bnT,  c:C.orange},
-  ];
-  const wOpts=chartOpts(v=>'R '+(v/1000).toFixed(0)+'k');
-  wOpts.scales.y.ticks.callback=v=>'R '+(v/1000).toFixed(0)+'k';
-  charts.wealth=mkChart('wealthChart',{type:'line',
-    data:{labels,datasets:wDs.map(s=>({label:s.label,data:s.data.map(v=>+v.toFixed(2)),borderColor:s.c,backgroundColor:s.c+'15',borderWidth:2.2,tension:0.3,pointRadius:4,pointHoverRadius:6}))},
-    options:wOpts});
-
-  document.getElementById('wealthLegend').innerHTML=wDs.map(s=>
-    `<span class="legend-item"><span class="legend-dot" style="background:${s.c}"></span>${s.label}</span>`).join('');
-
-  document.getElementById('wealthBreakdown').innerHTML=`
-    <div class="info-row"><span>Yr${d.yr} Price — No Buyback</span><span>${Rf(d.p5NB)}</span></div>
-    <div class="info-row"><span>Yr${d.yr} Price — With Buyback</span><span style="color:${C.tealDk}">${Rf(d.p5BB)}</span></div>
-    <div class="info-row"><span>Yr${d.yr} Price — Ex-Div</span><span>${Rf(d.p5Ex)}</span></div>
-    <div class="info-row"><span>Cash per share (buyback/div)</span><span>${Rf(d.divPS)}</span></div>
-    <div class="info-row"><span>Effective CGT rate</span><span>${(d.cgt*100).toFixed(1)}%</span></div>
-    <div class="info-row"><span>Gross reinvest return</span><span>${pct1(i.reinvRet)}</span></div>
-    <div class="info-row"><span>After-tax reinvest return</span><span style="color:var(--c-teal-dk);font-weight:600">${pct1(d.reinvRetAT)}</span></div>
-    <div class="info-row"><span>Best after-tax outcome</span><span style="color:${C.orange};font-weight:600">${bestLabel}</span></div>`;
-
-  const rows=[
-    ['','Base','Spec. Div','BB Partic.','BB No Part.'],
-    ['Shares Yr'+d.yr,i.shares.toLocaleString(),i.shares.toLocaleString(),Math.round(i.shares*(1-i.buybackPct)).toLocaleString(),i.shares.toLocaleString()],
-    ['Gross share value',Rf(d.baseGross),Rf(d.divGross),Rf(d.bpGross),Rf(d.bnGross)],
-    ['CGT on shares',Rf(d.baseCGT),Rf(d.divCGT),Rf(d.bpCGT),Rf(d.bnCGT)],
-    ['Net share proceeds',Rf(d.baseNet),Rf(d.divGross-d.divCGT),Rf(d.bpGross-d.bpCGT),Rf(d.bnNet)],
-    ['Cash received (gross)','—',Rf(d.divCash),Rf(d.bpGrossProceeds),'—'],
-    ['Tax on cash (div/CGT)','—',Rf(d.divTaxPd),Rf(d.bpCGTonProceeds),'—'],
-    ['Net cash reinvested','—',Rf(d.divNetCash),Rf(d.bpCashNet),'—'],
-    ['Reinvest rate (after-tax)','—',pct1(d.reinvRetAT),pct1(d.reinvRetAT),'—'],
-    ['Cash grown to Yr'+d.yr,'—',Rf(d.divReinv),Rf(d.bpReinv),'—'],
-    ['TOTAL after-tax Yr'+d.yr,Rf(d.baseNet),Rf(d.divTotal),Rf(d.bpTotal),Rf(d.bnNet)],
-  ];
-  const hCols=['',C.mint,C.teal,C.red,C.orange];
-  document.getElementById('taxDetail').innerHTML=
-    `<div style="overflow-x:auto"><table class="scenario-table"><thead><tr>${rows[0].map((h,ci)=>`<th style="${ci>0?'text-align:right;border-top:3px solid '+hCols[ci]:''}">${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,ci)=>`<td style="${ci>0?'text-align:right':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-}
-
-[['sharesHeld','sharesHeldVal',v=>(+v).toLocaleString('en-ZA')],
- ['wSharePrice','wSharePriceVal',v=>parseFloat(v).toFixed(2)],
- ['costBase','costBaseVal',v=>parseFloat(v).toFixed(2)],
- ['wHolding','wHoldingVal',v=>v],
- ['wEps','wEpsVal',v=>parseFloat(v).toFixed(2)],
- ['wEpsGrowth','wEpsGrowthVal',v=>parseFloat(v).toFixed(1)],
- ['wBuybackPct','wBuybackPctVal',v=>v],
- ['cgtInclusion','cgtInclusionVal',v=>v],
- ['marginalTax','marginalTaxVal',v=>v],
- ['divTax','divTaxVal',v=>v],
- ['reinvestReturn','reinvestReturnVal',v=>v],
-].forEach(([id,vid,fmt])=>{
-  document.getElementById(id).addEventListener('input',e=>{document.getElementById(vid).textContent=fmt(e.target.value);renderWealth();});
-});
-
-// ════════════════════════════════════════
-// ── WACC ──
-// ════════════════════════════════════════
-function getWaccIns(){return{
-  price:    +document.getElementById('waccPrice').value,
-  shares:   +document.getElementById('waccShares').value,
-  debt:     +document.getElementById('waccDebt').value,
-  cash:     +document.getElementById('waccCash').value,
-  rf:       +document.getElementById('waccRf').value/100,
-  beta:     +document.getElementById('waccBeta').value,
-  erp:      +document.getElementById('waccErp').value/100,
-  interest: +document.getElementById('waccInt').value,
-  taxRate:  +document.getElementById('waccTax').value/100,
-  bbPct:    +document.getElementById('waccBBpct').value/100,
-}}
-
-function calcWACC(i){
-  const E=i.price*i.shares, D=i.debt, V=E+D;
-  const ke=i.rf+i.beta*i.erp;
-  const kdPre=i.interest/D, kdPost=kdPre*(1-i.taxRate);
-  const wE=E/V, wD=D/V;
-  const waccCurr=wE*ke+wD*kdPost;
-
-  const bbAmt=E*i.bbPct;
-  // Debt-funded
-  const Ed=E-bbAmt, Dd=D+bbAmt, Vd=Ed+Dd;
-  const waccDebt=(Ed/Vd)*ke+(Dd/Vd)*kdPost;
-  // Cash-funded
-  const Ec=E-bbAmt, Dc=D, Vc=Ec+Dc;
-  const waccCash=(Ec/Vc)*ke+(Dc/Vc)*kdPost;
-
-  // Ke sensitivity (13%–21%)
-  const keRange=[0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.20,0.21];
-  const keSens=keRange.map(ke2=>{
-    const waccC=wE*ke2+wD*kdPost;
-    const waccD=(Ed/Vd)*ke2+(Dd/Vd)*kdPost;
-    const waccCa=(Ec/Vc)*ke2+(Dc/Vc)*kdPost;
-    return{ke:ke2,curr:waccC,debt:waccD,cash:waccCa};
-  });
-
-  // Buyback size sensitivity (0–25%)
-  const bbRange=[0,0.05,0.10,0.15,0.20,0.25];
-  const bbSens=bbRange.map(pct=>{
-    const bbA=E*pct;
-    const EdB=E-bbA, DdB=D+bbA, VdB=EdB+DdB;
-    const EcB=E-bbA, DcB=D, VcB=EcB+DcB;
-    return{pct,debt:(EdB/VdB)*ke+(DdB/VdB)*kdPost,cash:(EcB/VcB)*ke+(DcB/VcB)*kdPost};
-  });
-
-  return{E,D,V,ke,kdPre,kdPost,wE,wD,waccCurr,
-    bbAmt,Ed,Dd,Vd,Ec,Dc,Vc,waccDebt,waccCash,
-    deltaBps_debt:(waccDebt-waccCurr)*10000,
-    deltaBps_cash:(waccCash-waccCurr)*10000,
-    keSens,bbSens};
-}
-
-function renderWACC(){
-  const i=getWaccIns(), d=calcWACC(i);
-
-  document.getElementById('wacc-narrative').innerHTML=
-    `At a share price of ${hl('R'+i.price.toFixed(2))} with ${hl(i.shares.toLocaleString()+'m')} shares outstanding, equity market cap is ${hl('R'+d.E.toFixed(0)+'m')}. `+
-    `With ${hl('R'+i.debt.toLocaleString()+'m')} of debt, the current WACC is ${hl(pctFmt(d.waccCurr),'hl-grey')} using Ke of ${hl(pctFmt(d.ke),'hl-teal')} (Rf ${hl(pct1(i.rf))} + β ${hl(i.beta.toFixed(2))} × ERP ${hl(pct1(i.erp))}) and after-tax Kd of ${hl(pctFmt(d.kdPost),'hl-orange')}. `+
-    `A ${hl((i.bbPct*100).toFixed(0)+'%','hl-teal')} debt-funded buyback (R${d.bbAmt.toFixed(0)}m) shifts the capital mix toward cheaper debt, reducing WACC by ${hl(Math.abs(d.deltaBps_debt).toFixed(1)+' bps','hl-mint')} to ${hl(pctFmt(d.waccDebt),'hl-mint')}. `+
-    `A cash-funded buyback saves ${hl(Math.abs(d.deltaBps_cash).toFixed(1)+' bps','hl-orange')} to ${hl(pctFmt(d.waccCash),'hl-orange')}.`;
-
-  // WACC boxes
-  document.getElementById('waccBoxes').innerHTML=`
-    <div class="wacc-box wb-curr">
-      <div class="wb-lbl">Current WACC</div>
-      <div class="wb-wacc grey">${pctFmt(d.waccCurr)}</div>
-      <div class="wb-delta" style="color:var(--muted)">Baseline</div>
-    </div>
-    <div class="wacc-box wb-debt">
-      <div class="wb-lbl">Debt-Funded Buyback</div>
-      <div class="wb-wacc teal">${pctFmt(d.waccDebt)}</div>
-      <div class="wb-delta neg">${d.deltaBps_debt.toFixed(1)} bps</div>
-    </div>
-    <div class="wacc-box wb-cash">
-      <div class="wb-lbl">Cash-Funded Buyback</div>
-      <div class="wb-wacc orange">${pctFmt(d.waccCash)}</div>
-      <div class="wb-delta neg">${d.deltaBps_cash.toFixed(1)} bps</div>
-    </div>`;
-
-  // Caps row
-  document.getElementById('waccCaps').innerHTML=[
-    {l:'Equity (E)',     v:'R'+d.E.toFixed(0)+'m',  s:'Market cap'},
-    {l:'Debt (D)',       v:'R'+d.D.toLocaleString()+'m',s:'Book value'},
-    {l:'Total Capital', v:'R'+d.V.toFixed(0)+'m',   s:'E + D'},
-    {l:'E/V weight',    v:(d.wE*100).toFixed(1)+'%',s:'Equity weight'},
-    {l:'D/V weight',    v:(d.wD*100).toFixed(1)+'%',s:'Debt weight'},
-    {l:'Cost of Equity',v:pctFmt(d.ke),              s:'Ke = Rf + β×ERP'},
-    {l:'Pre-tax Kd',    v:pctFmt(d.kdPre),           s:'Int / Debt'},
-    {l:'After-tax Kd',  v:pctFmt(d.kdPost),          s:'Kd × (1−t)'},
-  ].map(c=>`<div class="wacc-cap"><div class="wacc-cap-lbl">${c.l}</div><div class="wacc-cap-val">${c.v}</div><div class="wacc-cap-sub">${c.s}</div></div>`).join('');
-
-  // Ke sensitivity chart
-  const keLabels=d.keSens.map(r=>(r.ke*100).toFixed(0)+'%');
-  const keOpts=chartOpts(v=>(v*100).toFixed(2)+'%');
-  keOpts.scales.y.ticks.callback=v=>(v*100).toFixed(1)+'%';
-  charts.waccKe=mkChart('waccKeChart',{type:'line',
-    data:{labels:keLabels,datasets:[
-      {label:'WACC – Current',    data:d.keSens.map(r=>r.curr), borderColor:C.grey,  backgroundColor:C.grey+'12', borderWidth:2,tension:0.3,pointRadius:3,borderDash:[5,4]},
-      {label:'WACC – Debt-funded',data:d.keSens.map(r=>r.debt), borderColor:C.teal,  backgroundColor:C.teal+'12',borderWidth:2.5,tension:0.3,pointRadius:4},
-      {label:'WACC – Cash-funded',data:d.keSens.map(r=>r.cash), borderColor:C.orange,backgroundColor:C.orange+'12',borderWidth:2,tension:0.3,pointRadius:3,borderDash:[3,3]},
-    ]},options:keOpts});
-
-  document.getElementById('waccKeLegend').innerHTML=[
-    {c:C.grey,l:'Current'},{c:C.teal,l:'Debt-funded'},{c:C.orange,l:'Cash-funded'}
-  ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
-
-  // Buyback size chart
-  const bbLabels=d.bbSens.map(r=>((r.pct)*100).toFixed(0)+'%');
-  const bbOpts=chartOpts(v=>(v*100).toFixed(2)+'%');
-  bbOpts.scales.y.ticks.callback=v=>(v*100).toFixed(1)+'%';
-  charts.waccBB=mkChart('waccBBChart',{type:'line',
-    data:{labels:bbLabels,datasets:[
-      {label:'WACC – Debt-funded',data:d.bbSens.map(r=>r.debt),borderColor:C.teal,  backgroundColor:C.teal+'12',  borderWidth:2.5,tension:0.3,pointRadius:4,pointHoverRadius:6},
-      {label:'WACC – Cash-funded',data:d.bbSens.map(r=>r.cash),borderColor:C.orange,backgroundColor:C.orange+'12',borderWidth:2,  tension:0.3,pointRadius:3,pointHoverRadius:5,borderDash:[3,3]},
-    ]},options:bbOpts});
-
-  document.getElementById('waccBBLegend').innerHTML=[
-    {c:C.teal,l:'Debt-funded'},{c:C.orange,l:'Cash-funded'}
-  ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
-
-  document.getElementById('waccStructureDetail').innerHTML=`
-    <div class="info-row"><span>Market value of equity</span><span>R${d.E.toFixed(0)}m</span></div>
-    <div class="info-row"><span>Total debt</span><span>R${d.D.toLocaleString()}m</span></div>
-    <div class="info-row"><span>Total capital (V)</span><span>R${d.V.toFixed(0)}m</span></div>
-    <div class="info-row"><span>Equity weight (E/V)</span><span>${(d.wE*100).toFixed(2)}%</span></div>
-    <div class="info-row"><span>Debt weight (D/V)</span><span>${(d.wD*100).toFixed(2)}%</span></div>
-    <div class="info-row"><span>Buyback amount</span><span style="color:${C.tealDk}">R${d.bbAmt.toFixed(0)}m</span></div>
-    <div class="info-row"><span>Post-BB equity (debt-funded)</span><span>R${d.Ed.toFixed(0)}m</span></div>
-    <div class="info-row"><span>Post-BB debt (debt-funded)</span><span>R${d.Dd.toFixed(0)}m</span></div>`;
-
-  document.getElementById('waccCostDetail').innerHTML=`
-    <div class="info-row"><span>Risk-free rate (Rf)</span><span>${(i.rf*100).toFixed(1)}%</span></div>
-    <div class="info-row"><span>Beta (β)</span><span>${i.beta.toFixed(2)}</span></div>
-    <div class="info-row"><span>Equity risk premium (ERP)</span><span>${(i.erp*100).toFixed(1)}%</span></div>
-    <div class="info-row"><span>Cost of equity (Ke)</span><span style="color:${C.tealDk}">${pctFmt(d.ke)}</span></div>
-    <div class="info-row"><span>Pre-tax cost of debt (Kd)</span><span>${pctFmt(d.kdPre)}</span></div>
-    <div class="info-row"><span>Tax rate</span><span>${(i.taxRate*100).toFixed(1)}%</span></div>
-    <div class="info-row"><span>After-tax Kd</span><span style="color:${C.orange}">${pctFmt(d.kdPost)}</span></div>
-    <div class="info-row"><span>Current WACC</span><span style="color:var(--c-grey);font-weight:700">${pctFmt(d.waccCurr)}</span></div>`;
-
-  // Update header WACC stat
-  document.getElementById('hs-wacc').textContent=(d.waccCurr*100).toFixed(2)+'%';
-}
-
-[['waccPrice','waccPriceVal',v=>parseFloat(v).toFixed(2)],
- ['waccShares','waccSharesVal',v=>(+v).toLocaleString('en-ZA')],
- ['waccDebt','waccDebtVal',v=>(+v).toLocaleString('en-ZA')],
- ['waccCash','waccCashVal',v=>(+v).toLocaleString('en-ZA')],
- ['waccRf','waccRfVal',v=>parseFloat(v).toFixed(1)],
- ['waccBeta','waccBetaVal',v=>parseFloat(v).toFixed(2)],
- ['waccErp','waccErpVal',v=>parseFloat(v).toFixed(1)],
- ['waccInt','waccIntVal',v=>(+v).toLocaleString('en-ZA')],
- ['waccTax','waccTaxVal',v=>parseFloat(v).toFixed(1)],
- ['waccBBpct','waccBBpctVal',v=>v],
-].forEach(([id,vid,fmt])=>{
-  document.getElementById(id).addEventListener('input',e=>{document.getElementById(vid).textContent=fmt(e.target.value);renderWACC();});
-});
-
-// ── HEADER SYNC ──
-
-
-// ════════════════════════════════════════
-// ── ROE ──
-// ════════════════════════════════════════
-function getRoeIns(){return{
-  netIncome: +document.getElementById('roeNetIncome').value,
-  equity:    +document.getElementById('roeEquity').value,
-  bbPrice:   +document.getElementById('roeBBPrice').value,
-  shares:    +document.getElementById('roeShares').value,
-  buybackPct:+document.getElementById('buybackPct').value/100,
-}}
-
-function calcROE(i){
-  const roeBase = i.netIncome / i.equity;
-  const sharesRepurch = i.shares * i.buybackPct;
-  const bbCost = sharesRepurch * i.bbPrice;
-  const equityAfter = i.equity - bbCost;
-  const roeAfter = i.netIncome / equityAfter;
-  const roeUplift = roeAfter - roeBase;
-
-  // Sensitivity: ROE & EPS accretion across 0–25% buyback sizes
-  const bbSizes = [0, 0.05, 0.10, 0.15, 0.20, 0.25];
-  const sens = bbSizes.map(pct => {
-    const cost = i.shares * pct * i.bbPrice;
-    const eq   = i.equity - cost;
-    const roe  = i.netIncome / eq;
-    const epsAcc = pct === 0 ? 0 : pct / (1 - pct);
-    return { pct, roe, epsAcc, cost, eq };
-  });
-  return { roeBase, roeAfter, roeUplift, sharesRepurch, bbCost, equityAfter, sens };
-}
-
+// ════════════════════════════════════════════════════════════════
+// RENDER: ROE EFFECT PAGE
+// ════════════════════════════════════════════════════════════════
 function renderROE(){
-  const acc = getAccIns();
-  const i   = getRoeIns();
-  const d   = calcROE(i);
-  const upliftPct = ((acc.buybackPct/(1-acc.buybackPct))*100).toFixed(1);
+  const s=STATE, d=calcROE();
+  const upliftPct = ((s.buybackPct/(1-s.buybackPct))*100).toFixed(1);
+  const bbPctDisp = (s.buybackPct*100).toFixed(0);
+
+  document.getElementById('roe-narrative').innerHTML=
+    `With net income of ${hl('R'+s.netIncome.toLocaleString()+'m')} on equity of ${hl('R'+s.equity.toLocaleString()+'m')}, the base ROE is ${hl((d.roeBase*100).toFixed(2)+'%','hl-grey')}. `+
+    `Repurchasing ${hl(bbPctDisp+'%','hl-teal')} of shares (${hl(d.sharesRepurch.toFixed(1)+'m shares','hl-teal')}) at ${hl('R'+s.sharePrice.toFixed(2))} costs ${hl('R'+d.bbCost.toFixed(0)+'m','hl-orange')}, shrinking equity to ${hl('R'+d.equityAfter.toFixed(0)+'m')}. `+
+    `Net income stays the same but the equity base falls — ROE mechanically rises to ${hl((d.roeAfter*100).toFixed(2)+'%','hl-mint')}, an uplift of ${hl('+'+(d.roeUplift*100).toFixed(2)+' ppt','hl-mint')}. `+
+    `This is identical in spirit to the ${hl('+'+upliftPct+'%','hl-mint')} EPS uplift — both come from a smaller denominator, not from improved profitability.`;
 
   document.getElementById('roeMetrics').innerHTML = [
     { l:'ROE — No Buyback', v:(d.roeBase*100).toFixed(2)+'%', cls:'', mc:'m-grey' },
     { l:'ROE — With Buyback', v:(d.roeAfter*100).toFixed(2)+'%', cls:'mint', mc:'m-mint' },
-    { l:'ROE Uplift (ppt)', v:'+'+( d.roeUplift*100).toFixed(2)+' ppt', cls:'mint', mc:'m-mint' },
+    { l:'ROE Uplift (ppt)', v:'+'+(d.roeUplift*100).toFixed(2)+' ppt', cls:'mint', mc:'m-mint' },
     { l:'Shares Repurchased', v:d.sharesRepurch.toFixed(1)+'m', cls:'teal', mc:'' },
     { l:'Buyback Cost', v:'R'+d.bbCost.toFixed(0)+'m', cls:'', mc:'m-orange' },
     { l:'Equity After BB', v:'R'+d.equityAfter.toFixed(0)+'m', cls:'', mc:'' },
   ].map(m=>`<div class="metric ${m.mc}"><div class="metric-label">${m.l}</div><div class="metric-val ${m.cls}">${m.v}</div></div>`).join('');
 
-  // Dual-axis: ROE (left) and EPS accretion % (right) vs buyback size
+  document.getElementById('roeBuild').innerHTML = `
+    <div class="info-row"><span>Net Income (FY2026)</span><span>R${s.netIncome.toLocaleString()}m</span></div>
+    <div class="info-row"><span>Total Equity (FY2026)</span><span>R${s.equity.toLocaleString()}m</span></div>
+    <div class="info-row"><span>Buyback % of shares</span><span>${(s.buybackPct*100).toFixed(0)}%</span></div>
+    <div class="info-row"><span>Shares repurchased</span><span>${d.sharesRepurch.toFixed(2)}m</span></div>
+    <div class="info-row"><span>Buyback cost</span><span style="color:${C.orange}">R${d.bbCost.toFixed(2)}m</span></div>
+    <div class="info-row"><span>Equity after buyback</span><span>R${d.equityAfter.toFixed(2)}m</span></div>
+    <div class="info-row"><span>ROE — No Buyback</span><span>${(d.roeBase*100).toFixed(2)}%</span></div>
+    <div class="info-row"><span>ROE — With Buyback</span><span style="color:${C.tealDk};font-weight:700">${(d.roeAfter*100).toFixed(2)}%</span></div>`;
+
   const labels = d.sens.map(r => (r.pct*100).toFixed(0)+'%');
   const cc = chartColors();
   const roeOpts = {
@@ -1025,113 +1559,605 @@ function renderROE(){
     {c:C.mint,  l:'ROE with buyback (left axis)'},
     {c:C.orange,l:'EPS accretion % (right axis)'},
   ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
+
+  document.getElementById('roeSensTable').innerHTML =
+    `<table class="scenario-table"><thead><tr><th>Buyback %</th><th>ROE</th><th>EPS Accretion</th><th>Buyback Cost</th><th>Equity After</th></tr></thead><tbody>`+
+    d.sens.map(r=>`<tr><td><span class="badge badge-teal">${(r.pct*100).toFixed(0)}%</span></td><td class="adv-pos">${(r.roe*100).toFixed(2)}%</td><td>${r.pct===0?'—':'+'+(r.epsAcc*100).toFixed(1)+'%'}</td><td>R${r.cost.toFixed(0)}m</td><td>R${r.eq.toFixed(0)}m</td></tr>`).join('')+
+    `</tbody></table>`;
+
+  return d;
 }
 
-[['roeNetIncome','roeNetIncomeVal',v=>(+v).toLocaleString('en-ZA')],
- ['roeEquity','roeEquityVal',v=>(+v).toLocaleString('en-ZA')],
- ['roeBBPrice','roeBBPriceVal',v=>parseFloat(v).toFixed(2)],
- ['roeShares','roeSharesVal',v=>(+v).toLocaleString('en-ZA')],
-].forEach(([id,vid,fmt])=>{
-  document.getElementById(id).addEventListener('input',e=>{
-    document.getElementById(vid).textContent=fmt(e.target.value);
-    renderROE();
-  });
-});
+// ════════════════════════════════════════════════════════════════
+// RENDER: SHAREHOLDER WEALTH PAGE
+// ════════════════════════════════════════════════════════════════
+function renderWealth(){
+  const s=STATE, d=calcWealth();
+  const bbPctDisp=(s.buybackPct*100).toFixed(0);
+  const upliftPct=((d.ul-1)*100).toFixed(1);
+  const bestVal=Math.max(d.bnNet,d.bpTotal,d.divTotal);
+  const bestLabel=bestVal===d.bnNet?'No Participation':bestVal===d.bpTotal?'Participates':'Special Dividend';
+  const bestGain=(bestVal/d.baseNet-1)*100;
+  const entityLabel = ENTITY_PRESETS[s.entity].label;
 
-// ════════════════════════════════════════
-// ── KEY FIGURES ──
-// ════════════════════════════════════════
+  const entityNote = s.entity==='company'
+    ? `As a ${hl(entityLabel,'hl-orange')}, dividends tax is ${hl('0%','hl-orange')} (inter-company exempt) and CGT inclusion is ${hl('80%','hl-orange')} at the corporate rate of ${hl((s.margTax*100).toFixed(0)+'%','hl-orange')}. `
+    : s.entity==='trust'
+    ? `As a ${hl(entityLabel,'hl-purple')}, CGT inclusion is ${hl('80%','hl-purple')} (same as a company) but dividends tax of ${hl((s.divTax*100).toFixed(0)+'%','hl-purple')} applies to income distributions. `
+    : `As an ${hl(entityLabel,'hl-teal')}, CGT inclusion is ${hl('40%','hl-teal')} with a marginal rate of ${hl((s.margTax*100).toFixed(0)+'%','hl-teal')} and dividends withholding tax of ${hl((s.divTax*100).toFixed(0)+'%','hl-teal')}. `;
 
-// Static historical data
-const HIST = {
-  years:  ['FY2023','FY2024','FY2025','FY2026'],
-  rev:    [11076, 11255, 10876, 10841],
-  ebitda: [3895,  3699,  3183,  3173],
-  netInc: [1744,  1530,  1244,  1295],
-  eps:    [1.67,  1.47,  1.20,  1.26],
-  fcf:    [1397,  1624,  720,   1599],
-  mcap:   [12687.98, 11253.21, 8592.53, 7069.14],
-  debt:   [8799, 8427, 7672, 6910],
-  cash:   [600,  635,  480,  470],
-  equity: [4605, 4870, 5172, 5458],
-  ocf:    [1946, 2389, 1432, 2288],
-  capex:  [549,  765,  712,  689],
+  document.getElementById('wealth-narrative').innerHTML=
+    `A ${hl(entityLabel)} holding ${hl(s.clientShares.toLocaleString()+' shares')} at ${hl('R'+s.sharePrice.toFixed(2))} (cost base ${hl('R'+s.costBase.toFixed(2))}) exits the full position at year ${hl(s.holding)}. `+
+    entityNote+
+    `A ${hl(bbPctDisp+'%','hl-teal')} buyback lifts EPS by ${hl('+'+upliftPct+'%','hl-mint')} — growing at ${hl(pct1(s.epsGrowth),'hl-mint')} p.a. `+
+    `Effective CGT rate: ${hl((d.cgt*100).toFixed(1)+'%','hl-grey')} (${hl((s.cgtInc*100).toFixed(0)+'%','hl-grey')} inclusion × ${hl((s.margTax*100).toFixed(0)+'%','hl-grey')} tax). `+
+    `Cash reinvested at ${hl(pct1(s.reinvRet),'hl-teal')} gross → ${hl(pct1(d.reinvRetAT),'hl-mint')} after-tax. `+
+    `Best outcome: ${hl('Buyback — '+bestLabel,'hl-mint')} at ${hl(Rf(bestVal),'hl-mint')}, ${hl('+'+bestGain.toFixed(1)+'%','hl-mint')} ahead of base.`;
+
+  document.getElementById('breakdownTitle').textContent=`Scenario Breakdown — Year ${d.yr}`;
+  document.getElementById('taxDetailTitle').textContent=`Tax & Mechanics — ${entityLabel} — ${s.holding}-Year Horizon`;
+  document.getElementById('wealthChartTitle').textContent=`After-Tax Value Trajectory — ${s.holding} Years`;
+
+  const cards=[
+    {cls:'wc-base', label:'Base — No Buyback',          val:d.baseNet, vs:0},
+    {cls:'wc-div',  label:'Special Dividend',            val:d.divTotal,vs:d.divTotal-d.baseNet},
+    {cls:'wc-part', label:'Buyback — Participates',      val:d.bpTotal, vs:d.bpTotal-d.baseNet},
+    {cls:'wc-nopart',label:'Buyback — No Participation', val:d.bnNet,   vs:d.bnNet-d.baseNet},
+  ];
+  document.getElementById('wealthCards').innerHTML=cards.map(c=>{
+    const vp=((Math.abs(c.vs)/d.baseNet)*100).toFixed(1);
+    const vsHtml=c.vs===0?'Base case':c.vs>0
+      ?`<span class="pos">+R ${fmt2(c.vs)} (+${vp}%) vs base</span>`
+      :`<span class="neg">−R ${fmt2(Math.abs(c.vs))} (−${vp}%) vs base</span>`;
+    return `<div class="wealth-card ${c.cls}"><div class="wc-label">${c.label}</div><div class="wc-val">R ${fmt2(c.val)}</div><div class="wc-vs">${vsHtml}</div></div>`;
+  }).join('');
+
+  const labels=d.yrs.map(y=>'Yr '+y);
+  const wDs=[
+    {label:'Special Dividend',          data:d.divT, c:C.teal},
+    {label:'Base — No Buyback',         data:d.baseT,c:C.mint},
+    {label:'Buyback — Participates',    data:d.bpT,  c:C.red},
+    {label:'Buyback — No Participation',data:d.bnT,  c:C.orange},
+  ];
+  const wOpts=chartOpts(v=>'R '+(v/1000).toFixed(0)+'k');
+  wOpts.scales.y.ticks.callback=v=>'R '+(v/1000).toFixed(0)+'k';
+  charts.wealth=mkChart('wealthChart',{type:'line',
+    data:{labels,datasets:wDs.map(s2=>({label:s2.label,data:s2.data.map(v=>+v.toFixed(2)),borderColor:s2.c,backgroundColor:s2.c+'15',borderWidth:2.2,tension:0.3,pointRadius:4,pointHoverRadius:6}))},
+    options:wOpts});
+
+  document.getElementById('wealthLegend').innerHTML=wDs.map(s2=>
+    `<span class="legend-item"><span class="legend-dot" style="background:${s2.c}"></span>${s2.label}</span>`).join('');
+
+  document.getElementById('wealthBreakdown').innerHTML=`
+    <div class="info-row"><span>Yr${d.yr} Price — No Buyback</span><span>${Rf(d.p5NB)}</span></div>
+    <div class="info-row"><span>Yr${d.yr} Price — With Buyback</span><span style="color:${C.tealDk}">${Rf(d.p5BB)}</span></div>
+    <div class="info-row"><span>Yr${d.yr} Price — Ex-Div</span><span>${Rf(d.p5Ex)}</span></div>
+    <div class="info-row"><span>Cash per share (buyback/div)</span><span>${Rf(d.divPS)}</span></div>
+    <div class="info-row"><span>Effective CGT rate</span><span>${(d.cgt*100).toFixed(1)}%</span></div>
+    <div class="info-row"><span>Gross reinvest return</span><span>${pct1(s.reinvRet)}</span></div>
+    <div class="info-row"><span>After-tax reinvest return</span><span style="color:var(--c-tealdk);font-weight:600">${pct1(d.reinvRetAT)}</span></div>
+    <div class="info-row"><span>Best after-tax outcome</span><span style="color:${C.orange};font-weight:600">${bestLabel}</span></div>`;
+
+  const rows=[
+    ['','Base','Spec. Div','BB Partic.','BB No Part.'],
+    ['Shares Yr'+d.yr,s.clientShares.toLocaleString(),s.clientShares.toLocaleString(),Math.round(s.clientShares*(1-s.buybackPct)).toLocaleString(),s.clientShares.toLocaleString()],
+    ['Gross share value',Rf(d.baseGross),Rf(d.divGross),Rf(d.bpGross),Rf(d.bnGross)],
+    ['CGT on shares',Rf(d.baseCGT),Rf(d.divCGT),Rf(d.bpCGT),Rf(d.bnCGT)],
+    ['Net share proceeds',Rf(d.baseNet),Rf(d.divGross-d.divCGT),Rf(d.bpGross-d.bpCGT),Rf(d.bnNet)],
+    ['Cash received (gross)','—',Rf(d.divCash),Rf(d.bpGrossProceeds),'—'],
+    ['Tax on cash (div/CGT)','—',Rf(d.divTaxPd),Rf(d.bpCGTonProceeds),'—'],
+    ['Net cash reinvested','—',Rf(d.divNetCash),Rf(d.bpCashNet),'—'],
+    ['Reinvest rate (after-tax)','—',pct1(d.reinvRetAT),pct1(d.reinvRetAT),'—'],
+    ['Cash grown to Yr'+d.yr,'—',Rf(d.divReinv),Rf(d.bpReinv),'—'],
+    ['TOTAL after-tax Yr'+d.yr,Rf(d.baseNet),Rf(d.divTotal),Rf(d.bpTotal),Rf(d.bnNet)],
+  ];
+  const hCols=['',C.mint,C.teal,C.red,C.orange];
+  document.getElementById('taxDetail').innerHTML=
+    `<div style="overflow-x:auto"><table class="scenario-table"><thead><tr>${rows[0].map((h,ci)=>`<th style="${ci>0?'text-align:right;border-top:3px solid '+hCols[ci]:''}">${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r=>`<tr>${r.map((c,ci)=>`<td style="${ci>0?'text-align:right':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+
+  return d;
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: FUNDING METHOD PAGE (debt vs cash funded)
+// ════════════════════════════════════════════════════════════════
+function renderFunding(){
+  const s=STATE, d=calcFunding();
+  const bbPctDisp=(s.buybackPct*100).toFixed(0);
+  const chosenMethod = s.fundingDebt ? 'Debt-Funded' : 'Cash-Funded';
+  const chosenUplift = s.fundingDebt ? d.upliftFactorDebt : d.upliftFactorCash;
+  const otherUplift   = s.fundingDebt ? d.upliftFactorCash : d.upliftFactorDebt;
+  const upliftDiffPts = ((chosenUplift - otherUplift)*100).toFixed(2);
+
+  document.getElementById('funding-narrative').innerHTML=
+    `A ${hl(bbPctDisp+'%','hl-teal')} buyback costs ${hl('R'+d.bbCost.toFixed(0)+'m')}. The current assumption is ${hl(chosenMethod,'hl-mint')}. `+
+    `If funded with new debt at a pre-tax cost of ${hl(pct1(d.Kd_pretax),'hl-orange')}, the buyback adds ${hl('R'+d.pretaxInterestOnBBDebt.toFixed(2)+'m','hl-orange')} of pre-tax interest on that new debt. `+
+    (s.interestDeductible
+      ? `Since this buyback-debt interest is currently treated as ${hl('tax-deductible','hl-mint')}, the ${hl(pct1(s.waccTaxRate),'hl-grey')} shield reduces the drag to ${hl('R'+d.afterTaxDrag.toFixed(2)+'m','hl-red')} after tax — ${hl((d.dragPctOfNI*100).toFixed(2)+'%','hl-red')} of net income.`
+      : `Since this buyback-debt interest is currently treated as ${hl('NOT tax-deductible','hl-red')} (toggle on the Assumptions page), the full pre-tax amount of ${hl('R'+d.afterTaxDrag.toFixed(2)+'m','hl-red')} hits net income with no shield — ${hl((d.dragPctOfNI*100).toFixed(2)+'%','hl-red')} of net income.`)+
+    ` That brings the debt-funded EPS uplift factor down to ${hl(d.upliftFactorDebt.toFixed(4)+'x','hl-teal')}, versus the full ${hl(d.upliftFactorCash.toFixed(4)+'x','hl-mint')} achieved when the buyback is funded from existing cash with no new borrowing cost (and therefore no exposure to the deductibility toggle at all).`;
+
+  document.getElementById('fundingMetrics').innerHTML=[
+    {l:'Buyback Cost', v:'R'+d.bbCost.toFixed(0)+'m', cls:'', mc:''},
+    {l:'Pre-tax Cost of Debt', v:pct1(d.Kd_pretax), cls:'orange', mc:'m-orange'},
+    {l:'Pre-tax Interest Added', v:'R'+d.pretaxInterestOnBBDebt.toFixed(2)+'m', cls:'orange', mc:'m-orange'},
+    {l:(s.interestDeductible?'After-tax Earnings Drag':'Earnings Drag (no shield)'), v:'R'+d.afterTaxDrag.toFixed(2)+'m', cls:'', mc:'m-red'},
+    {l:'Drag as % of Net Income', v:(d.dragPctOfNI*100).toFixed(2)+'%', cls:'', mc:'m-red'},
+    {l:'Uplift Difference', v:upliftDiffPts+' ppt', cls:'mint', mc:'m-mint'},
+  ].map(m=>`<div class="metric ${m.mc}"><div class="metric-label">${m.l}</div><div class="metric-val ${m.cls}">${m.v}</div></div>`).join('');
+
+  document.getElementById('fundingDebtDetail').innerHTML=`
+    <div class="info-row"><span>Pre-tax interest on buyback debt</span><span>R${d.pretaxInterestOnBBDebt.toFixed(2)}m</span></div>
+    <div class="info-row"><span>Buyback debt interest deductible?</span><span style="color:${s.interestDeductible?C.tealDk:C.red};font-weight:600">${s.interestDeductible?'Yes':'No'}</span></div>
+    <div class="info-row"><span>Tax shield (${pct1(s.waccTaxRate)})</span><span>${s.interestDeductible?'−R'+(d.pretaxInterestOnBBDebt-d.afterTaxDrag).toFixed(2)+'m':'R0.00m (no shield)'}</span></div>
+    <div class="info-row"><span>${s.interestDeductible?'After-tax':'Pre-tax'} earnings drag</span><span style="color:${C.red};font-weight:600">R${d.afterTaxDrag.toFixed(2)}m</span></div>
+    <div class="info-row"><span>Adjusted net income</span><span>R${(s.netIncome-d.afterTaxDrag).toFixed(2)}m</span></div>
+    <div class="info-row"><span>Shares after buyback</span><span>${d.sharesAfterBB.toFixed(1)}m</span></div>
+    <div class="info-row"><span>EPS — debt-funded</span><span style="color:${C.tealDk}">R${d.epsDebtFunded.toFixed(4)}</span></div>
+    <div class="info-row"><span>EPS uplift factor</span><span style="color:${C.tealDk};font-weight:700">${d.upliftFactorDebt.toFixed(4)}x</span></div>`;
+
+  document.getElementById('fundingCashDetail').innerHTML=`
+    <div class="info-row"><span>Interest cost added</span><span>R0.00m (none)</span></div>
+    <div class="info-row"><span>Earnings drag</span><span style="color:${C.mint};font-weight:600">R0.00m</span></div>
+    <div class="info-row"><span>Net income (unchanged)</span><span>R${s.netIncome.toLocaleString()}m</span></div>
+    <div class="info-row"><span>Shares after buyback</span><span>${d.sharesAfterBB.toFixed(1)}m</span></div>
+    <div class="info-row"><span>EPS — cash-funded</span><span style="color:${C.orange}">R${d.epsCashFunded.toFixed(4)}</span></div>
+    <div class="info-row"><span>EPS uplift factor</span><span style="color:${C.orange};font-weight:700">${d.upliftFactorCash.toFixed(4)}x</span></div>
+    <div class="info-row"><span style="font-size:0.72rem;color:var(--muted)">Note: no new debt raised, so unaffected by the deductibility toggle; assumes idle cash earns no return</span><span></span></div>`;
+
+  const labels = d.sens.map(r=>(r.pct*100).toFixed(0)+'%');
+  const opts = chartOpts(v=>v.toFixed(4)+'x');
+  opts.scales.y.ticks.callback=v=>v.toFixed(3)+'x';
+  charts.funding = mkChart('fundingChart',{type:'line',
+    data:{labels,datasets:[
+      {label:'Cash-Funded',data:d.sens.map(r=>r.upliftCash),borderColor:C.orange,backgroundColor:C.orange+'15',borderWidth:2.5,tension:0.3,pointRadius:4,pointHoverRadius:6},
+      {label:'Debt-Funded',data:d.sens.map(r=>r.upliftDebt),borderColor:C.teal,  backgroundColor:C.teal+'15',  borderWidth:2.5,tension:0.3,pointRadius:4,pointHoverRadius:6},
+    ]},options:opts});
+
+  document.getElementById('fundingChartLegend').innerHTML=[
+    {c:C.orange,l:'Cash-Funded (full uplift)'},{c:C.teal,l:'Debt-Funded (after interest drag)'}
+  ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
+
+  document.getElementById('fundingDragDetail').innerHTML=`
+    <table class="scenario-table"><thead><tr><th>Buyback %</th><th>Uplift (Debt)</th><th>Uplift (Cash)</th><th>Gap</th></tr></thead><tbody>`+
+    d.sens.map(r=>`<tr><td><span class="badge badge-teal">${(r.pct*100).toFixed(0)}%</span></td><td>${r.upliftDebt.toFixed(4)}x</td><td class="adv-pos">${r.upliftCash.toFixed(4)}x</td><td>${r.pct===0?'—':((r.upliftCash-r.upliftDebt)*100).toFixed(2)+' ppt'}</td></tr>`).join('')+
+    `</tbody></table>`;
+
+  return d;
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: WACC IMPACT PAGE
+// ════════════════════════════════════════════════════════════════
+function renderWACC(){
+  const s=STATE, d=calcWACC();
+
+  document.getElementById('wacc-narrative').innerHTML=
+    `At a share price of ${hl('R'+s.sharePrice.toFixed(2))} with ${hl(s.shares.toLocaleString()+'m')} shares outstanding, equity market cap is ${hl('R'+d.E.toFixed(0)+'m')}. `+
+    `With ${hl('R'+s.debt.toLocaleString()+'m')} of existing debt, the current WACC is ${hl(pctFmt(d.waccCurr),'hl-grey')} using Ke of ${hl(pctFmt(d.ke),'hl-teal')} (Rf ${hl(pct1(s.rf))} + β ${hl(s.beta.toFixed(2))} × ERP ${hl(pct1(s.erp))}) and after-tax Kd on existing debt of ${hl(pctFmt(d.kdPostExisting),'hl-orange')}. `+
+    `A ${hl((s.buybackPct*100).toFixed(0)+'%','hl-teal')} debt-funded buyback (R${d.bbAmt.toFixed(0)}m of new debt) shifts the capital mix toward cheaper debt, reducing WACC by ${hl(Math.abs(d.deltaBps_debt).toFixed(1)+' bps','hl-mint')} to ${hl(pctFmt(d.waccDebt),'hl-mint')}. `+
+    `A cash-funded buyback raises no new debt, saving ${hl(Math.abs(d.deltaBps_cash).toFixed(1)+' bps','hl-orange')} to ${hl(pctFmt(d.waccCash),'hl-orange')} — unaffected by the deductibility toggle below since there's no new debt involved. `+
+    (s.interestDeductible
+      ? `Interest on the ${hl('new buyback debt','hl-mint')} is currently treated as ${hl('tax-deductible','hl-mint')}, giving it the same shield as existing debt. Existing debt's interest is always deductible regardless of this toggle.`
+      : `Interest on the ${hl('new buyback debt','hl-red')} is currently treated as ${hl('NOT tax-deductible','hl-red')} — only the debt-funded WACC above is affected, since that's the only scenario with new debt; existing debt keeps its shield either way.`);
+
+  document.getElementById('waccBoxes').innerHTML = `
+    <div class="wealth-card wc-grey">
+      <div class="wc-label">Current WACC</div>
+      <div class="wc-val">${pctFmt(d.waccCurr)}</div>
+      <div class="wc-vs">Baseline capital structure</div>
+    </div>
+    <div class="wealth-card wc-teal">
+      <div class="wc-label">Debt-Funded Buyback</div>
+      <div class="wc-val">${pctFmt(d.waccDebt)}</div>
+      <div class="wc-vs"><span class="pos">${d.deltaBps_debt.toFixed(1)} bps</span></div>
+    </div>
+    <div class="wealth-card wc-orange">
+      <div class="wc-label">Cash-Funded Buyback</div>
+      <div class="wc-val">${pctFmt(d.waccCash)}</div>
+      <div class="wc-vs"><span class="pos">${d.deltaBps_cash.toFixed(1)} bps</span></div>
+    </div>`;
+
+  document.getElementById('waccCaps').innerHTML=[
+    {l:'Equity (E)',     v:'R'+d.E.toFixed(0)+'m',  s:'Market cap'},
+    {l:'Debt (D)',       v:'R'+d.D.toLocaleString()+'m',s:'Book value'},
+    {l:'Total Capital', v:'R'+d.V.toFixed(0)+'m',   s:'E + D'},
+    {l:'E/V weight',    v:(d.wE*100).toFixed(1)+'%',s:'Equity weight'},
+    {l:'D/V weight',    v:(d.wD*100).toFixed(1)+'%',s:'Debt weight'},
+    {l:'Cost of Equity',v:pctFmt(d.ke),              s:'Ke = Rf + β×ERP'},
+    {l:'Pre-tax Kd',    v:pctFmt(d.kdPre),           s:'Int / Debt'},
+    {l:'Existing Debt Kd', v:pctFmt(d.kdPostExisting), s:'After-tax (always deductible)'},
+    {l:'Buyback Debt Kd',  v:pctFmt(d.kdPostBBDebt),   s:s.interestDeductible?'After-tax (deductible)':'Pre-tax (no shield)'},
+  ].map(c=>`<div class="metric"><div class="metric-label">${c.l}</div><div class="metric-val">${c.v}</div><div style="font-size:0.68rem;color:var(--muted);margin-top:2px">${c.s}</div></div>`).join('');
+
+  const keLabels=d.keSens.map(r=>(r.ke*100).toFixed(0)+'%');
+  const keOpts=chartOpts(v=>(v*100).toFixed(2)+'%');
+  keOpts.scales.y.ticks.callback=v=>(v*100).toFixed(1)+'%';
+  charts.waccKe=mkChart('waccKeChart',{type:'line',
+    data:{labels:keLabels,datasets:[
+      {label:'WACC – Current',    data:d.keSens.map(r=>r.curr), borderColor:C.grey,  backgroundColor:C.grey+'12', borderWidth:2,tension:0.3,pointRadius:3,borderDash:[5,4]},
+      {label:'WACC – Debt-funded',data:d.keSens.map(r=>r.debt), borderColor:C.teal,  backgroundColor:C.teal+'12',borderWidth:2.5,tension:0.3,pointRadius:4},
+      {label:'WACC – Cash-funded',data:d.keSens.map(r=>r.cash), borderColor:C.orange,backgroundColor:C.orange+'12',borderWidth:2,tension:0.3,pointRadius:3,borderDash:[3,3]},
+    ]},options:keOpts});
+
+  document.getElementById('waccKeLegend').innerHTML=[
+    {c:C.grey,l:'Current'},{c:C.teal,l:'Debt-funded'},{c:C.orange,l:'Cash-funded'}
+  ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
+
+  const bbLabels=d.bbSens.map(r=>((r.pct)*100).toFixed(0)+'%');
+  const bbOpts=chartOpts(v=>(v*100).toFixed(2)+'%');
+  bbOpts.scales.y.ticks.callback=v=>(v*100).toFixed(1)+'%';
+  charts.waccBB=mkChart('waccBBChart',{type:'line',
+    data:{labels:bbLabels,datasets:[
+      {label:'WACC – Debt-funded',data:d.bbSens.map(r=>r.debt),borderColor:C.teal,  backgroundColor:C.teal+'12',  borderWidth:2.5,tension:0.3,pointRadius:4,pointHoverRadius:6},
+      {label:'WACC – Cash-funded',data:d.bbSens.map(r=>r.cash),borderColor:C.orange,backgroundColor:C.orange+'12',borderWidth:2,  tension:0.3,pointRadius:3,pointHoverRadius:5,borderDash:[3,3]},
+    ]},options:bbOpts});
+
+  document.getElementById('waccBBLegend').innerHTML=[
+    {c:C.teal,l:'Debt-funded'},{c:C.orange,l:'Cash-funded'}
+  ].map(x=>`<span class="legend-item"><span class="legend-dot" style="background:${x.c}"></span>${x.l}</span>`).join('');
+
+  // Tax deductibility comparison table
+  const tdRows = [
+    ['Funding','WACC if BB Debt Deductible','WACC if NOT Deductible','ΔWACC (bps)'],
+    ['Current (no buyback)', pctFmt(d.waccCurrDeductible), pctFmt(d.waccCurrNotDeductible), ((d.waccCurrNotDeductible-d.waccCurrDeductible)*10000).toFixed(1)],
+    ['Debt-funded',   pctFmt(d.waccDebtDeductible), pctFmt(d.waccDebtNotDeductible), ((d.waccDebtNotDeductible-d.waccDebtDeductible)*10000).toFixed(1)],
+    ['Cash-funded',   pctFmt(d.waccCashDeductible), pctFmt(d.waccCashNotDeductible), ((d.waccCashNotDeductible-d.waccCashDeductible)*10000).toFixed(1)],
+  ];
+  document.getElementById('waccTaxDeductDetail').innerHTML = `
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem">The toggle on the Assumptions page currently treats interest on the <strong>buyback-incremental debt</strong> as <strong style="color:${s.interestDeductible?C.tealDk:C.red}">${s.interestDeductible?'tax-deductible':'NOT tax-deductible'}</strong> — existing debt's interest is always deductible and isn't affected by this toggle. Since there's no new debt in the current or cash-funded scenarios, only the debt-funded WACC moves between the two columns; the other two rows are identical regardless of the toggle.</p>
+    <div style="overflow-x:auto"><table class="scenario-table">
+      <thead><tr>${tdRows[0].map((h,i)=>`<th${i>0?' style="text-align:right"':''}>${h}</th>`).join('')}</tr></thead>
+      <tbody>${tdRows.slice(1).map(r=>`<tr><td>${r[0]}</td><td style="text-align:right">${r[1]}</td><td style="text-align:right">${r[2]}</td><td style="text-align:right;color:${Math.abs(parseFloat(r[3]))>0.01?C.red:'var(--muted)'};font-weight:600">${Math.abs(parseFloat(r[3]))>0.01?'+'+r[3]:'—'}</td></tr>`).join('')}</tbody>
+    </table></div>`;
+
+  document.getElementById('waccStructureDetail').innerHTML=`
+    <div class="info-row"><span>Market value of equity</span><span>R${d.E.toFixed(0)}m</span></div>
+    <div class="info-row"><span>Total debt</span><span>R${d.D.toLocaleString()}m</span></div>
+    <div class="info-row"><span>Total capital (V)</span><span>R${d.V.toFixed(0)}m</span></div>
+    <div class="info-row"><span>Equity weight (E/V)</span><span>${(d.wE*100).toFixed(2)}%</span></div>
+    <div class="info-row"><span>Debt weight (D/V)</span><span>${(d.wD*100).toFixed(2)}%</span></div>
+    <div class="info-row"><span>Buyback amount (new debt)</span><span style="color:${C.tealDk}">R${d.bbAmt.toFixed(0)}m</span></div>
+    <div class="info-row"><span>Post-BB equity (debt-funded)</span><span>R${d.Ed.toFixed(0)}m</span></div>
+    <div class="info-row"><span>Post-BB debt (debt-funded)</span><span>R${d.Dd.toFixed(0)}m</span></div>`;
+
+  document.getElementById('waccCostDetail').innerHTML=`
+    <div class="info-row"><span>Risk-free rate (Rf)</span><span>${(s.rf*100).toFixed(1)}%</span></div>
+    <div class="info-row"><span>Beta (β)</span><span>${s.beta.toFixed(2)}</span></div>
+    <div class="info-row"><span>Equity risk premium (ERP)</span><span>${(s.erp*100).toFixed(1)}%</span></div>
+    <div class="info-row"><span>Cost of equity (Ke)</span><span style="color:${C.tealDk}">${pctFmt(d.ke)}</span></div>
+    <div class="info-row"><span>Pre-tax cost of debt (Kd)</span><span>${pctFmt(d.kdPre)}</span></div>
+    <div class="info-row"><span>Tax rate</span><span>${(s.waccTaxRate*100).toFixed(1)}%</span></div>
+    <div class="info-row"><span>Buyback debt interest deductible?</span><span style="color:${s.interestDeductible?C.tealDk:C.red};font-weight:600">${s.interestDeductible?'Yes':'No'}</span></div>
+    <div class="info-row"><span>Existing debt Kd (always deductible)</span><span style="color:${C.orange}">${pctFmt(d.kdPostExisting)}</span></div>
+    <div class="info-row"><span>Buyback debt Kd (toggle-controlled)</span><span style="color:${C.orange}">${pctFmt(d.kdPostBBDebt)}</span></div>
+    <div class="info-row"><span>Current WACC</span><span style="color:var(--c-grey);font-weight:700">${pctFmt(d.waccCurr)}</span></div>`;
+
+  return d;
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: ASSUMPTIONS PAGE (summary + historical reference)
+// ════════════════════════════════════════════════════════════════
+const HIST_BY_COMPANY = {
+  TSG: {
+    years: ['FY2023', 'FY2024', 'FY2025', 'FY2026'],
+    rev: [11076, 11255, 10876, 10841],
+    ebitda: [3895, 3699, 3183, 3173],
+    netInc: [1744, 1530, 1244, 1295],
+    eps: [1.67, 1.47, 1.2, 1.26],
+    fcf: [1397, 1624, 720, 1599],
+    mcap: [12687.98, 11253.21, 8592.53, 7069.14],
+    debt: [8799, 8427, 7672, 6910],
+    cash: [600, 635, 480, 470],
+    equity: [4605, 4870, 5172, 5458],
+    ocf: [1946, 2389, 1432, 2288],
+    capex: [549, 765, 712, 689],
+  },
+  CMH: {
+    years: ['FY2023', 'FY2024', 'FY2025', 'FY2026'],
+    rev: [12434.38, 12839.56, 13251.6, 15711.19],
+    ebitda: [1155.34, 1131.54, 988.45, 1108.88],
+    netInc: [443.46, 408.48, 301.49, 390.95],
+    eps: [5.75, 5.36, 3.98, 5.25],
+    fcf: [475.13, 670.96, 714.69, 857.67],
+    mcap: [2145.32, 2019.65, 2318.86, 2946.12],
+    debt: [1866.56, 904.46, 1966.86, 2132.63],
+    cash: [761.88, 815.11, 954.12, 1145.42],
+    equity: [1264.29, 1367.72, 1416.09, 1470.42],
+    ocf: [542.36, 719.93, 766.87, 910.28],
+    capex: [67.24, 48.98, 52.17, 52.61],
+  },
+  HCI: {
+    years: ['FY2023', 'FY2024', 'FY2025', 'FY2026'],
+    rev: [22898.94, 23733.23, 23436.78, 24172.49],
+    ebitda: [5639.05, 3581.75, 10090.37, 5428.95],
+    netInc: [3207.07, 651.9, 6724.05, 2538.49],
+    eps: [39.01, 7.89, 81.72, 31.95],
+    fcf: [2524.57, 2310.7, 178.19, 2619.44],
+    mcap: [16245.19, 14035.01, 10913.68, 13041.3],
+    debt: [15083.36, 14979.16, 14023.99, 13216.68],
+    cash: [2091.88, 1712.31, 3169.31, 2566.04],
+    equity: [28164.96, 28193.64, 38765.67, 39549.87],
+    ocf: [3600.9, 3502.45, 1358.55, 3809.16],
+    capex: [1076.33, 1259.9, 1180.36, 1189.73],
+  },
+  JSEJF: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [2649.98, 2819.87, 2971.35, 3403.22],
+    ebitda: [4479.77, 5999.41, 5890.32, 1683.07],
+    netInc: [748.56, 830.98, 917.75, 1063.4],
+    eps: [9.01, 10.02, 11.07, 12.9],
+    fcf: [784.64, 943.63, 953.25, 1210.27],
+    mcap: [8714.77, 6818.79, 10203.94, 634.5],
+    debt: [190.27, 124.48, 208.92, 183.56],
+    cash: [2223.16, 2303.76, 2204.76, 3149.78],
+    equity: [4173.15, 4386.15, 4682.75, 5029.26],
+    ocf: [977.75, 1111.13, 1094.43, 1244.71],
+    capex: [193.11, 167.51, 141.18, 34.44],
+  },
+  MTH: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [91978, 106321, 113764, 112658],
+    ebitda: [6824, 8107, 8329, 8117],
+    netInc: [3290, 3354, 2436, 2451],
+    eps: [18.08, 19.28, 14.0, 14.17],
+    fcf: [1765, -2199, 2486, 4536],
+    mcap: [18568.35, 16728.39, 16558.08, 15708.02],
+    debt: [13364, 30490, 28079, 25693],
+    cash: [993, 2042, 1729, 2666],
+    equity: [14045, 17762, 18137, 20107],
+    ocf: [2733, -1187, 3533, 5669],
+    capex: [968, 1012, 1047, 1133],
+  },
+  MDI: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [226.39, 242.8, 270.84, 291.98],
+    ebitda: [52.44, 50.3, 46.52, 65.76],
+    netInc: [21.43, 20.58, 17.42, 30.48],
+    eps: [0.14, 0.14, 0.12, 0.22],
+    fcf: [3.59, 1.45, 14.35, 0.22],
+    mcap: [128.4, 111.4, 107.93, 144.52],
+    debt: [55.69, 51.73, 54.61, 69.63],
+    cash: [30.67, 27.85, 34.62, 39.88],
+    equity: [189.13, 208.98, 211.47, 241.85],
+    ocf: [24.96, 35.46, 42.47, 17.89],
+    capex: [21.37, 34.0, 28.12, 17.67],
+  },
+  HDC: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [8151.4, 8896.56, 8379.0, 8748.0],
+    ebitda: [1192.44, 1246.39, 992.0, 1232.0],
+    netInc: [596.27, 610.81, 506.0, 575.0],
+    eps: [19.27, 20.67, 17.52, 19.82],
+    fcf: [565.52, 528.81, 1251.0, 948.0],
+    mcap: [4158.58, 4654.59, 5692.39, 5115.52],
+    debt: [1288.64, 1727.85, 1286.0, 1695.0],
+    cash: [226.64, 244.99, 269.0, 352.0],
+    equity: [3254.39, 3481.18, 3611.0, 3900.0],
+    ocf: [649.41, 641.78, 1334.0, 1034.0],
+    capex: [83.89, 112.97, 78.57, 86.0],
+  },
+  HAR: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [42645, 49275, 61379, 73896],
+    ebitda: [3343, 11054, 16523, 26265],
+    netInc: [-1052, 4820, 8587, 14384],
+    eps: [-1.72, 7.77, 13.64, 22.88],
+    fcf: [710, 2308, 7252, 10792],
+    mcap: [31823.16, 48950.74, 104009.67, 153911.23],
+    debt: [3647, 6221, 2291, 2229],
+    cash: [2448, 2867, 4693, 13101],
+    equity: [30117, 34880, 40949, 48512],
+    ocf: [6924, 9948, 15650, 22647],
+    capex: [6214, 7640, 8398, 11855],
+  },
+  LHC: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [20526, 22641, 25791, 25104],
+    ebitda: [3519, 3615, 4128, 1037],
+    netInc: [1531, 264, 4827, 3864],
+    eps: [1.05, 0.18, 1.38, 2.66],
+    fcf: [1884, 3457, 2170, 2618],
+    mcap: [24942.87, 29199.57, 23239.48, 16614.16],
+    debt: [13685, 13189, 4421, 3951],
+    cash: [2802, 846, 2462, 3810],
+    equity: [19860, 21289, 13514, 12142],
+    ocf: [4232, 4670, 3723, 4043],
+    capex: [2348, 1213, 1553, 1807],
+  },
+  ITE: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [8981, 9136, 9064, 8876],
+    ebitda: [3194, 2855, 2682, 2725],
+    netInc: [1850, 1605, 1462, 1494],
+    eps: [1.52, 1.32, 1.22, 1.26],
+    fcf: [-331, 852, 1597, 392],
+    mcap: [17047.56, 15735.43, 13882.02, 11900.0],
+    debt: [942, 917, 982, 936],
+    cash: [431, 1049, 1844, 2169],
+    equity: [6998, 7768, 8474, 8388],
+    ocf: [693, 1541, 2204, 632],
+    capex: [1024, 689, 609, 240],
+  },
+  DCP: {
+    years: ['FY2023', 'FY2024', 'FY2025', 'FY2026'],
+    rev: [32663.51, 36283.48, 39172.35, 42825.78],
+    ebitda: [2746.29, 2912.76, 3298.28, 3254.13],
+    netInc: [1000.22, 984.48, 1179.81, 978.89],
+    eps: [1.16, 1.15, 1.38, 1.14],
+    fcf: [-236.01, 863.11, -497.45, 1213.34],
+    mcap: [23274.16, 26228.53, 28001.26, 31709.24],
+    debt: [4974.14, 5689.95, 6235.35, 6637.53],
+    cash: [287.39, 884.37, 585.35, 499.76],
+    equity: [3932.48, 4474.94, 5228.97, 5694.23],
+    ocf: [853.94, 1890.21, 904.70, 2316.93],
+    capex: [1089.95, 1027.09, 1402.14, 1103.59],
+  },
+  LEW: {
+    years: ['FY2023', 'FY2024', 'FY2025', 'FY2026'],
+    rev: [6149.10, 8183.80, 9287.80, 10319.90],
+    ebitda: [1032.10, 1120.10, 1588.00, 1789.30],
+    netInc: [411.00, 436.40, 754.90, 853.80],
+    eps: [6.66, 7.81, 14.03, 15.87],
+    fcf: [374.60, 334.10, 432.40, 452.50],
+    mcap: [2423.54, 2376.00, 3673.31, 4097.26],
+    debt: [1312.50, 1715.90, 2032.20, 2355.30],
+    cash: [183.00, 224.30, 175.40, 161.20],
+    equity: [4609.90, 4702.80, 5078.40, 5485.60],
+    ocf: [517.50, 458.70, 560.30, 581.50],
+    capex: [142.90, 124.60, 127.90, 129.00],
+  },
+  RLO: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [11129, 13781, 14446, 13881],
+    ebitda: [1522, 1820, 1721, 1995],
+    netInc: [827, 919, 1037, 926],
+    eps: [5.17, 5.71, 6.10, 5.58],
+    fcf: [25, 513, 548, 454],
+    mcap: [6883.11, 9568.62, 13768.30, 8446.60],
+    debt: [842, 1602, 1618, 1824],
+    cash: [957, 1298, 1832, 1754],
+    equity: [7190, 7630, 8100, 8208],
+    ocf: [711, 1373, 1323, 679],
+    capex: [232, 355, 223, 225],
+  },
+  CLS: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [39587.14, 41621.68, 45437.64, 51289.29],
+    ebitda: [5220.37, 5214.28, 5991.14, 6684.30],
+    netInc: [2638.68, 2537.53, 2837.06, 3236.33],
+    eps: [10.80, 10.42, 11.90, 13.63],
+    fcf: [1079.48, 2380.07, 3791.24, 4256.71],
+    mcap: [72808.07, 66586.31, 89067.52, 87969.69],
+    debt: [3099.88, 3238.93, 3786.29, 4042.48],
+    cash: [2014.55, 2455.18, 2704.96, 3255.77],
+    equity: [5698.81, 5964.81, 6285.54, 6857.59],
+    ocf: [1917.08, 3310.07, 4682.10, 5241.24],
+    capex: [837.60, 930.00, 890.86, 984.53],
+  },
+  ADH: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [6960.60, 7859.90, 8520.60, 9330.40],
+    ebitda: [1692.60, 1972.80, 2246.60, 2503.30],
+    netInc: [805.40, 951.00, 1104.70, 1288.00],
+    eps: [1.47, 1.73, 2.01, 2.33],
+    fcf: [555.70, 708.10, 53.90, 1054.70],
+    mcap: [9855.38, 13387.12, 18548.51, 20454.16],
+    debt: [2698.30, 2685.60, 3153.70, 2994.00],
+    cash: [355.10, 381.40, 509.40, 344.80],
+    equity: [4951.20, 5498.30, 6179.10, 6725.00],
+    ocf: [1260.10, 1377.10, 1036.10, 2046.70],
+    capex: [704.40, 669.00, 982.20, 992.00],
+  },
+  BVT: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [99929.07, 114911.52, 122615.99, 126605.41],
+    ebitda: [13253.11, 14952.30, 16403.47, 15325.60],
+    netInc: [5071.74, 5972.69, 6368.98, 6068.54],
+    eps: [29.80, 29.80, 18.69, 17.83],
+    fcf: [2330.02, 1339.86, 1951.15, 2740.10],
+    mcap: [35618.56, 44461.01, 98567.47, 79370.65],
+    debt: [30174.62, 33410.85, 36832.64, 44507.60],
+    cash: [11521.46, 9253.50, 5834.90, 6193.64],
+    equity: [31875.34, 36331.69, 38532.03, 41414.56],
+    ocf: [5587.69, 5055.04, 9259.23, 6230.72],
+    capex: [3257.67, 3715.18, 4047.85, 3490.62],
+  },
+  BID: {
+    years: ['FY2022', 'FY2023', 'FY2024', 'FY2025'],
+    rev: [147138.31, 196341.24, 225905.34, 235591.18],
+    ebitda: [9552.67, 13157.38, 15583.60, 16244.99],
+    netInc: [4824.72, 6886.26, 8010.07, 8174.17],
+    eps: [14.40, 20.56, 23.83, 24.27],
+    fcf: [188.85, 3226.51, 990.03, 1772.64],
+    mcap: [102490.22, 138035.11, 138524.40, 156893.73],
+    debt: [15192.83, 21987.03, 22354.44, 26206.40],
+    cash: [7398.25, 12397.29, 11722.48, 11768.59],
+    equity: [31103.47, 40194.62, 42524.37, 47672.67],
+    ocf: [3271.60, 7665.87, 6941.22, 11992.22],
+    capex: [3082.75, 4439.36, 5951.19, 6437.89],
+  },
 };
 
-function getKDIns(){return{
-  sharePrice: +document.getElementById('kd-sharePrice').value,
-  eps:        +document.getElementById('kd-eps').value,
-  epsGrowth:  +document.getElementById('kd-epsGrowth').value/100,
-  buybackPct: +document.getElementById('kd-buybackPct').value/100,
-  shares:     +document.getElementById('kd-shares').value,
-  netIncome:  +document.getElementById('kd-netIncome').value,
-  equity:     +document.getElementById('kd-equity').value,
-  debt:       +document.getElementById('kd-debt').value,
-  cash:       +document.getElementById('kd-cash').value,
-  revenue:    +document.getElementById('kd-revenue').value,
-  ebitda:     +document.getElementById('kd-ebitda').value,
-  fcf:        +document.getElementById('kd-fcf').value,
-}}
+// Convenience accessor: always reflects the currently selected company's history
+function getHist(){ return HIST_BY_COMPANY[currentCompany] || HIST_BY_COMPANY.TSG; }
 
-function renderKeyData(){
-  const i = getKDIns();
-  const pe = i.sharePrice / i.eps;
-  const mcap = i.sharePrice * i.shares;
-  const ev = mcap - i.cash + i.debt;
-  const evEbitda = ev / i.ebitda;
-  const netDebt = i.debt - i.cash;
-  const roe = i.netIncome / i.equity;
-  const netMargin = i.netIncome / i.revenue;
-  const ebitdaMargin = i.ebitda / i.revenue;
-  const fcfYield = (i.fcf / mcap) * 100;
-  const netDebtEbitda = netDebt / i.ebitda;
-  const ul = 1/(1-i.buybackPct);
+function renderAssumptionsSummary(accD, waccD){
+  const s=STATE;
+  const pe = s.sharePrice/s.eps;
+  const ul = 1/(1-s.buybackPct);
 
+  document.getElementById('assumptionsSummary').innerHTML=[
+    {l:'Implied P/E', v:pe.toFixed(2)+'x', mc:''},
+    {l:'EPS Uplift Factor', v:ul.toFixed(4)+'x', mc:'m-mint'},
+    {l:'Current WACC', v:pctFmt(waccD.waccCurr), mc:'m-grey'},
+    {l:'Cost of Equity', v:pctFmt(waccD.ke), mc:'m-teal'},
+    {l:'Effective CGT', v:(s.margTax*s.cgtInc*100).toFixed(1)+'%', mc:'m-orange'},
+    {l:'Funding Method', v:s.fundingDebt?'Debt':'Cash', mc:s.fundingDebt?'m-teal':'m-orange'},
+  ].map(m=>`<div class="metric ${m.mc}"><div class="metric-label">${m.l}</div><div class="metric-val">${m.v}</div></div>`).join('');
+}
+
+function renderHistoricalData(){
+  const s=STATE;
+  const HIST = getHist();
   const infoRows = (rows) => rows.map(([l,v,c=''])=>
     `<div class="info-row"><span>${l}</span><span${c?` style="color:${c}"`:''}>${v}</span></div>`
   ).join('');
 
+  const baseYearLabel = HIST.years[3];
+  const mcap = s.sharePrice*s.shares;
+  const ev = mcap - s.cash + s.debt;
+  const revenue = HIST.rev[3], ebitda = HIST.ebitda[3];
+  const evEbitda = ev/ebitda;
+  const netDebt = s.debt - s.cash;
+  const roe = s.netIncome/s.equity;
+  const netMargin = s.netIncome/revenue;
+  const ebitdaMargin = ebitda/revenue;
+  const fcf = HIST.fcf[3];
+  const fcfYield = (fcf/mcap)*100;
+  const netDebtEbitda = netDebt/ebitda;
+
   document.getElementById('kd-income').innerHTML = infoRows([
-    ['Revenue', 'R'+i.revenue.toLocaleString()+'m'],
-    ['EBITDA', 'R'+i.ebitda.toLocaleString()+'m'],
+    ['Revenue ('+baseYearLabel+')', 'R'+revenue.toLocaleString()+'m'],
+    ['EBITDA', 'R'+ebitda.toLocaleString()+'m'],
     ['EBITDA Margin', (ebitdaMargin*100).toFixed(1)+'%', C.mint],
-    ['Net Income', 'R'+i.netIncome.toLocaleString()+'m'],
+    ['Net Income', 'R'+s.netIncome.toLocaleString()+'m'],
     ['Net Margin', (netMargin*100).toFixed(1)+'%', C.tealDk],
-    ['EPS (diluted)', 'R'+i.eps.toFixed(2), C.tealDk],
-    ['Shares Outstanding', i.shares.toLocaleString()+'m'],
+    ['EPS (diluted)', 'R'+s.eps.toFixed(2), C.tealDk],
+    ['Shares Outstanding', s.shares.toLocaleString()+'m'],
   ]);
 
   document.getElementById('kd-valuation').innerHTML = infoRows([
-    ['Share Price', 'R'+i.sharePrice.toFixed(2), C.tealDk],
+    ['Share Price', 'R'+s.sharePrice.toFixed(2), C.tealDk],
     ['Market Cap', 'R'+mcap.toFixed(0)+'m'],
     ['Enterprise Value', 'R'+ev.toFixed(0)+'m'],
-    ['P/E (implied)', pe.toFixed(2)+'x', C.orange],
+    ['P/E (implied)', (s.sharePrice/s.eps).toFixed(2)+'x', C.orange],
     ['EV/EBITDA', evEbitda.toFixed(2)+'x', C.orange],
     ['FCF Yield', fcfYield.toFixed(2)+'%', C.mint],
-    ['EPS Growth p.a. (assumed)', (i.epsGrowth*100).toFixed(1)+'%'],
+    ['EPS Growth p.a. (assumed)', (s.epsGrowth*100).toFixed(1)+'%'],
   ]);
 
   document.getElementById('kd-balance').innerHTML = infoRows([
-    ['Total Equity', 'R'+i.equity.toLocaleString()+'m'],
-    ['Total Debt', 'R'+i.debt.toLocaleString()+'m'],
-    ['Cash & Equivalents', 'R'+i.cash.toLocaleString()+'m'],
+    ['Total Equity', 'R'+s.equity.toLocaleString()+'m'],
+    ['Total Debt', 'R'+s.debt.toLocaleString()+'m'],
+    ['Cash & Equivalents', 'R'+s.cash.toLocaleString()+'m'],
     ['Net Debt', 'R'+netDebt.toLocaleString()+'m'],
     ['Net Debt / EBITDA', netDebtEbitda.toFixed(2)+'x', netDebtEbitda>3?C.red:C.mint],
     ['ROE', (roe*100).toFixed(2)+'%', C.mint],
-    ['ROE — Post Buyback ('+((i.buybackPct*100).toFixed(0))+'%)', (i.netIncome/(i.equity-i.shares*i.buybackPct*i.sharePrice)*100).toFixed(2)+'%', C.mint],
+    ['ROE — Post Buyback ('+((s.buybackPct*100).toFixed(0))+'%)', (s.netIncome/(s.equity-s.shares*s.buybackPct*s.sharePrice)*100).toFixed(2)+'%', C.mint],
   ]);
 
   document.getElementById('kd-cashflow').innerHTML = infoRows([
-    ['Operating Cash Flow', 'R'+2288+'m'],
-    ['Capital Expenditure', '−R'+689+'m'],
-    ['Free Cash Flow', 'R'+i.fcf.toLocaleString()+'m'],
-    ['FCF / Net Income', ((i.fcf/i.netIncome)*100).toFixed(1)+'%', C.tealDk],
-    ['Buyback % of FCF', ((i.shares*i.buybackPct*i.sharePrice/i.fcf)*100).toFixed(1)+'%'],
-    ['Buyback Cost (Rm)', 'R'+(i.shares*i.buybackPct*i.sharePrice).toFixed(0)+'m'],
+    ['Operating Cash Flow', 'R'+HIST.ocf[3]+'m'],
+    ['Capital Expenditure', '−R'+HIST.capex[3]+'m'],
+    ['Free Cash Flow', 'R'+fcf.toLocaleString()+'m'],
+    ['FCF / Net Income', ((fcf/s.netIncome)*100).toFixed(1)+'%', C.tealDk],
+    ['Buyback % of FCF', ((s.shares*s.buybackPct*s.sharePrice/fcf)*100).toFixed(1)+'%'],
+    ['Buyback Cost (Rm)', 'R'+(s.shares*s.buybackPct*s.sharePrice).toFixed(0)+'m'],
   ]);
 
-  // Historical table
-  const hdr = ['Metric','FY2023','FY2024','FY2025','FY2026 (Base)'];
+  const hdr = ['Metric', HIST.years[0], HIST.years[1], HIST.years[2], HIST.years[3]+' (Base)'];
   const hrows = [
     ['Revenue (Rm)', ...HIST.rev.map(v=>v.toLocaleString())],
     ['EBITDA (Rm)', ...HIST.ebitda.map(v=>v.toLocaleString())],
@@ -1149,59 +2175,57 @@ function renderKeyData(){
       <thead><tr>${hdr.map((h,ci)=>`<th style="${ci>0?'text-align:right;'+(ci===4?'border-top:3px solid '+C.tealDk:''):''}">${h}</th>`).join('')}</tr></thead>
       <tbody>${hrows.map(r=>`<tr>${r.map((c,ci)=>`<td style="${ci>0?'text-align:right':'font-weight:500'}">${c}</td>`).join('')}</tr>`).join('')}</tbody>
     </table></div>`;
-
-  // Derived panel
-  document.getElementById('kd-derived').innerHTML =
-    `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">` +
-    [
-      {l:'Implied P/E',    v:pe.toFixed(2)+'x',           mc:''},
-      {l:'EPS Uplift (BB)',v:'+'+((ul-1)*100).toFixed(1)+'%',mc:'m-mint'},
-      {l:'EV / EBITDA',   v:evEbitda.toFixed(2)+'x',     mc:'m-orange'},
-      {l:'FCF Yield',     v:fcfYield.toFixed(2)+'%',      mc:'m-mint'},
-      {l:'Net Debt/EBITDA',v:netDebtEbitda.toFixed(2)+'x',mc:netDebtEbitda>3?'m-red':''},
-      {l:'ROE — Base',    v:(roe*100).toFixed(2)+'%',     mc:''},
-    ].map(m=>`<div class="metric ${m.mc}"><div class="metric-label">${m.l}</div><div class="metric-val">${m.v}</div></div>`).join('') +
-    `</div>`;
 }
 
-// Key data sliders — sync display values
-[['kd-sharePrice','kd-sharePriceVal',v=>parseFloat(v).toFixed(2)],
- ['kd-eps','kd-epsVal',v=>parseFloat(v).toFixed(2)],
- ['kd-epsGrowth','kd-epsGrowthVal',v=>parseFloat(v).toFixed(1)],
- ['kd-buybackPct','kd-buybackPctVal',v=>v],
- ['kd-shares','kd-sharesVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-netIncome','kd-netIncomeVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-equity','kd-equityVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-debt','kd-debtVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-cash','kd-cashVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-revenue','kd-revenueVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-ebitda','kd-ebitdaVal',v=>(+v).toLocaleString('en-ZA')],
- ['kd-fcf','kd-fcfVal',v=>(+v).toLocaleString('en-ZA')],
-].forEach(([id,vid,fmt])=>{
-  document.getElementById(id).addEventListener('input',e=>{
-    document.getElementById(vid).textContent=fmt(e.target.value);
-    renderKeyData();
-  });
-});
-
-// ── HEADER SYNC ──
-function syncHeader(){
-  const sp=+document.getElementById('sharePrice').value;
-  const ep=+document.getElementById('eps').value;
-  const bb=+document.getElementById('buybackPct').value;
-  const pe=sp/ep;
-  document.getElementById('hs-price').textContent='R'+sp.toFixed(2);
-  document.getElementById('hs-pe').textContent=pe.toFixed(2)+'x';
-  document.getElementById('hs-eps').textContent='R'+ep.toFixed(2);
-  document.getElementById('hs-bb').textContent=bb+'%';
+// ════════════════════════════════════════════════════════════════
+// MASTER RENDER — calls every page's render function in sequence
+// ════════════════════════════════════════════════════════════════
+function renderAll(){
+  updateTaxBadges();
+  const accD = renderAccretion();
+  renderROE();
+  renderWealth();
+  renderFunding();
+  const waccD = renderWACC();
+  renderAssumptionsSummary(accD, waccD);
+  renderHistoricalData();
+  updateHeader(waccD.waccCurr);
 }
 
 // ── INIT ──
-renderAcc();
-renderROE();
-renderWealth();
-renderWACC();
-renderKeyData();
+// Tune Chart.js global animation for a smooth "draw-in" feel
+if(window.Chart){
+  Chart.defaults.animation = {duration:900, easing:'easeOutQuart'};
+  Chart.defaults.animations = Chart.defaults.animations || {};
+  Chart.defaults.font = Object.assign({}, Chart.defaults.font, {family:'Inter'});
+}
+
+// Wrap renderAll so every update path gets: slider fill + count-up + tab indicator.
+// Count-up only fires on discrete changes (company/entity/tab/theme), not during
+// continuous slider dragging (detected by <350ms gaps between renders).
+const __origRenderAll = renderAll;
+let __lastRenderTs = 0;
+renderAll = function(){
+  const now = performance.now();
+  const doAnimate = (now - __lastRenderTs) > 350;
+  __lastRenderTs = now;
+  let prevMap = new Map();
+  if(doAnimate){
+    document.querySelectorAll(ANIM_SELECTOR).forEach(el=>prevMap.set(el, el.textContent));
+  }
+  __origRenderAll.apply(this, arguments);
+  refreshAllFills();
+  animateNumbers(prevMap, doAnimate);
+};
+
+renderCompanySelector();
+renderAll();
+requestAnimationFrame(()=>{ positionTabIndicator(); refreshAllFills(); });
+window.addEventListener('load',()=>{ positionTabIndicator(); });
+
 </script>
-</body>
-</html>
+
+
+
+
+</body></html>
