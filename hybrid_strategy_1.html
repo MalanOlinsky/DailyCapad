@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hybrid Capital Strategy — The Buyback Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-teal:#01A0C6;--c-tealdk:#0E7CA8;--c-mint:#8ADFB6;
+  --c-red:#ED2A3F;--c-orange:#F79736;--c-grey:#988E8A;
+  --c-purple:#741B81;
+  --font-sans:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  --bg:#eef1f6;--surface:#ffffff;--surface2:#f5f7fb;--surface3:#eaeef6;
+  --border:#e3e8f1;--border2:#cdd6e6;
+  --text:#0c141f;--text2:#43536a;--muted:#7a8aa0;
+  --card-shadow:0 1px 2px rgba(16,32,64,.05),0 6px 22px rgba(16,32,64,.07);
+  --glow:rgba(1,160,198,.18);--glow2:rgba(116,27,129,.10);
+  --track:rgba(12,32,64,.12);
+}
+[data-theme="dark"]{
+  --bg:#070a11;--surface:#0f141d;--surface2:#141a26;--surface3:#1b2332;
+  --border:rgba(255,255,255,.065);--border2:rgba(255,255,255,.13);
+  --text:#e9eef6;--text2:#a6b3c6;--muted:#647488;
+  --card-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 10px 34px rgba(0,0,0,.55);
+  --glow:rgba(1,160,198,.20);--glow2:rgba(116,27,129,.13);
+  --track:rgba(255,255,255,.11);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);color:var(--text);background:var(--bg);min-height:100vh;
+  background-image:radial-gradient(1100px 560px at 8% -10%,var(--glow),transparent 58%),
+                   radial-gradient(1000px 620px at 102% -4%,var(--glow2),transparent 55%);
+  background-attachment:fixed;transition:background .4s,color .4s;
+}
+
+/* ── HEADER ───────────────────────────────────────────────────── */
+.header{
+  background:rgba(14,35,64,.92);backdrop-filter:blur(12px);
+  padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;
+  height:54px;position:sticky;top:0;z-index:200;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.header-left{display:flex;align-items:center;gap:1.2rem}
+.logo{font-size:.8rem;font-weight:800;color:#e9eef6;letter-spacing:.04em;white-space:nowrap}
+.logo span{color:var(--c-teal)}
+.header-badge{font-size:.72rem;font-weight:700;color:var(--c-teal);
+  background:rgba(1,160,198,.12);border:1px solid rgba(1,160,198,.25);
+  border-radius:20px;padding:.2rem .75rem}
+.header-right{display:flex;align-items:center;gap:.7rem}
+.theme-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:#e9eef6;border-radius:6px;padding:.28rem .65rem;font-size:.74rem;cursor:pointer}
+
+/* ── COMPANY SELECTOR ─────────────────────────────────────────── */
+.co-bar{
+  background:rgba(14,35,64,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:.6rem 1.5rem;display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;
+  position:sticky;top:54px;z-index:190;
+}
+.co-btn{
+  padding:.35rem .85rem;border-radius:20px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);color:var(--muted);
+  font-size:.72rem;font-weight:700;cursor:pointer;letter-spacing:.04em;
+  transition:all .15s;white-space:nowrap;
+}
+.co-btn:hover{color:var(--text);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08)}
+.co-btn.active{
+  background:linear-gradient(135deg,var(--c-teal),var(--c-tealdk));
+  border-color:var(--c-teal);color:#fff;
+  box-shadow:0 0 14px rgba(1,160,198,.35);
+}
+
+/* ── LAYOUT ───────────────────────────────────────────────────── */
+.container{max-width:1120px;margin:0 auto;padding:1.5rem 1.5rem 3rem}
+
+/* ── PAGE INTRO ───────────────────────────────────────────────── */
+.page-intro{margin-bottom:1.4rem}
+.page-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
+.page-eyebrow::before{content:'';width:22px;height:2px;background:var(--c-teal);border-radius:2px}
+.page-heading{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:800;line-height:1.2;margin-bottom:.5rem}
+.page-sub{font-size:.88rem;color:var(--muted);line-height:1.7;max-width:740px}
+
+/* ── ASSUMPTION SLIDERS ───────────────────────────────────────── */
+.assumptions{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:1.2rem 1.4rem;margin-bottom:1.4rem;box-shadow:var(--card-shadow);
+}
+.assumptions h3{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--c-teal);margin-bottom:1rem}
+.slider-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem}
+.control-group{display:flex;flex-direction:column;gap:.35rem}
+.control-group label{font-size:.74rem;color:var(--muted);font-weight:600;
+  display:flex;justify-content:space-between}
+.control-val{font-size:.88rem;font-weight:700;color:var(--c-tealdk)}
+.control-group input[type=range]{
+  -webkit-appearance:none;width:100%;height:4px;border-radius:2px;outline:none;cursor:pointer;
+  background:linear-gradient(90deg,var(--c-teal) 0%,var(--c-teal) var(--fill,30%),var(--track) var(--fill,30%),var(--track) 100%);
+}
+.control-group input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:15px;height:15px;border-radius:50%;
+  background:#fff;border:3px solid var(--c-teal);cursor:pointer}
+
+/* ── SECTION TITLE ────────────────────────────────────────────── */
+.sec-head{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--c-teal);display:flex;align-items:center;gap:8px;margin:1.6rem 0 .8rem}
+.sec-head::before{content:'';width:18px;height:2px;background:var(--c-teal);border-radius:2px}
+
+/* ── NARRATIVE ────────────────────────────────────────────────── */
+.narrative{font-size:.86rem;line-height:1.75;color:var(--text);
+  background:var(--surface);border:1px solid var(--border);
+  border-left:3px solid var(--c-teal);border-radius:0 12px 12px 0;
+  padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.narrative strong{color:var(--c-teal)}
+.narrative em{color:var(--c-orange);font-style:normal}
+
+/* ── CARDS ────────────────────────────────────────────────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:1.2rem 1.4rem;box-shadow:var(--card-shadow);margin-bottom:1.2rem}
+.card-title{font-size:.8rem;font-weight:700;letter-spacing:.05em;color:var(--text2);
+  margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.2rem}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}.four-col{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.four-col{grid-template-columns:1fr}}
+
+/* ── METRICS ──────────────────────────────────────────────────── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.2rem}
+.metric{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem}
+.metric-label{font-size:.68rem;color:var(--muted);font-weight:600;letter-spacing:.03em;margin-bottom:.25rem}
+.metric-val{font-size:1.2rem;font-weight:800;color:var(--c-teal)}
+.metric-sub{font-size:.7rem;margin-top:.15rem;font-weight:600}
+.pos{color:var(--c-mint)}.neg{color:var(--c-orange)}
+
+/* ── TIMELINE ─────────────────────────────────────────────────── */
+.timeline{display:flex;align-items:flex-start;gap:0;margin:.5rem 0 1rem;overflow-x:auto}
+.tl-step{flex:1;text-align:center;position:relative;min-width:120px;padding:0 .3rem}
+.tl-step:not(:last-child)::after{
+  content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;
+  background:var(--border2);z-index:0}
+.tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.8rem;font-weight:800;margin:0 auto .5rem;
+  position:relative;z-index:1;color:#fff}
+.tl-label{font-size:.72rem;font-weight:700;color:var(--text2);margin-bottom:.2rem}
+.tl-note{font-size:.68rem;color:var(--muted);line-height:1.4;padding:0 .2rem}
+
+/* ── SCENARIO TABS ────────────────────────────────────────────── */
+.sc-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.sc-tab{padding:.45rem 1rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--muted);font-size:.76rem;font-weight:600;
+  cursor:pointer;transition:all .18s}
+.sc-tab.active{background:var(--c-teal);color:#fff;border-color:var(--c-teal)}
+
+/* ── RESULTS TABLE ────────────────────────────────────────────── */
+.res-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.res-table th{padding:.45rem .8rem;text-align:left;font-size:.7rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.res-table td{padding:.5rem .8rem;border-bottom:1px solid var(--border)}
+.res-table tr:last-child td{border-bottom:none}
+.res-table .val{font-weight:600;text-align:right;font-size:.84rem}
+.res-table .pos{color:var(--c-teal)}.res-table .neg{color:var(--c-orange)}
+.res-table .hl{background:color-mix(in srgb,var(--c-teal) 5%,transparent)}
+.res-table .sec-row td{font-size:.69rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--c-teal);padding-top:.9rem;background:none}
+
+/* ── COMPARISON CARDS ─────────────────────────────────────────── */
+.cmp-card{border:1px solid var(--border);border-radius:12px;padding:1rem;background:var(--surface2)}
+.cmp-header{font-size:.71rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.65rem}
+.cmp-row{display:flex;justify-content:space-between;font-size:.79rem;padding:.2rem 0;border-bottom:1px solid var(--border)}
+.cmp-row:last-child{border-bottom:none;font-weight:700;font-size:.84rem}
+.cmp-key{color:var(--muted)}
+.best-badge{font-size:.65rem;font-weight:800;background:var(--c-teal);color:#fff;
+  border-radius:4px;padding:.05rem .35rem;margin-left:.4rem;vertical-align:middle}
+
+/* ── CHART ────────────────────────────────────────────────────── */
+.chart-wrap{position:relative}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--muted);
+  border-top:1px solid var(--border);margin-top:1rem}
+
+/* ── Hybrid infographic ──────────────────────────────────────── */
+.hig-asm-item{flex:1;padding:0 14px;border-right:1px solid rgba(255,255,255,.07)}
+.hig-asm-item:first-child{padding-left:0}
+.hig-asm-item:last-child{border-right:none}
+.hig-asm-lbl{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.hig-asm-val{font-size:15px;font-weight:800;color:var(--c-teal);line-height:1}
+.hig-asm-sub{font-size:8px;color:rgba(100,116,136,.6);margin-top:2px}
+.hig-tl-step{flex:1;text-align:center;position:relative;padding:0 6px;min-width:0}
+.hig-tl-step:not(:last-child)::after{content:'';position:absolute;top:16px;left:50%;width:100%;
+  height:2px;background:rgba(255,255,255,.08);z-index:0}
+.hig-tl-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;margin:0 auto 7px;
+  position:relative;z-index:1;color:#fff;flex-shrink:0}
+.hig-tl-label{font-size:9px;font-weight:700;color:var(--text2);margin-bottom:3px}
+.hig-tl-note{font-size:8px;color:var(--muted);line-height:1.4}
+.hig-sc-card{border-radius:10px;padding:12px 14px;border-top:3px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03)}
+.hig-sc-label{font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin-bottom:4px}
+.hig-sc-val{font-size:18px;font-weight:900;line-height:1.1;margin-bottom:5px}
+.hig-sc-note{font-size:9px;color:var(--muted);line-height:1.4;font-weight:500}
+.hig-sc-tax{font-size:9px;font-weight:700;margin-top:6px;padding-top:6px;
+  border-top:1px solid rgba(255,255,255,.06)}
+.hig-impact-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.hig-impact-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.hig-impact-title{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.hig-impact-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block}
+.hig-ba{display:grid;grid-template-columns:1fr auto 1fr;gap:7px;align-items:center;margin-bottom:9px}
+.hig-ba-box{background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px}
+.hig-ba-box-hl{border-radius:8px;padding:8px 10px}
+.hig-ba-lbl{font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.hig-ba-val{font-size:16px;font-weight:900;line-height:1}
+.hig-ba-sub{font-size:8px;color:var(--muted);margin-top:2px}
+.hig-ba-arrow{font-size:14px;color:var(--c-teal);text-align:center}
+.hig-mrow{display:flex;justify-content:space-between;font-size:9px;
+  padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.hig-mrow:last-child{border-bottom:none}
+.hig-mkey{color:var(--muted);font-weight:500}
+.hig-mval{font-weight:700;color:var(--text)}
+.hig-pill{display:inline-flex;font-size:8px;font-weight:700;border-radius:20px;
+  padding:2px 8px;letter-spacing:.04em;margin:2px}
+.hig-pill-teal{background:rgba(1,160,198,.12);color:var(--c-teal);border:1px solid rgba(1,160,198,.25)}
+.hig-pill-mint{background:rgba(138,223,182,.1);color:#8ADFB6;border:1px solid rgba(138,223,182,.2)}
+.hig-pill-orange{background:rgba(247,151,54,.1);color:var(--c-orange);border:1px solid rgba(247,151,54,.2)}
+.hig-wbar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.hig-wbar-lbl{font-size:9px;color:var(--muted);width:150px;flex-shrink:0;font-weight:500;line-height:1.3}
+.hig-wbar-track{flex:1;height:22px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.hig-wbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;
+  padding:0 8px;font-size:9px;font-weight:700;color:#fff;white-space:nowrap;justify-content:space-between}
+.hig-wbar-val{font-size:10px;font-weight:800;width:80px;text-align:right;flex-shrink:0}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">The Buyback <span>Blueprint</span></div>
+    <div class="header-badge" id="co-badge">TSG · Hybrid Strategy</div>
+  </div>
+  <div class="header-right">
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</div>
+
+<div class="co-bar" id="co-bar"></div>
+
+<div class="container">
+
+  <div class="page-intro">
+    <div class="page-eyebrow">Hybrid Capital Strategy</div>
+    <div class="page-heading" id="pg-heading">Special Dividend + Scrip Alternative + Share Buyback</div>
+    <div class="page-sub">
+      The company offers shareholders a choice: receive the capital return as <strong>cash</strong> or as <strong>new shares at a discount</strong>.
+      Cash not paid out (because shareholders elected scrip) is deployed to repurchase shares in the open market.
+      Model the four shareholder outcomes — and see which route wins after tax.
+    </div>
+  </div>
+
+  <!-- ── SLIDERS ─────────────────────────────────────────────── -->
+  <div class="assumptions">
+    <h3>Structure Assumptions</h3>
+    <div class="slider-grid">
+      <div class="control-group">
+        <label>Dividend per Share (R) <span class="control-val" id="lbl-divps"></span></label>
+        <input type="range" id="sl-divps" min="0.1" max="20" step="0.1" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>Scrip Discount to Market (%) <span class="control-val" id="lbl-scripdisc"></span></label>
+        <input type="range" id="sl-scripdisc" min="1" max="15" step="0.5" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>% Shareholders Electing Scrip <span class="control-val" id="lbl-scripelect"></span></label>
+        <input type="range" id="sl-scripelect" min="5" max="90" step="5" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>Marginal Tax Rate (%) <span class="control-val" id="lbl-margtax"></span></label>
+        <input type="range" id="sl-margtax" min="18" max="45" step="1" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>CGT Inclusion Rate (%) <span class="control-val" id="lbl-cgtinc"></span></label>
+        <input type="range" id="sl-cgtinc" min="20" max="80" step="10" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>Dividends Tax Rate (%) <span class="control-val" id="lbl-divtax"></span></label>
+        <input type="range" id="sl-divtax" min="10" max="20" step="1" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>Client Shares Held <span class="control-val" id="lbl-cshares"></span></label>
+        <input type="range" id="sl-cshares" min="100" max="100000" step="100" oninput="onSlider()">
+      </div>
+      <div class="control-group">
+        <label>Cost Base per Share (R) <span class="control-val" id="lbl-costbase"></span></label>
+        <input type="range" id="sl-costbase" min="0" max="1" step="0.01" oninput="onSlider()">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NARRATIVE ──────────────────────────────────────────── -->
+  <div class="narrative" id="narrative"></div>
+
+  <!-- ── TRANSACTION METRICS ────────────────────────────────── -->
+  <div class="sec-head">Transaction Overview</div>
+  <div class="metrics" id="top-metrics"></div>
+
+  <!-- ── TIMELINE ───────────────────────────────────────────── -->
+  <div class="sec-head">How the Structure Executes</div>
+  <div class="card"><div class="timeline" id="timeline"></div></div>
+
+  <!-- ── SCENARIOS ──────────────────────────────────────────── -->
+  <div class="sec-head">Shareholder Scenarios</div>
+  <div class="sc-tabs" id="sc-tabs">
+    <button class="sc-tab active" onclick="setScenario('A',this)">A · Take Cash Dividend</button>
+    <button class="sc-tab" onclick="setScenario('B',this)">B · Elect Scrip (new shares)</button>
+    <button class="sc-tab" onclick="setScenario('C',this)">C · Sell into Buyback</button>
+    <button class="sc-tab" onclick="setScenario('D',this)">D · Hold (no action)</button>
+  </div>
+  <div id="scenario-detail"></div>
+
+  <!-- ── SIDE BY SIDE ───────────────────────────────────────── -->
+  <div class="sec-head">All Scenarios — Side by Side</div>
+  <div class="four-col" id="cmp-grid"></div>
+
+  <!-- ── CHARTS ─────────────────────────────────────────────── -->
+  <div class="sec-head">Company-Level Impact</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-teal)"></span>EPS & Share Count</div>
+      <div class="chart-wrap" style="height:230px"><canvas id="chart-eps"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-mint)"></span>ROE Effect</div>
+      <div class="chart-wrap" style="height:230px"><canvas id="chart-roe"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--c-orange)"></span>After-Tax Wealth per Client Holding — All Scenarios</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="chart-wealth"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--c-purple)"></span>Scrip vs Cash Dividend — After-Tax Compounding (5-year hold)</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="chart-compound"></canvas></div>
+  </div>
+
+  <!-- ── INFOGRAPHIC ─────────────────────────────────────────────── -->
+  <div class="sec-head" style="margin-top:2rem">Hybrid Strategy Infographic</div>
+
+  <button onclick="downloadHybridInfographic()" style="
+    background:linear-gradient(135deg,var(--c-teal),#0E7CA8);color:#fff;border:none;
+    border-radius:8px;padding:.5rem 1.3rem;font-size:.78rem;font-weight:700;
+    cursor:pointer;margin-bottom:1.2rem;font-family:var(--font-sans);letter-spacing:.03em;
+  ">⬇ Download Infographic PDF</button>
+
+  <div id="hybrid-ig-wrap" style="
+    background:
+      radial-gradient(ellipse 900px 500px at 5% -5%,rgba(1,160,198,.13) 0%,transparent 60%),
+      radial-gradient(ellipse 800px 600px at 100% 10%,rgba(116,27,129,.10) 0%,transparent 55%),
+      #070a11;
+    border-radius:18px;border:1px solid rgba(255,255,255,.1);
+    padding:32px 36px 28px;
+  ">
+
+    <!-- HEADER -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;
+         border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:16px;margin-bottom:20px">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+             color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:7px">
+          <span style="width:20px;height:2px;background:var(--c-teal);border-radius:2px;display:inline-block"></span>
+          The Buyback Blueprint · Avior Capital Markets
+        </div>
+        <div style="font-size:clamp(20px,2.8vw,30px);font-weight:900;line-height:1.1;letter-spacing:-.02em">
+          <span id="hig-coname">Company</span>
+          <span style="color:var(--c-teal)" id="hig-coticker"></span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:5px;font-weight:500" id="hig-sub">
+          Special Dividend + Scrip Alternative + Share Buyback
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+             color:var(--c-teal);background:rgba(1,160,198,.1);border:1px solid rgba(1,160,198,.25);
+             border-radius:20px;padding:4px 13px;display:inline-block;margin-bottom:7px">
+          Illustrative · For Discussion Only
+        </div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7" id="hig-meta"></div>
+      </div>
+    </div>
+
+    <!-- STRUCTURE ASSUMPTIONS STRIP -->
+    <div style="display:flex;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+         border-radius:11px;padding:12px 18px;margin-bottom:18px;gap:0" id="hig-asm"></div>
+
+    <!-- TIMELINE -->
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="width:14px;height:2px;background:var(--c-teal);display:inline-block;border-radius:2px"></span>
+      Transaction Structure
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:18px;
+         background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);
+         border-radius:11px;padding:16px" id="hig-timeline"></div>
+
+    <!-- SCENARIO OUTCOMES -->
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="width:14px;height:2px;background:var(--c-teal);display:inline-block;border-radius:2px"></span>
+      Shareholder Outcomes — <span id="hig-holding-label" style="color:var(--muted);font-weight:600;letter-spacing:0;text-transform:none;margin-left:4px"></span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px" id="hig-scenarios"></div>
+
+    <!-- ROW: Company Impact + Tax Mechanics -->
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="width:14px;height:2px;background:var(--c-teal);display:inline-block;border-radius:2px"></span>
+      Company-Level Impact &amp; Tax Mechanics
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px" id="hig-impact"></div>
+
+    <!-- WEALTH COMPARISON BAR -->
+    <div style="font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--c-teal);display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="width:14px;height:2px;background:var(--c-teal);display:inline-block;border-radius:2px"></span>
+      After-Tax Wealth Comparison
+    </div>
+    <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);
+         border-radius:11px;padding:16px 20px" id="hig-wealth-bars"></div>
+
+    <!-- FOOTNOTE -->
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:rgba(100,116,136,.7);
+         margin-top:16px;padding-top:11px;border-top:1px solid rgba(255,255,255,.06)" id="hig-footnote"></div>
+  </div>
+
+</div>
+<footer>Avior Capital Markets · The Buyback Blueprint · Hybrid Capital Strategy · For discussion purposes only · Not investment advice</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ── Companies ──────────────────────────────────────────────────
+const COMPANIES = {
+  TSG:  {name:'Tsogo Sun Gaming',            fyEnd:'FY2026 (Mar)', sharePrice:7.65,   eps:1.26,  shares:1026,    netIncome:1295,     equity:5458,      cash:470,     waccTaxRate:0.3113},
+  FBR:  {name:'Famous Brands',               fyEnd:'FY2026 (Feb)', sharePrice:56.07,  eps:6.00,  shares:99.42,   netIncome:601.21,   equity:1483.13,   cash:404.44,  waccTaxRate:0.2573},
+  CMH:  {name:'Combined Motor Holdings',     fyEnd:'FY2026 (Feb)', sharePrice:39.56,  eps:5.25,  shares:74.48,   netIncome:390.95,   equity:1470.42,   cash:1145.42, waccTaxRate:0.2606},
+  HCI:  {name:'Hosken Consolidated Inv.',    fyEnd:'FY2026 (Mar)', sharePrice:164.17, eps:31.95, shares:79.44,   netIncome:2538.49,  equity:39549.87,  cash:2566.04, waccTaxRate:0.2320},
+  JSEJF:{name:'JSE Limited',                 fyEnd:'FY2025 (Dec)', sharePrice:139.91, eps:12.90, shares:83.01,   netIncome:1070.65,  equity:5063.56,   cash:3171.27, waccTaxRate:0.2626},
+  MTH:  {name:'Motus Holdings',              fyEnd:'FY2025 (Jun)', sharePrice:90.80,  eps:14.17, shares:173,     netIncome:2451,     equity:20107,     cash:2666,    waccTaxRate:0.2506},
+  MDI:  {name:'Master Drilling Group',       fyEnd:'FY2025 (Dec)', sharePrice:0.96,   eps:0.22,  shares:151.25,  netIncome:30.48,    equity:241.85,    cash:39.88,   waccTaxRate:0.2649},
+  HDC:  {name:'Hudaco Industries',           fyEnd:'FY2025 (Nov)', sharePrice:176.34, eps:19.82, shares:29.01,   netIncome:575,      equity:3900,      cash:352,     waccTaxRate:0.2841},
+  HAR:  {name:'Harmony Gold Mining',         fyEnd:'FY2025 (Jun)', sharePrice:244.69, eps:22.88, shares:629,     netIncome:14384,    equity:48512,     cash:13101,   waccTaxRate:0.3140},
+  LHC:  {name:'Life Healthcare Group',       fyEnd:'FY2025 (Sep)', sharePrice:11.44,  eps:2.66,  shares:1452.74, netIncome:3864,     equity:12142,     cash:3810,    waccTaxRate:0.2700},
+  ITE:  {name:'Italtile',                    fyEnd:'FY2025 (Jun)', sharePrice:10.00,  eps:1.26,  shares:1190,    netIncome:1494,     equity:8388,      cash:2169,    waccTaxRate:0.2713},
+  DCP:  {name:'Dis-Chem Pharmacies',         fyEnd:'FY2026 (Feb)', sharePrice:36.96,  eps:1.14,  shares:857.82,  netIncome:978.89,   equity:5694.23,   cash:499.76,  waccTaxRate:0.2575},
+  LEW:  {name:'Lewis Group',                 fyEnd:'FY2026 (Mar)', sharePrice:76.16,  eps:15.87, shares:53.80,   netIncome:853.80,   equity:5485.60,   cash:161.20,  waccTaxRate:0.2477},
+  RLO:  {name:'Reunert',                     fyEnd:'FY2025 (Sep)', sharePrice:50.88,  eps:5.58,  shares:166,     netIncome:926,      equity:8208,      cash:1754,    waccTaxRate:0.2689},
+  CLS:  {name:'Clicks Group',                fyEnd:'FY2025 (Aug)', sharePrice:370.38, eps:13.63, shares:237.51,  netIncome:3236.33,  equity:6857.59,   cash:3255.77, waccTaxRate:0.2700},
+  ADH:  {name:'ADvTECH',                     fyEnd:'FY2025 (Dec)', sharePrice:37.00,  eps:2.33,  shares:552.80,  netIncome:1288.00,  equity:6725.00,   cash:344.80,  waccTaxRate:0.2766},
+  BVT:  {name:'Bidvest Group',               fyEnd:'FY2025 (Jun)', sharePrice:233.13, eps:17.83, shares:340.45,  netIncome:6068.54,  equity:41414.56,  cash:6193.64, waccTaxRate:0.2330},
+  BID:  {name:'Bid Corporation',             fyEnd:'FY2025 (Jun)', sharePrice:465.77, eps:24.27, shares:336.85,  netIncome:8174.17,  equity:47672.67,  cash:11768.59,waccTaxRate:0.2643},
+  MTN:  {name:'MTN Group',                     fyEnd:'H1 2026 (Jun) — annualised', sharePrice:226.8, eps:8.04, shares:1841.52, netIncome:14820.0,  equity:154333.0, cash:33600.0, waccTaxRate:0.4888},
+  TKG:  {name:'Telkom SA',                      fyEnd:'H2 FY2026 (Mar) — annualised', sharePrice:58.1,  eps:7.78, shares:498.61,  netIncome:3880,    equity:35891,   cash:7723,    waccTaxRate:0.2421},
+};
+
+// ── State ──────────────────────────────────────────────────────
+let currentTicker = 'TSG';
+let scenario = 'A';
+let S = {};
+
+// Slider defaults (per-company overrides set in loadCompany)
+const SLIDERS = {
+  divps:      {id:'sl-divps',      lbl:'lbl-divps',      fmt:v=>'R'+v.toFixed(2)},
+  scripdisc:  {id:'sl-scripdisc',  lbl:'lbl-scripdisc',  fmt:v=>v.toFixed(1)+'%'},
+  scripelect: {id:'sl-scripelect', lbl:'lbl-scripelect', fmt:v=>v.toFixed(0)+'%'},
+  margtax:    {id:'sl-margtax',    lbl:'lbl-margtax',    fmt:v=>v.toFixed(0)+'%'},
+  cgtinc:     {id:'sl-cgtinc',     lbl:'lbl-cgtinc',     fmt:v=>v.toFixed(0)+'%'},
+  divtax:     {id:'sl-divtax',     lbl:'lbl-divtax',     fmt:v=>v.toFixed(0)+'%'},
+  cshares:    {id:'sl-cshares',    lbl:'lbl-cshares',    fmt:v=>Math.round(v).toLocaleString()},
+  costbase:   {id:'sl-costbase',   lbl:'lbl-costbase',   fmt:v=>'R'+v.toFixed(2)},
+};
+
+function slVal(key){return parseFloat(document.getElementById(SLIDERS[key].id).value)}
+function setSlider(key,val){
+  const el=document.getElementById(SLIDERS[key].id);
+  el.value=val;
+  updateSliderFill(el);
+  document.getElementById(SLIDERS[key].lbl).textContent=SLIDERS[key].fmt(parseFloat(val));
+}
+function updateSliderFill(el){
+  const min=+el.min,max=+el.max,val=+el.value;
+  el.style.setProperty('--fill',((val-min)/(max-min)*100)+'%');
+}
+function onSlider(){
+  Object.values(SLIDERS).forEach(s=>{
+    const el=document.getElementById(s.id);
+    updateSliderFill(el);
+    document.getElementById(s.lbl).textContent=s.fmt(parseFloat(el.value));
+  });
+  calc();
+}
+
+// ── Company selector ───────────────────────────────────────────
+function buildSelector(){
+  const bar=document.getElementById('co-bar');
+  bar.innerHTML=Object.keys(COMPANIES).map(tk=>`
+    <button class="co-btn${tk===currentTicker?' active':''}" onclick="loadCompany('${tk}',this)">${tk}</button>
+  `).join('');
+}
+
+function loadCompany(ticker,btn){
+  currentTicker=ticker;
+  document.querySelectorAll('.co-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const c=COMPANIES[ticker];
+  document.getElementById('co-badge').textContent=ticker+' · Hybrid Strategy';
+  document.getElementById('pg-heading').textContent=c.name+' — Hybrid Capital Strategy';
+
+  // Set slider ranges and sensible defaults for this company
+  const price=c.sharePrice;
+  const maxDiv=Math.max(price*0.15,1);
+  const defDiv=Math.min(price*0.08, maxDiv*0.6); // ~8% yield as default
+  const sl=document.getElementById('sl-divps');
+  sl.min=(price*0.01).toFixed(2); sl.max=maxDiv.toFixed(2); sl.step=(price*0.005).toFixed(3);
+
+  const cbSlider=document.getElementById('sl-costbase');
+  cbSlider.min=(price*0.3).toFixed(2); cbSlider.max=(price*1.1).toFixed(2); cbSlider.step=(price*0.01).toFixed(3);
+
+  setSlider('divps',    defDiv.toFixed(2));
+  setSlider('scripdisc','5');
+  setSlider('scripelect','40');
+  setSlider('margtax', '45');
+  setSlider('cgtinc',  '40');
+  setSlider('divtax',  '20');
+  setSlider('cshares', '1000');
+  setSlider('costbase',(price*0.7).toFixed(2));
+  calc();
+}
+
+// ── Core calculation ───────────────────────────────────────────
+function calc(){
+  const c   = COMPANIES[currentTicker];
+  const price    = c.sharePrice;
+  const shares   = c.shares;
+  const ni       = c.netIncome;
+  const equity   = c.equity;
+  const epsBase  = c.eps;
+  const pe       = price/epsBase;
+  const roeBase  = ni/equity;
+
+  const divps      = slVal('divps');
+  const scripDisc  = slVal('scripdisc')/100;
+  const scripPct   = slVal('scripelect')/100;
+  const margTax    = slVal('margtax')/100;
+  const cgtInc     = slVal('cgtinc')/100;
+  const divTax     = slVal('divtax')/100;
+  const clientSh   = Math.round(slVal('cshares'));
+  const costBase   = slVal('costbase');
+
+  // Transaction mechanics
+  const scripPrice      = price*(1-scripDisc);
+  const totalDivCashM   = divps*shares;             // ZARm — gross dividend
+  const cashPaidM       = totalDivCashM*(1-scripPct);
+  const scripValueM     = totalDivCashM*scripPct;
+  const newSharesM      = scripValueM/scripPrice;   // m new scrip shares issued
+  const buybackBudgetM  = scripValueM;              // cash saved → buyback
+  const sharesBBM       = buybackBudgetM/price;     // m shares repurchased
+
+  const sharesPost = shares + newSharesM - sharesBBM;
+  const epsPost    = ni/sharesPost;
+  const equityPost = equity - cashPaidM;
+  const roePost    = ni/equityPost;
+  const effCGT     = margTax*cgtInc;
+
+  // ── Per-shareholder (clientSh shares) ─────────────────────
+  // A: Cash dividend
+  const A_divGross = clientSh*divps;
+  const A_divNet   = A_divGross*(1-divTax);
+  const A_pricePost= epsPost*pe;
+  const A_eqVal    = clientSh*A_pricePost;
+  const A_gain     = Math.max(0, A_eqVal - clientSh*costBase);
+  const A_cgt      = A_gain*effCGT;
+  const A_total    = A_divNet + A_eqVal - A_cgt;
+
+  // B: Scrip election
+  const B_extra    = clientSh*(divps/scripPrice);
+  const B_total_sh = clientSh+B_extra;
+  const B_blendedCB= (clientSh*costBase + B_extra*scripPrice)/B_total_sh;
+  const B_pricePost= epsPost*pe;
+  const B_eqVal    = B_total_sh*B_pricePost;
+  const B_gain     = Math.max(0, B_eqVal - B_total_sh*B_blendedCB);
+  const B_cgt      = B_gain*effCGT;
+  const B_total    = B_eqVal - B_cgt;
+
+  // C: Sell into buyback at current market
+  const C_proceeds = clientSh*price;
+  const C_gain     = Math.max(0, C_proceeds - clientSh*costBase);
+  const C_cgt      = C_gain*effCGT;
+  const C_total    = C_proceeds - C_cgt;
+
+  // D: Hold, no action
+  const D_pricePost= epsPost*pe;
+  const D_eqVal    = clientSh*D_pricePost;
+  const D_gain     = Math.max(0, D_eqVal - clientSh*costBase);
+  const D_cgt      = D_gain*effCGT;
+  const D_total    = D_eqVal - D_cgt;
+
+  window.S=S={
+    c, price, shares, ni, equity, epsBase, pe, roeBase,
+    divps, scripDisc, scripPct, margTax, cgtInc, divTax, clientSh, costBase,
+    scripPrice, totalDivCashM, cashPaidM, scripValueM, newSharesM,
+    buybackBudgetM, sharesBBM, sharesPost, epsPost, equityPost, roePost, effCGT,
+    A:{divGross:A_divGross, divNet:A_divNet, pricePost:A_pricePost, eqVal:A_eqVal, gain:A_gain, cgt:A_cgt, total:A_total},
+    B:{extra:B_extra, totalSh:B_total_sh, blendedCB:B_blendedCB, pricePost:B_pricePost, eqVal:B_eqVal, gain:B_gain, cgt:B_cgt, total:B_total},
+    C:{proceeds:C_proceeds, gain:C_gain, cgt:C_cgt, total:C_total},
+    D:{pricePost:D_pricePost, eqVal:D_eqVal, gain:D_gain, cgt:D_cgt, total:D_total},
+  };
+
+  render();
+}
+
+// ── Formatting ─────────────────────────────────────────────────
+const R  = (v,dp=2)=>'R'+(+v).toLocaleString('en-ZA',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const Rm = (v,dp=1)=>'R'+(+v).toFixed(dp).replace(/\B(?=(\d{3})+(?!\d))/g,',')+'m';
+const pct= (v,dp=1)=>((+v)*100).toFixed(dp)+'%';
+const num= (v,dp=2)=>parseFloat(v).toFixed(dp);
+
+// ── Render all ─────────────────────────────────────────────────
+function render(){
+  renderNarrative();
+  renderMetrics();
+  renderTimeline();
+  renderScenario(scenario);
+  renderComparison();
+  renderCharts();
+  setTimeout(renderHybridInfographic,100);
+}
+
+function renderNarrative(){
+  const {c,divps,scripPct,scripDisc,sharesPost,shares,epsBase,epsPost,roeBase,roePost,
+         buybackBudgetM,sharesBBM,newSharesM,cashPaidM,totalDivCashM} = S;
+  const epsUplift=(epsPost-epsBase)/epsBase;
+  const netShareChange=sharesPost-shares;
+  document.getElementById('narrative').innerHTML=
+    `<strong>${c.name} (${currentTicker})</strong> declares a special dividend of <strong>${R(divps)}/share</strong> (total: ${Rm(totalDivCashM)}).
+    <em>${pct(scripPct)}</em> of shareholders elect to receive new shares at a <em>${pct(scripDisc)}</em> discount to market (scrip price: ${R(S.scripPrice)}).
+    The ${Rm(buybackBudgetM)} of cash <strong>not paid out</strong> is used to repurchase <strong>${num(sharesBBM,2)}m shares</strong>.
+    Net effect: ${num(newSharesM,2)}m new scrip shares issued, ${num(sharesBBM,2)}m bought back —
+    total share count moves from <strong>${num(shares,2)}m → ${num(sharesPost,2)}m</strong>,
+    EPS: <strong>${R(epsBase)} → ${R(epsPost)}</strong> (${epsUplift>=0?'+':''}${pct(epsUplift)} uplift),
+    ROE: <strong>${pct(roeBase)} → ${pct(roePost)}</strong>.`;
+}
+
+function renderMetrics(){
+  const {epsBase,epsPost,roeBase,roePost,sharesPost,shares,buybackBudgetM,sharesBBM,totalDivCashM,cashPaidM} = S;
+  const epsUp=(epsPost-epsBase)/epsBase;
+  const netChg=sharesPost-shares;
+  const items=[
+    {label:'EPS Before',      val:R(epsBase,2),           sub:'',              pos:true},
+    {label:'EPS After',       val:R(epsPost,2),           sub:(epsUp>=0?'+':'')+pct(epsUp)+' uplift', pos:epsUp>=0},
+    {label:'Net Share Change',val:num(netChg,2)+'m',     sub:netChg<=0?'Share count fell':'Share count rose', pos:netChg<=0},
+    {label:'ROE Before',      val:pct(roeBase),           sub:'',              pos:true},
+    {label:'ROE After',       val:pct(roePost),           sub:'+'+pct(roePost-roeBase)+' uplift', pos:true},
+    {label:'Total Div. Cost', val:Rm(totalDivCashM),     sub:'Gross declared', pos:true},
+    {label:'Cash Paid Out',   val:Rm(cashPaidM),         sub:pct(1-S.scripPct)+' took cash', pos:true},
+    {label:'Buyback Budget',  val:Rm(buybackBudgetM),    sub:'From scrip savings',pos:true},
+  ];
+  document.getElementById('top-metrics').innerHTML=items.map(it=>`
+    <div class="metric">
+      <div class="metric-label">${it.label}</div>
+      <div class="metric-val">${it.val}</div>
+      ${it.sub?`<div class="metric-sub ${it.pos?'pos':'neg'}">${it.sub}</div>`:''}
+    </div>`).join('');
+}
+
+function renderTimeline(){
+  const {divps,scripPct,scripDisc,scripPrice,cashPaidM,scripValueM,newSharesM,
+         buybackBudgetM,sharesBBM,shares,sharesPost,epsBase,epsPost,roeBase,roePost,divTax}=S;
+  const steps=[
+    {col:'#01A0C6',n:'①',label:'Announcement',    note:`Board declares ${R(divps)}/share special dividend. Scrip election window opens.`},
+    {col:'#8ADFB6',n:'②',label:'Scrip Election',  note:`${pct(scripPct)} elect new shares at ${R(scripPrice)} (${pct(scripDisc)} disc.). ${pct(1-scripPct)} take cash.`},
+    {col:'#F79736',n:'③',label:'Cash Dividend',   note:`${Rm(cashPaidM)} paid net of ${pct(divTax)} WHT to cash-electors.`},
+    {col:'#741B81',n:'④',label:'Scrip Issued',    note:`${num(newSharesM,2)}m new shares issued. Cost base = ${R(scripPrice)}. Zero tax event.`},
+    {col:'#ED2A3F',n:'⑤',label:'Buyback Program', note:`${Rm(buybackBudgetM)} deploys into market buyback of ${num(sharesBBM,2)}m shares.`},
+    {col:'#D4A017',n:'⑥',label:'Net Result',      note:`Shares: ${num(shares,1)}m→${num(sharesPost,2)}m · EPS: ${R(epsBase)}→${R(epsPost)} · ROE: ${pct(roeBase)}→${pct(roePost)}`},
+  ];
+  document.getElementById('timeline').innerHTML=steps.map(s=>`
+    <div class="tl-step">
+      <div class="tl-dot" style="background:${s.col}">${s.n}</div>
+      <div class="tl-label">${s.label}</div>
+      <div class="tl-note">${s.note}</div>
+    </div>`).join('');
+}
+
+function setScenario(id,btn){
+  scenario=id;
+  document.querySelectorAll('.sc-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderScenario(id);
+}
+
+function renderScenario(id){
+  const {clientSh,divps,divTax,costBase,effCGT,cgtInc,margTax,scripPrice,scripDisc,price,A,B,C,D,epsBase,epsPost,roeBase,roePost}=S;
+  let html='';
+  const row=(k,v,cls='')=>`<tr><td>${k}</td><td class="val ${cls}">${v}</td></tr>`;
+  const sec=(t)=>`<tr class="sec-row"><td colspan="2">${t}</td></tr>`;
+  const hlrow=(k,v,cls='')=>`<tr class="hl"><td><strong>${k}</strong></td><td class="val ${cls}"><strong>${v}</strong></td></tr>`;
+
+  if(id==='A'){
+    html=`<div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-orange)"></span>Scenario A — Take Cash Dividend</div>
+      <div class="narrative">Receives <strong>${R(divps)}/share</strong> cash, less <em>${pct(divTax)} Dividends Tax</em> withheld at source.
+      Continues holding ${clientSh.toLocaleString()} shares. EPS accretion from the buyback still lifts the post-transaction price.
+      Immediate tax leakage of ${R(clientSh*divps*divTax)} cannot be recovered.</div>
+      <table class="res-table"><tr><th>Item</th><th class="val">Amount</th></tr>
+      ${sec('Dividend Receipt')}
+      ${row('Gross dividend ('+clientSh.toLocaleString()+' × '+R(divps)+')',R(A.divGross))}
+      ${row('Dividends Tax ('+pct(divTax)+' WHT at source)','−'+R(clientSh*divps*divTax),'neg')}
+      ${hlrow('Net cash received',R(A.divNet),'pos')}
+      ${sec('Equity Position After')}
+      ${row('Shares held',clientSh.toLocaleString())}
+      ${row('Share price (post-transaction)',R(A.pricePost))}
+      ${row('Equity value',R(A.eqVal))}
+      ${row('Capital gain (on eventual sale)',R(A.gain))}
+      ${row('Deferred CGT ('+pct(effCGT)+' effective)','−'+R(A.cgt),'neg')}
+      ${sec('Summary')}
+      ${hlrow('Total after-tax wealth',R(A.total),'pos')}
+      ${row('Tax paid today (WHT)',R(clientSh*divps*divTax),'neg')}
+      </table></div>`;
+  } else if(id==='B'){
+    html=`<div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-mint)"></span>Scenario B — Elect Scrip (Receive New Shares)</div>
+      <div class="narrative">Receives <strong>${num(B.extra,2)} new shares</strong> at ${R(scripPrice)}/share (${pct(scripDisc)} discount).
+      <strong>Zero Dividends Tax triggered.</strong> New cost base blended at ${R(B.blendedCB)}/share.
+      All tax deferred until voluntary sale. Participates in EPS uplift from the buyback (funded by cash-takers' dividends).</div>
+      <table class="res-table"><tr><th>Item</th><th class="val">Amount</th></tr>
+      ${sec('Scrip Receipt')}
+      ${row('Dividend entitlement',R(clientSh*divps))}
+      ${row('Scrip price (market − '+pct(scripDisc)+')',R(scripPrice))}
+      ${row('New shares received',num(B.extra,2)+' shares','pos')}
+      ${row('Dividends Tax','R0.00 — zero','pos')}
+      ${sec('New Position')}
+      ${row('Total shares held',num(B.totalSh,2),'pos')}
+      ${row('Blended cost base',R(B.blendedCB))}
+      ${row('Share price (post-transaction)',R(B.pricePost))}
+      ${row('Equity value',R(B.eqVal))}
+      ${row('Deferred CGT on gain of '+R(B.gain),'−'+R(B.cgt)+' (deferred)','neg')}
+      ${sec('Summary')}
+      ${hlrow('After-tax equity value',R(B.total),'pos')}
+      ${row('Immediate tax paid today','R0.00 ✓','pos')}
+      </table></div>`;
+  } else if(id==='C'){
+    html=`<div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-red)"></span>Scenario C — Sell Shares into the Buyback</div>
+      <div class="narrative">Tenders ${clientSh.toLocaleString()} shares at current market price <strong>${R(price)}</strong>.
+      Full exit. CGT applies only to the gain above cost base (${R(costBase)}/share) at the inclusion rate.
+      Effective CGT rate is <strong>${pct(effCGT)}</strong> on the gain vs ${pct(S.divTax)} dividends tax on the same amount — 
+      and CGT excludes the cost base entirely.</div>
+      <table class="res-table"><tr><th>Item</th><th class="val">Amount</th></tr>
+      ${sec('Sale')}
+      ${row('Shares tendered',clientSh.toLocaleString())}
+      ${row('Buyback price (market)',R(price))}
+      ${row('Gross proceeds',R(C.proceeds))}
+      ${sec('CGT')}
+      ${row('Cost base ('+clientSh.toLocaleString()+' × '+R(costBase)+')',R(clientSh*costBase))}
+      ${row('Capital gain',R(C.gain))}
+      ${row('Inclusion rate',pct(cgtInc))}
+      ${row('Taxable gain',R(C.gain*cgtInc))}
+      ${row('CGT payable ('+pct(margTax)+' × included gain)','−'+R(C.cgt),'neg')}
+      ${row('Effective CGT on total gain',pct(effCGT)+' (vs '+pct(S.divTax)+' divs tax on same amount)')}
+      ${sec('Summary')}
+      ${hlrow('Net after-tax proceeds',R(C.total),'pos')}
+      </table></div>`;
+  } else {
+    html=`<div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--c-grey)"></span>Scenario D — Hold, Take No Action</div>
+      <div class="narrative">Does nothing — no dividend, no scrip election, no sale.
+      Continues holding ${clientSh.toLocaleString()} shares. The buyback reduces the total share count,
+      lifting EPS to <strong>${R(epsPost)}</strong>, which re-rates the share price to <strong>${R(D.pricePost)}</strong>.
+      Zero tax today; all deferred to voluntary sale.</div>
+      <table class="res-table"><tr><th>Item</th><th class="val">Amount</th></tr>
+      ${sec('Position After')}
+      ${row('Shares held (unchanged)',clientSh.toLocaleString())}
+      ${row('New EPS (post-transaction)',R(epsPost),'pos')}
+      ${row('Share price (post-transaction)',R(D.pricePost))}
+      ${row('Equity value',R(D.eqVal))}
+      ${row('Cash received today','R0.00')}
+      ${row('Deferred CGT on gain of '+R(D.gain),'−'+R(D.cgt)+' (deferred)','neg')}
+      ${sec('Summary')}
+      ${hlrow('After-tax equity value',R(D.total),'pos')}
+      ${row('Immediate tax paid today','R0.00 ✓','pos')}
+      ${row('EPS uplift from buyback','+'+pct((epsPost-epsBase)/epsBase),'pos')}
+      </table></div>`;
+  }
+  document.getElementById('scenario-detail').innerHTML=html;
+}
+
+function renderComparison(){
+  const {A,B,C,D,clientSh,divps,divTax,scripPrice,scripDisc,price,costBase,effCGT,margTax,cgtInc,epsBase,epsPost}=S;
+  const totals=[A.total, B.total, C.total, D.total];
+  const best=Math.max(...totals);
+  const scenarios=[
+    {label:'A · Cash Dividend',  color:'var(--c-orange)', total:A.total,
+      rows:[['Cash today',R(A.divNet)],['WHT paid',R(clientSh*divps*divTax)],['Equity (post-tx)',R(A.eqVal)],['Deferred CGT','−'+R(A.cgt)],['Total AT wealth',R(A.total)]]},
+    {label:'B · Scrip Election', color:'var(--c-mint)',   total:B.total,
+      rows:[['New shares',num(B.extra,2)],['Tax today','R0.00 ✓'],['Equity (post-tx)',R(B.eqVal)],['Deferred CGT','−'+R(B.cgt)],['Total AT wealth',R(B.total)]]},
+    {label:'C · Sell Buyback',  color:'var(--c-red)',    total:C.total,
+      rows:[['Proceeds',R(C.proceeds)],['CGT paid','−'+R(C.cgt)],['Equity remaining','R0.00'],['Further CGT','None'],['Total AT wealth',R(C.total)]]},
+    {label:'D · Hold (no action)',color:'var(--c-grey)', total:D.total,
+      rows:[['Cash today','R0.00'],['Tax today','R0.00 ✓'],['Equity (post-tx)',R(D.eqVal)],['Deferred CGT','−'+R(D.cgt)],['Total AT wealth',R(D.total)]]},
+  ];
+  document.getElementById('cmp-grid').innerHTML=scenarios.map(sc=>`
+    <div class="cmp-card" style="border-top:3px solid ${sc.color}">
+      <div class="cmp-header" style="color:${sc.color}">${sc.label}${sc.total===best?'<span class="best-badge">★ Best</span>':''}</div>
+      ${sc.rows.map(([k,v])=>`<div class="cmp-row"><span class="cmp-key">${k}</span><span style="color:var(--text);font-weight:${sc.rows.indexOf([k,v])===sc.rows.length-1?800:500}">${v}</span></div>`).join('')}
+    </div>`).join('');
+}
+
+// ── Charts ──────────────────────────────────────────────────────
+const CI={};
+function mkChart(id,type,data,extraOpts={}){
+  if(CI[id]){CI[id].destroy()}
+  const ctx=document.getElementById(id);
+  if(!ctx)return;
+  CI[id]=new Chart(ctx,{type,data,options:{
+    responsive:true,maintainAspectRatio:false,animation:{duration:400},
+    plugins:{legend:{labels:{color:'#99aabb',font:{size:11},boxWidth:11}},
+      tooltip:{backgroundColor:'#0E2340cc',titleColor:'#fff',bodyColor:'#ccd',
+               borderColor:'#1D3860',borderWidth:1,padding:10}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#99aabb',font:{size:10}}},
+      y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#99aabb',font:{size:10}}}
+    },...extraOpts
+  }});
+}
+
+function renderCharts(){
+  const {epsBase,epsPost,shares,sharesPost,roeBase,roePost,A,B,C,D,clientSh,pe,c} = S;
+  const TEAL='#01A0C6',MINT='#8ADFB6',ORANGE='#F79736',GREY='#988E8A',RED='#ED2A3F',PURPLE='#741B81';
+
+  // EPS & shares
+  mkChart('chart-eps','bar',{
+    labels:['Before','After'],
+    datasets:[
+      {label:'EPS (R)',data:[+epsBase.toFixed(3),+epsPost.toFixed(3)],backgroundColor:['#335577',TEAL],borderRadius:5,yAxisID:'y'},
+      {label:'Shares (m)',data:[+shares.toFixed(2),+sharesPost.toFixed(2)],backgroundColor:['#44335577',MINT+'99'],borderRadius:5,yAxisID:'y2'},
+    ]},{
+    scales:{
+      y:{position:'left',grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#99aabb',callback:v=>'R'+v.toFixed(2)},title:{display:true,text:'EPS (R)',color:'#99aabb'}},
+      y2:{position:'right',grid:{display:false},ticks:{color:'#99aabb',callback:v=>v+'m'},title:{display:true,text:'Shares (m)',color:'#99aabb'}},
+      x:{grid:{display:false},ticks:{color:'#99aabb'}}
+    }
+  });
+
+  // ROE
+  mkChart('chart-roe','bar',{
+    labels:['ROE Before','ROE After'],
+    datasets:[{label:'ROE (%)',data:[+(roeBase*100).toFixed(2),+(roePost*100).toFixed(2)],
+      backgroundColor:['#335577',MINT],borderRadius:5}]
+  },{scales:{y:{ticks:{callback:v=>v+'%',color:'#99aabb'},grid:{color:'rgba(255,255,255,0.05)'},title:{display:true,text:'ROE (%)',color:'#99aabb'}},x:{grid:{display:false},ticks:{color:'#99aabb'}}}});
+
+  // Wealth comparison
+  const vals=[A.total,B.total,C.total,D.total];
+  const best=Math.max(...vals);
+  mkChart('chart-wealth','bar',{
+    labels:['A · Cash Dividend','B · Scrip Election','C · Sell (Buyback)','D · Hold'],
+    datasets:[{
+      label:'After-tax wealth (R)',
+      data:vals.map(v=>+v.toFixed(0)),
+      backgroundColor:vals.map((v,i)=>v===best?TEAL:[ORANGE,MINT,RED,GREY][i]),
+      borderRadius:6
+    }]
+  },{scales:{y:{ticks:{callback:v=>'R'+Math.round(v).toLocaleString(),color:'#99aabb',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},x:{grid:{display:false},ticks:{color:'#99aabb',font:{size:10}}}}});
+
+  // Compounding (5yr)
+  const g=0.08; // EPS growth
+  const yrs=[0,1,2,3,4,5];
+
+  const scrip_series=yrs.map(y=>{
+    const epsY=epsPost*(1+g)**y;
+    const priceY=epsY*pe;
+    const gross=B.totalSh*priceY;
+    const gain=Math.max(0,gross-B.totalSh*B.blendedCB);
+    return +(gross-gain*S.effCGT).toFixed(0);
+  });
+
+  const cash_series=yrs.map(y=>{
+    const epsY=epsPost*(1+g)**y;
+    const priceY=epsY*pe;
+    const eqVal=clientSh*priceY;
+    const gain=Math.max(0,eqVal-clientSh*S.costBase);
+    const eqAT=eqVal-gain*S.effCGT;
+    // Reinvest net dividend at 7% AT compounded
+    const reinv=A.divNet*(1+0.07)**y;
+    return +(eqAT+reinv).toFixed(0);
+  });
+
+  mkChart('chart-compound','line',{
+    labels:yrs.map(y=>'Year '+y),
+    datasets:[
+      {label:'B · Scrip (hold to year N, then sell)',data:scrip_series,borderColor:TEAL,backgroundColor:'rgba(1,160,198,0.07)',borderWidth:2.5,tension:0.3,fill:true,pointRadius:4,pointBackgroundColor:TEAL},
+      {label:'A · Cash Div + reinvest at 7% AT',data:cash_series,borderColor:ORANGE,backgroundColor:'rgba(247,151,54,0.06)',borderWidth:2,tension:0.3,fill:true,pointRadius:4,pointBackgroundColor:ORANGE},
+    ]
+  },{scales:{
+    y:{ticks:{callback:v=>'R'+Math.round(v).toLocaleString(),color:'#99aabb',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'},title:{display:true,text:'After-tax wealth (R) per '+clientSh.toLocaleString()+' shares',color:'#99aabb'}},
+    x:{grid:{display:false},ticks:{color:'#99aabb'}}
+  }});
+}
+
+// ── Theme ──────────────────────────────────────────────────────
+function toggleTheme(){
+  const h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+
+
+// ── Hybrid Infographic ────────────────────────────────────────────────
+function renderHybridInfographic(){
+  if(!window.S || !window.S.price) return; // not calculated yet
+  const s = window.S;
+  const co = COMPANIES[currentTicker] || {};
+  const cs = Math.round(slVal('cshares'));
+
+  const Rf = (v,dp=2) => 'R'+v.toFixed(dp).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  const Rm = (v,dp=0) => 'R'+v.toFixed(dp).replace(/\B(?=(\d{3})+(?!\d))/g,',')+'m';
+  const P  = (v,dp=1) => (v*100).toFixed(dp)+'%';
+  const N  = v => Math.round(v).toLocaleString();
+
+  // Header
+  document.getElementById('hig-coname').textContent = co.name || currentTicker;
+  document.getElementById('hig-coticker').textContent = ' ('+currentTicker+')';
+  document.getElementById('hig-sub').textContent =
+    'Special Dividend + Scrip Alternative + Share Buyback  ·  '+(co.fyEnd||'');
+  document.getElementById('hig-meta').innerHTML =
+    'Div/share: <strong>'+Rf(s.divps)+'</strong>  ·  Scrip discount: <strong>'+P(s.scripDisc)+'</strong>  ·  Scrip election: <strong>'+P(s.scripPct,0)+'</strong><br>'+
+    'Share price: <strong>'+Rf(s.price)+'</strong>  ·  EPS: <strong>'+Rf(co.eps||0)+'</strong>';
+  document.getElementById('hig-holding-label').textContent =
+    N(cs)+' shares held  ·  Tax: '+P(s.margTax,0)+' marginal, '+P(s.cgtInc,0)+' CGT inclusion';
+
+  // ── Assumptions strip ─────────────────────────────────────────────
+  const asms = [
+    ['Share Price',      Rf(s.price),           'Current market'],
+    ['EPS',              Rf(co.eps||0),          co.fyEnd||'Latest'],
+    ['Div / Share',      Rf(s.divps),            'Declared dividend'],
+    ['Scrip Discount',   P(s.scripDisc),         'Below market'],
+    ['% Elect Scrip',    P(s.scripPct,0),        'Shareholders'],
+    ['Marginal Tax',     P(s.margTax,0),         'Individual rate'],
+    ['CGT Inclusion',    P(s.cgtInc,0),          'SA individual'],
+    ['Divs Tax (WHT)',   P(s.divTax,0),          'Withheld at source'],
+  ];
+  document.getElementById('hig-asm').innerHTML = asms.map(([l,v,sub])=>
+    '<div class="hig-asm-item"><div class="hig-asm-lbl">'+l+'</div>'+
+    '<div class="hig-asm-val">'+v+'</div>'+
+    '<div class="hig-asm-sub">'+sub+'</div></div>'
+  ).join('');
+
+  // ── Timeline ──────────────────────────────────────────────────────
+  const tl_steps = [
+    {col:'#01A0C6', n:'①', label:'Announcement',   note:'Board declares '+Rf(s.divps)+'/share. Election window opens.'},
+    {col:'#8ADFB6', n:'②', label:'Scrip Election',  note:P(s.scripPct,0)+' elect shares at '+Rf(s.scripPrice)+' ('+P(s.scripDisc)+' disc.)'},
+    {col:'#F79736', n:'③', label:'Cash Div Paid',   note:Rm(s.cashPaidM)+' paid net of '+P(s.divTax,0)+' WHT'},
+    {col:'#741B81', n:'④', label:'Scrip Issued',    note:parseFloat(s.newSharesM).toFixed(2)+'m new shares. Zero tax event.'},
+    {col:'#ED2A3F', n:'⑤', label:'Buyback Program', note:Rm(s.buybackBudgetM)+' → '+parseFloat(s.sharesBBM).toFixed(2)+'m shares repurchased'},
+    {col:'#D4A017', n:'⑥', label:'Net Result',      note:'EPS: '+Rf(co.eps||0)+' → '+Rf(s.epsPost)+' · ROE uplift · Share count ↓'},
+  ];
+  document.getElementById('hig-timeline').innerHTML = tl_steps.map(st=>
+    '<div class="hig-tl-step">'+
+    '<div class="hig-tl-dot" style="background:'+st.col+'">'+st.n+'</div>'+
+    '<div class="hig-tl-label">'+st.label+'</div>'+
+    '<div class="hig-tl-note">'+st.note+'</div></div>'
+  ).join('');
+
+  // ── Scenario cards ────────────────────────────────────────────────
+  const effCGT = s.margTax * s.cgtInc;
+  const sc_data = [
+    {
+      col:'#F79736', label:'A · Cash Dividend',
+      val: s.A.total, note:'Receive '+Rf(s.divps)+'/share cash.',
+      tax: P(s.divTax,0)+' WHT at source = '+Rf(cs*s.divps*s.divTax)+' tax today',
+      highlight: false,
+    },
+    {
+      col:'#8ADFB6', label:'B · Elect Scrip ★',
+      val: s.B.total, note:'Receive '+parseFloat(s.B.extra).toFixed(2)+' new shares at '+Rf(s.scripPrice)+'.',
+      tax: 'Zero tax today · CGT deferred to sale · Effective '+P(effCGT)+' on gain',
+      highlight: true,
+    },
+    {
+      col:'#ED2A3F', label:'C · Sell into Buyback',
+      val: s.C.total, note:'Full exit at '+Rf(s.price)+'/share.',
+      tax: 'CGT on gain only: '+P(effCGT)+' effective vs '+P(s.divTax,0)+' WHT',
+      highlight: false,
+    },
+    {
+      col:'var(--muted)', label:'D · Hold (no action)',
+      val: s.D.total, note:'No cash. EPS lifts to '+Rf(s.epsPost)+'.',
+      tax: 'Zero tax today · All deferred · Benefits from BB EPS accretion',
+      highlight: false,
+    },
+  ];
+  const bestSc = Math.max(...sc_data.map(x=>x.val));
+  document.getElementById('hig-scenarios').innerHTML = sc_data.map(sc=>
+    '<div class="hig-sc-card" style="border-color:'+sc.col+';'+
+    (sc.val===bestSc?'background:rgba(1,160,198,.04)':'')+'">' +
+    '<div class="hig-sc-label" style="color:'+sc.col+'">'+sc.label+'</div>'+
+    '<div class="hig-sc-val" style="color:'+sc.col+'">'+Rf(sc.val/1e6,2)+'m</div>'+
+    '<div class="hig-sc-note">'+sc.note+'</div>'+
+    '<div class="hig-sc-tax" style="color:'+sc.col+'">'+sc.tax+'</div>'+
+    '</div>'
+  ).join('');
+
+  // ── Company impact cards ──────────────────────────────────────────
+  const roeBase = co.netIncome/(co.equity||1);
+  const bbCostM = s.newSharesM*s.scripPrice; // approx equity impact from new shares - cash cost
+  const roePost = co.netIncome/Math.max(1,(co.equity||0) - s.cashPaidM);
+
+  document.getElementById('hig-impact').innerHTML = `
+    <div class="hig-impact-card">
+      <div class="hig-impact-accent" style="background:var(--c-teal)"></div>
+      <div class="hig-impact-title"><span class="hig-impact-dot" style="background:var(--c-teal)"></span>EPS & Share Count</div>
+      <div class="hig-ba">
+        <div class="hig-ba-box">
+          <div class="hig-ba-lbl">Before</div>
+          <div class="hig-ba-val" style="color:var(--muted)">${Rf(co.eps||0)}</div>
+          <div class="hig-ba-sub">Base EPS</div>
+        </div>
+        <div class="hig-ba-arrow">→</div>
+        <div class="hig-ba-box-hl" style="background:rgba(1,160,198,.06);border:1px solid rgba(1,160,198,.2)">
+          <div class="hig-ba-lbl" style="color:var(--c-teal)">After</div>
+          <div class="hig-ba-val" style="color:var(--c-teal)">${Rf(s.epsPost)}</div>
+          <div class="hig-ba-sub">Post-transaction</div>
+        </div>
+      </div>
+      <div style="margin-bottom:8px">
+        <span class="hig-pill hig-pill-teal">EPS: +${P((s.epsPost-(co.eps||0))/(co.eps||1))}</span>
+        <span class="hig-pill hig-pill-mint">${parseFloat(s.sharesBBM).toFixed(1)}m shares cancelled</span>
+      </div>
+      <div class="hig-mrow"><span class="hig-mkey">Shares: before → after</span><span class="hig-mval" style="color:var(--c-teal)">${N(co.shares||0)}m → ${parseFloat(s.sharesPost).toFixed(1)}m</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">New scrip shares issued</span><span class="hig-mval">+${parseFloat(s.newSharesM).toFixed(2)}m</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Buyback budget</span><span class="hig-mval">${Rm(s.buybackBudgetM)}</span></div>
+    </div>
+
+    <div class="hig-impact-card">
+      <div class="hig-impact-accent" style="background:#8ADFB6"></div>
+      <div class="hig-impact-title"><span class="hig-impact-dot" style="background:#8ADFB6"></span>ROE Effect</div>
+      <div class="hig-ba">
+        <div class="hig-ba-box">
+          <div class="hig-ba-lbl">Before</div>
+          <div class="hig-ba-val" style="color:var(--muted)">${P(roeBase)}</div>
+          <div class="hig-ba-sub">NI ÷ Equity</div>
+        </div>
+        <div class="hig-ba-arrow">→</div>
+        <div class="hig-ba-box-hl" style="background:rgba(138,223,182,.05);border:1px solid rgba(138,223,182,.2)">
+          <div class="hig-ba-lbl" style="color:#8ADFB6">After</div>
+          <div class="hig-ba-val" style="color:#8ADFB6">${P(roePost)}</div>
+          <div class="hig-ba-sub">Equity falls by cash paid</div>
+        </div>
+      </div>
+      <div style="margin-bottom:8px">
+        <span class="hig-pill hig-pill-mint">+${P(roePost-roeBase)} ROE uplift</span>
+      </div>
+      <div class="hig-mrow"><span class="hig-mkey">Cash paid out</span><span class="hig-mval">${Rm(s.cashPaidM)}</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Cash retained (scrip)</span><span class="hig-mval" style="color:var(--c-teal)">${Rm(s.scripValueM)}</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Net Income</span><span class="hig-mval">${Rm(co.netIncome||0)} (unchanged)</span></div>
+    </div>
+
+    <div class="hig-impact-card">
+      <div class="hig-impact-accent" style="background:var(--c-orange)"></div>
+      <div class="hig-impact-title"><span class="hig-impact-dot" style="background:var(--c-orange)"></span>Tax Mechanics</div>
+      <div class="hig-mrow"><span class="hig-mkey">Dividends Tax (WHT)</span><span class="hig-mval" style="color:var(--c-orange)">${P(s.divTax,0)} — at source, immediate</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Effective CGT rate</span><span class="hig-mval" style="color:#8ADFB6">${P(effCGT)} — deferred to sale</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">CGT advantage vs WHT</span><span class="hig-mval" style="color:#8ADFB6">${((s.divTax-effCGT)*100).toFixed(1)}pp lower + deferred</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Scrip tax event today</span><span class="hig-mval" style="color:#8ADFB6">R0.00 — zero</span></div>
+      <div class="hig-mrow"><span class="hig-mkey">Scrip blended cost base</span><span class="hig-mval">${Rf(s.B.blendedCB)}/sh</span></div>
+      <div style="margin-top:9px">
+        <span class="hig-pill hig-pill-orange">WHT: ${P(s.divTax,0)} now</span>
+        <span class="hig-pill hig-pill-mint">CGT: ${P(effCGT)} deferred</span>
+        <span class="hig-pill hig-pill-teal">Scrip: R0 today</span>
+      </div>
+    </div>
+  `;
+
+  // ── Wealth comparison bars ─────────────────────────────────────────
+  const wvals = [s.A.total, s.B.total, s.C.total, s.D.total];
+  const wlabels = ['A · Cash Dividend','B · Scrip Election','C · Sell into Buyback','D · Hold (no action)'];
+  const wcols = ['#F79736','#8ADFB6','#ED2A3F','#988E8A'];
+  const wmax = Math.max(...wvals);
+  document.getElementById('hig-wealth-bars').innerHTML =
+    wvals.map((v,i)=>{
+      const pctW = Math.min(100,(v/wmax*100));
+      const isBest = v===wmax;
+      return '<div class="hig-wbar-row">'+
+        '<div class="hig-wbar-lbl">'+wlabels[i]+(isBest?' ★':'')+
+        '<br><span style="font-size:8px;color:var(--muted)">'+
+        (i===0?'WHT today, reinvest proceeds':i===1?'Zero tax today, scrip compounds':i===2?'CGT on gain, full exit':
+          'Zero tax, EPS accretion benefit')+'</span></div>'+
+        '<div class="hig-wbar-track">'+
+        '<div class="hig-wbar-fill" style="width:'+pctW.toFixed(1)+'%;background:'+(isBest?'linear-gradient(90deg,var(--c-teal),#8ADFB6)':wcols[i]+'99')+'">' +
+        '<span>'+wlabels[i].split('·')[0].trim()+'</span>' +
+        '<span>'+Rf(v/1e6,2)+'m</span></div></div>'+
+        '<div class="hig-wbar-val" style="color:'+(isBest?'var(--c-teal)':wcols[i])+'">'+Rf(v/1e6,2)+'m</div>'+
+        '</div>';
+    }).join('');
+
+  // ── Footnote ──────────────────────────────────────────────────────
+  document.getElementById('hig-footnote').innerHTML =
+    '<span>Assumptions: Price '+Rf(s.price)+' · Div/share '+Rf(s.divps)+
+    ' · Scrip discount '+P(s.scripDisc)+' · '+P(s.scripPct,0)+' elect scrip'+
+    ' · Client holds '+N(cs)+' shares · Marginal tax '+P(s.margTax,0)+
+    ' · CGT inclusion '+P(s.cgtInc,0)+' · Divs tax '+P(s.divTax,0)+'</span>'+
+    '<span style="white-space:nowrap;margin-left:14px">For discussion purposes only · Not investment advice · Avior Capital Markets</span>';
+}
+
+// ── Download hybrid infographic ───────────────────────────────────────
+function downloadHybridInfographic(){
+  const wrap = document.getElementById('hybrid-ig-wrap');
+  const w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'+
+    '<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">'+
+    '<style>*{box-sizing:border-box;margin:0;padding:0}'+
+    ':root{--c-teal:#01A0C6;--c-orange:#F79736;--c-purple:#741B81;--muted:#647488;--text:#e9eef6;--text2:#a6b3c6}'+
+    'body{background:#070a11;font-family:Montserrat,sans-serif;padding:0}'+
+    '@media print{@page{margin:0;size:A3 landscape}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+    '</style></head><body>'+wrap.outerHTML+'</body></html>');
+  w.document.close();
+  setTimeout(()=>{w.focus();w.print();},1400);
+}
+
+// ── Init ───────────────────────────────────────────────────────
+buildSelector();
+loadCompany('TSG', document.querySelector('.co-btn'));
+</script>
+</body>
+</html>
