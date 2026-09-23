@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roan &amp; Anke Ad-Libs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+<style>
+:root{
+  --ground:#EEF1EA; --paper:#FBFCF8; --ink:#1D2B24; --ink-soft:#56645C; --line:#D3DBCF;
+  --accent:#D98A1F; --accent-ink:#2A1A04; --rose:#B8455F; --blank:#FFF1D6; --blank-line:#D9A24A;
+  --pen:#2346A0; --ok:#2F7A4E; --shade:rgba(20,30,25,.45); --shadow:0 18px 40px -18px rgba(29,43,36,.35);
+  --display:"Gloock", "Georgia", "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hand:"Caveat", "Bradley Hand", "Segoe Print", cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#111915; --paper:#19231E; --ink:#E7ECE3; --ink-soft:#A2AFA6; --line:#2C3A33;
+    --accent:#F0AE4A; --accent-ink:#241603; --rose:#E27891; --blank:#2B2819; --blank-line:#A57E3A;
+    --pen:#A9C0FF; --ok:#6CC790; --shade:rgba(0,0,0,.6); --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#111915; --paper:#19231E; --ink:#E7ECE3; --ink-soft:#A2AFA6; --line:#2C3A33;
+  --accent:#F0AE4A; --accent-ink:#241603; --rose:#E27891; --blank:#2B2819; --blank-line:#A57E3A;
+  --pen:#A9C0FF; --ok:#6CC790; --shade:rgba(0,0,0,.6); --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding-inline:18px;padding-block:28px 120px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.05}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+
+/* Home */
+.hero{padding-block:14px 26px}
+.hero h1{font-size:clamp(52px,15vw,84px);letter-spacing:-.01em}
+.hero h1 .amp{font-family:var(--hand);color:var(--rose);font-size:.8em;padding-inline:.06em}
+.note{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px 18px 16px;position:relative;box-shadow:var(--shadow)}
+.note::before{content:"";position:absolute;top:-9px;left:50%;width:84px;height:18px;margin-left:-42px;background:var(--accent);opacity:.55;transform:rotate(-2deg)}
+.note p{margin:0 0 10px}
+.note p:last-child{margin:0}
+.sig{font-family:var(--hand);font-size:28px;color:var(--pen);line-height:1}
+.meter{margin-top:26px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.meter strong{font-family:var(--display);font-weight:400;font-size:34px;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:inherit;transition:width .4s ease}
+.chapters{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.ch{width:100%;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.ch:hover{border-color:var(--blank-line)}
+.ch .num{font-family:var(--display);font-size:26px;color:var(--ink-soft);text-align:center}
+.ch.done .num{color:var(--ok)}
+.ch .t{font-weight:600;line-height:1.25}
+.ch .s{font-size:14px;color:var(--ink-soft);margin-top:2px}
+.ch .p{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+.ch.done .p{color:var(--ok)}
+.turn{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--blank);color:var(--ink);border:1px solid var(--blank-line);margin-left:6px;vertical-align:2px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{border:0;border-radius:99px;padding:13px 22px;font-weight:600;background:var(--accent);color:var(--accent-ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px;line-height:1.2}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{padding:9px 16px;font-size:15px}
+
+/* Chapter */
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:22px}
+.back{background:none;border:0;padding:6px 0;font-weight:600;color:var(--ink-soft)}
+.chhead h2{font-size:clamp(38px,11vw,54px);margin-top:6px}
+.chhead .intro{color:var(--ink-soft);margin:10px 0 0}
+.handoff{margin-top:14px;padding:10px 14px;border-radius:10px;border:1.5px dashed var(--rose);color:var(--rose);font-weight:600;font-size:15px}
+.story{margin-top:22px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 18px;box-shadow:var(--shadow)}
+.story p{margin:0 0 20px;line-height:2.1;font-size:18px}
+.story p:last-child{margin:0}
+.blank{display:inline;border:0;background:var(--blank);border-bottom:2px solid var(--blank-line);border-radius:4px 4px 0 0;padding:1px 6px;margin:0 1px;
+  font-size:15px;color:var(--ink-soft);font-style:italic;line-height:1.5;-webkit-box-decoration-break:clone;box-decoration-break:clone;text-align:left}
+.blank.filled{background:transparent;font-family:var(--hand);font-style:normal;font-size:27px;font-weight:700;color:var(--pen);padding:0 3px;border-bottom-color:var(--pen);line-height:1.1}
+.blank:hover{border-bottom-width:3px}
+.ref{font-weight:600}
+.chfoot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
+.chfoot .count{font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:var(--shade);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--paper);border-radius:20px 20px 0 0;border-top:1px solid var(--line);
+  padding:14px 18px calc(16px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow:auto;box-shadow:0 -20px 50px -20px rgba(0,0,0,.4)}
+.sheet .in{max-width:600px;margin:0 auto}
+.grab{width:40px;height:4px;border-radius:9px;background:var(--line);margin:0 auto 12px}
+.ctx{font-size:15px;color:var(--ink-soft);margin:0 0 6px;line-height:1.45}
+.ctx em{font-style:normal;background:var(--blank);border-bottom:2px solid var(--blank-line);padding:0 6px}
+.sheet label{display:block;font-weight:700;font-size:15px;margin:10px 0 8px}
+.field{width:100%;font-family:var(--hand);font-size:28px;font-weight:700;color:var(--pen);background:var(--ground);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;line-height:1.25;resize:vertical}
+textarea.field{min-height:120px}
+.field:focus{outline:none;border-color:var(--accent)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--ground);border-radius:99px;padding:10px 20px;font-weight:600}
+.opt[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sheetnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px}
+.sheetnav .pos{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+
+/* Finale */
+.final h2{font-size:clamp(40px,12vw,60px)}
+.final .lead{color:var(--ink-soft);margin:12px 0 0}
+.sendbox{margin-top:20px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+.sendbox h3{margin:0;font-size:17px}
+.sendbox p{margin:0;font-size:15px;color:var(--ink-soft)}
+.parts{display:flex;flex-wrap:wrap;gap:8px}
+.parts a{font-size:14px;padding:7px 12px;border-radius:99px;border:1.5px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600}
+.readback{margin-top:24px;display:grid;gap:18px}
+.readback section{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:18px}
+.readback h4{font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 8px}
+.readback p{margin:0 0 10px;font-size:16px}
+.readback b{font-family:var(--hand);font-size:23px;color:var(--pen);font-weight:700}
+.readback .gap{color:var(--ink-soft);letter-spacing:.1em}
+#copyText{width:100%;height:120px;font:13px/1.4 ui-monospace,Menlo,monospace;background:var(--ground);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;font-weight:600;font-size:15px;z-index:40}
+.danger{background:none;border:0;color:var(--ink-soft);text-decoration:underline;font-size:14px;padding:4px 0}
+.saved{font-size:13px;color:var(--ink-soft)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:30;width:100%;height:100%}
+@media (prefers-reduced-motion: reduce){ .bar i{transition:none} }
+</style>
+<style>html{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<canvas id="confetti" hidden></canvas>
+<main class="wrap" id="app"></main>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetLabel" hidden><div class="in" id="sheetIn"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ---------- Content ----------
+   [[id:hint]]            short blank
+   [[id*:hint]]           long blank (textarea)
+   [[id:hint|A|B|C]]      tap-to-choose blank
+   {{id|fallback}}        echoes an earlier answer (or the fallback)          */
+const WHO = ["Roan","Anke","Both of us"];
+const CHAPTERS = [
+ { title:"Meet the Cast", sub:"Names, nicknames and day jobs", turn:"Together",
+   intro:"Let's start with the basics so I don't embarrass anyone in the first thirty seconds.",
+   paras:[
+    "Our full names are [[roan_full:Roan's full name, middle names and all]] and [[anke_full:Anke's full name]]. For the record, Roan is pronounced [[roan_pron:how to say it, e.g. ROO-ahn]] and Anke is pronounced [[anke_pron:how to say it, e.g. AHN-kuh]].",
+    "Roan's friends call him [[roan_nick:his nickname(s)]], and Anke answers to [[anke_nick:her nickname(s)]]. The pet name we'd never say in public (but you can tell the MC) is [[pet_name:your secret pet name]].",
+    "Roan grew up in [[roan_home:town or city]], and Anke grew up in [[anke_home:town or city]]. By day, Roan works as a [[roan_job:his job]] and Anke works as a [[anke_job:her job]] — though if you asked our friends, Roan's real job is [[roan_realjob:a funny 'real' job title]] and Anke's is [[anke_realjob:a funny 'real' job title]]."
+   ]},
+ { title:"Anke's Family", sub:"The people who raised the bride", turn:"Together",
+   intro:"Every family has a loud one, a crier, and a signature dish. Who's who?",
+   paras:[
+    "Anke's mom is [[anke_mom:her mom's name]] and her dad is [[anke_dad:her dad's name]]. Anke's siblings are [[anke_sibs:names & ages, or 'only child']]. Her grandparents are [[anke_grand:grandparents' names]].",
+    "The loudest person at any family gathering is always [[anke_loud:name]], and the one who cries at absolutely everything is [[anke_cry:name]]. Anke's family's signature dish is [[anke_dish:the dish]], and nobody leaves the house without [[anke_ritual:a family tradition or saying]].",
+    "Growing up, Anke was the kind of child who [[anke_child*:a story about little Anke her parents love to tell]]. Her mom's favourite saying is “[[anke_mom_says:what {{anke_mom|her mom}} always says]]” and her dad's is “[[anke_dad_says:what {{anke_dad|her dad}} always says]]”."
+   ]},
+ { title:"Roan's Family", sub:"The people who raised the groom", turn:"Together",
+   intro:"Same questions, other side of the aisle.",
+   paras:[
+    "Roan's mom is [[roan_mom:his mom's name]] and his dad is [[roan_dad:his dad's name]]. Roan's siblings are [[roan_sibs:names & ages, or 'only child']]. His grandparents are [[roan_grand:grandparents' names]].",
+    "The loudest person at a Roan-family braai is [[roan_loud:name]], and the one guaranteed to tell an embarrassing story about him is [[roan_teller:name]]. His family's signature dish is [[roan_dish:the dish]], and their big family tradition is [[roan_ritual:the tradition]].",
+    "As a boy, Roan was obsessed with [[roan_obsess:a childhood obsession]] and once got into big trouble for [[roan_trouble*:the story]]. His mom always says “[[roan_mom_says:what {{roan_mom|his mom}} always says]]” and his dad always says “[[roan_dad_says:what {{roan_dad|his dad}} always says]]”."
+   ]},
+ { title:"How We Met", sub:"Where it all started", turn:"Together",
+   intro:"The origin story. Details, please — the room wants details.",
+   paras:[
+    "It all started in [[met_year:year]] at [[met_place:the place]], during [[met_event:the event or occasion]]. Anke first noticed Roan because he was [[met_roan:what Roan was doing]], and her first impression was that he was [[anke_first:her first thought, in a few words]].",
+    "Roan's first impression of Anke was [[roan_first:his first thought]]. The very first thing he said to her was “[[first_words:his opening line]]”, to which she replied “[[first_reply:her reply]]”.",
+    "The person we have to thank for all of this is [[matchmaker:a name, or 'pure fate']], who still takes credit by [[matchmaker_brag:how they remind you]]. After that first meeting, the next time we saw each other was [[next_time:when & where]]."
+   ]},
+ { title:"The First Date", sub:"Nerves, outfits and awkward moments", turn:"Together",
+   intro:"Every good speech needs one slightly awkward first date.",
+   paras:[
+    "Our first official date was at [[date_place:where]], and we [[date_did:what you did]]. Roan wore [[date_outfit:his outfit]] and was nervous because [[date_nerves:why]]. Anke spent [[date_prep:how long]] getting ready and changed outfits [[date_changes:how many]] times.",
+    "The most awkward moment of the night was when [[date_awkward*:what happened]]. Roan paid with [[date_paid:cash, card, or 'Anke paid']], and the bill came to roughly [[date_bill:an amount in rands]].",
+    "Afterwards, Anke told [[date_told:who she told]] that Roan was [[date_verdict:her verdict]]. Roan texted her “[[date_text:the text he sent]]” exactly [[date_wait:how long after]] after dropping her off."
+   ]},
+ { title:"Meeting the Parents", sub:"First visits and first impressions", turn:"Together",
+   intro:"The moment every new boyfriend and girlfriend dreads.",
+   paras:[
+    "The first time Roan visited Anke's family, [[uncle:an uncle or aunt, e.g. Oom Frik]] really loved it when Roan said “[[uncle_line:what Roan said]]”. {{anke_mom|Anke's mom}} loved the way Roan always brought [[roan_brought:the thing he always brought]] to the house when he came to visit.",
+    "{{anke_dad|Anke's dad}} was a tougher crowd: he only warmed up to Roan after [[dad_warm:what won him over]]. Roan's biggest mistake on that first visit was [[roan_blunder:the blunder]].",
+    "When Anke met Roan's family, {{roan_mom|Roan's mom}} immediately [[roan_mom_did:what she did]], and {{roan_dad|his dad}} asked her “[[roan_dad_q:the question he asked]]”. Anke won them over completely with [[anke_won:what she did or brought]].",
+    "Today, Roan's nickname in Anke's family is [[roan_inlaw_nick:what they call him]], and Anke's nickname in Roan's family is [[anke_inlaw_nick:what they call her]]."
+   ]},
+ { title:"Falling in Love", sub:"The moment you both knew", turn:"Together",
+   intro:"Now the sweet part. Tissues on standby.",
+   paras:[
+    "Roan knew Anke was the one when [[roan_knew*:the moment]]. Anke knew when [[anke_knew*:the moment]].",
+    "The first one to say “I love you” was [[ily_who:who said it first|Roan|Anke]], at [[ily_where:where]] while we were [[ily_doing:what you were doing]]. The reply was “[[ily_reply:the exact reply]]”.",
+    "Our song is [[song:song & artist]], because [[song_why:why it's yours]]. Our first trip together was to [[trip:destination]], where [[trip_story*:what went brilliantly — or horribly — wrong]]."
+   ]},
+ { title:"The Proposal", sub:"Rings, plans and near-misses", turn:"Together",
+   intro:"Roan, this is your moment. Anke, correct him where needed.",
+   paras:[
+    "Roan planned the proposal for [[plan_time:how long]], and the only people who knew were [[in_on_it:who was in on it]]. He nearly gave it away when [[almost:what happened]]. Until the big day, the ring was hidden in [[ring_hide:the hiding spot]].",
+    "On [[prop_date:the date]] at [[prop_place:the place]], Roan [[prop_how*:how he popped the question]]. Anke's first words were “[[prop_words:what she said]]”, and then she [[prop_react:what she did next]].",
+    "The first person we called was [[first_call:who]], who screamed “[[first_call_said:their reaction]]”. The funniest reaction to the news came from [[funny_react:who & what they said]]."
+   ]},
+ { title:"Life Together", sub:"Home, habits and arguments", turn:"Together",
+   intro:"What does a normal Tuesday look like in your house?",
+   paras:[
+    "We live in [[live:suburb or town]] with [[pets:pets & their names, or 'plants we're trying to keep alive']]. On a perfect Saturday you'll find us [[saturday:doing what]].",
+    "Roan is in charge of [[roan_chore:his household job]] and Anke is in charge of [[anke_chore:hers]]. The chore we both pretend not to see is [[ignored_chore:the chore]].",
+    "Our longest-running argument is about [[argument:the topic]], and the correct answer is obviously [[argument_win:who's right|Roan|Anke]]. At a braai, Roan [[roan_braai:his braai habit]], while Anke [[anke_braai:her braai habit]].",
+    "Our go-to takeaway is [[takeaway:what & from where]], the show we've rewatched far too many times is [[show:TV show]], and the song Roan sings badly in the car is [[car_song:the song]]."
+   ]},
+ { title:"Roan's Turn", sub:"All about Anke", turn:"Roan only", handoff:"Anke, hand the phone to Roan — no peeking!",
+   intro:"Roan, answer these about Anke. Be honest. Be sweet. Be a little funny.",
+   paras:[
+    "Anke is the most [[r_adj:one word]] person I know. The thing she does that makes me laugh every single time is [[r_laugh:the thing]]. She can't start her day without [[r_morning:what]], and she's secretly terrible at [[r_bad:what]].",
+    "Her most-used phrase is “[[r_phrase:the phrase]]”. If Anke were an animal, she'd be a [[r_animal:animal]], because [[r_animal_why:why]]. Her celebrity lookalike, according to me, is [[r_celeb:a celebrity]].",
+    "The moment I was most proud of her was when [[r_proud*:the moment]]. The first thing I noticed about her was [[r_noticed:what]], and the thing I love most about her now is [[r_love*:what]].",
+    "One thing I promise Anke, in front of everyone, is [[r_promise*:your promise]]."
+   ]},
+ { title:"Anke's Turn", sub:"All about Roan", turn:"Anke only", handoff:"Roan, hand the phone to Anke — eyes on the ceiling!",
+   intro:"Anke, your turn. Tell us everything about the groom.",
+   paras:[
+    "Roan is the most [[a_adj:one word]] person I know. The thing he does that makes me laugh every single time is [[a_laugh:the thing]]. He can't function without [[a_need:what]], and he's secretly terrible at [[a_bad:what]].",
+    "His most-used phrase is “[[a_phrase:the phrase]]”. If Roan were an animal, he'd be a [[a_animal:animal]], because [[a_animal_why:why]]. His celebrity lookalike, according to me, is [[a_celeb:a celebrity]].",
+    "The moment I was most proud of him was when [[a_proud*:the moment]]. The first thing I noticed about him was [[a_noticed:what]], and the thing I love most about him now is [[a_love*:what]].",
+    "One thing I promise Roan, in front of everyone, is [[a_promise*:your promise]]."
+   ]},
+ { title:"Who's Most Likely To", sub:"Quick-fire round", turn:"Together",
+   intro:"Tap an answer — no overthinking. (I may use these for a game on the night.)",
+   paras:[
+    "Who takes longer to get ready? [[ml_ready:tap to choose|Roan|Anke|Both of us]]  Who will cry first at the wedding? [[ml_cry:tap to choose|Roan|Anke|Both of us]]  Who falls asleep during movies? [[ml_sleep:tap to choose|Roan|Anke|Both of us]]",
+    "Who gets lost even with GPS? [[ml_lost:tap to choose|Roan|Anke|Both of us]]  Who's the better cook? [[ml_cook:tap to choose|Roan|Anke|Both of us]]  Who spends more money? [[ml_spend:tap to choose|Roan|Anke|Both of us]]",
+    "Who apologises first after a fight? [[ml_sorry:tap to choose|Roan|Anke|Both of us]]  Who's first on the dance floor? [[ml_dance:tap to choose|Roan|Anke|Both of us]]  Who's last to leave the party? [[ml_last:tap to choose|Roan|Anke|Both of us]]",
+    "Who's more likely to talk to strangers? [[ml_talk:tap to choose|Roan|Anke|Both of us]]  Who hogs the blankets? [[ml_blanket:tap to choose|Roan|Anke|Both of us]]  Who said “I do” in their head long before the proposal? [[ml_ido:tap to choose|Roan|Anke|Both of us]]"
+   ]},
+ { title:"The Squad", sub:"Friends, crew and legendary stories", turn:"Together",
+   intro:"The people who've been there for all of it — and the stories they'd rather I didn't tell.",
+   paras:[
+    "Our wedding crew is [[crew*:bridesmaids, groomsmen & who they are to you]].",
+    "Roan's best mate [[roan_mate:name]] once [[roan_mate_story*:a legendary story]]. Anke's best friend [[anke_bff:name]] is famous for [[anke_bff_famous:what]].",
+    "The most embarrassing story about Roan that is still safe for ouma's ears is [[roan_emb*:the story]]. The Anke equivalent is [[anke_emb*:the story]].",
+    "The guest most likely to grab the mic uninvited is [[wildcard:name]], and the one who'll still be dancing at the end is [[last_dancer:name]]."
+   ]},
+ { title:"For the MC Only", sub:"The serious bits I must get right", turn:"Together",
+   intro:"Not funny, just important. Leave anything blank that doesn't apply.",
+   paras:[
+    "Please be sure to thank [[thanks*:people to thank & why]].",
+    "Special guests who travelled far: [[travellers*:names & where they came from]]. We'd love a quiet moment to remember [[remember*:loved ones who have passed — or leave blank]].",
+    "Topics that are strictly off-limits: [[offlimits*:no-go zones — exes, awkward family stuff, etc.]]. Names that are tricky to pronounce: [[tricky*:names & how to say them]].",
+    "Inside jokes the crowd will get: [[inside*:jokes & who'll get them]]. One thing we'd love the MC to do on the night: [[mc_wish*:your request]]."
+   ]},
+ { title:"Happily Ever After", sub:"The future, and a message", turn:"Together",
+   intro:"Last chapter. Make it count.",
+   paras:[
+    "In ten years we'll be living in [[ten_where:where]], with [[ten_with:kids, dogs, chickens…]], and still arguing about {{argument|the same thing}}. Our dream holiday is [[dream_trip:where]].",
+    "The best advice we've ever had about love came from [[advice_who:who]], who told us “[[advice*:the advice]]”.",
+    "And if we could say one thing to everyone in that room, it would be: [[message*:your message to your guests]]."
+   ]}
+];
+
+/* ---------- Parsing ---------- */
+CHAPTERS.forEach(c=>{ c.paras=c.paras.flatMap(p=>p.split(/\s{2,}/)); });
+const TOKEN = /\[\[(.+?)\]\]|\{\{(.+?)\}\}/g;
+function parse(tpl){
+  const out=[]; let last=0, m;
+  TOKEN.lastIndex=0;
+  while((m=TOKEN.exec(tpl))){
+    if(m.index>last) out.push({t:"text",v:tpl.slice(last,m.index)});
+    if(m[1]){
+      const c=m[1].indexOf(":");
+      let id=m[1].slice(0,c), rest=m[1].slice(c+1);
+      const long=id.endsWith("*"); if(long) id=id.slice(0,-1);
+      const parts=rest.split("|");
+      out.push({t:"blank",id,long,hint:parts[0],options:parts.length>1?parts.slice(1):null});
+    } else {
+      const [id,fb]=m[2].split("|"); out.push({t:"ref",id,fb:fb||""});
+    }
+    last=TOKEN.lastIndex;
+  }
+  if(last<tpl.length) out.push({t:"text",v:tpl.slice(last)});
+  return out;
+}
+// resolve {{refs}} inside hints too
+const fillRefs = s => s.replace(/\{\{(.+?)\}\}/g,(_,x)=>{const [id,fb]=x.split("|");return (A[id]||"").trim()||fb||"";});
+
+CHAPTERS.forEach((ch,ci)=>{
+  ch.parsed=ch.paras.map(parse);
+  ch.blanks=[];
+  ch.parsed.forEach((segs,pi)=>segs.forEach((s,si)=>{ if(s.t==="blank"){ s.ci=ci; s.pi=pi; s.si=si; s.idx=ch.blanks.length; ch.blanks.push(s);} }));
+});
+const ALL = CHAPTERS.flatMap(c=>c.blanks);
+
+/* ---------- State ---------- */
+const KEY="roan-anke-adlibs-v1";
+let A={}; let celebrated={};
+try{ const s=JSON.parse(localStorage.getItem(KEY)||"{}"); A=s.a||{}; celebrated=s.c||{}; }catch(e){}
+let saveT;
+function persist(){ clearTimeout(saveT); saveT=setTimeout(()=>{ try{localStorage.setItem(KEY,JSON.stringify({a:A,c:celebrated}));}catch(e){} },250); }
+const filled = id => !!(A[id]&&A[id].trim());
+const chDone = ch => ch.blanks.filter(b=>filled(b.id)).length;
+
+/* ---------- Rendering ---------- */
+const app=document.getElementById("app");
+const el=(tag,attrs={},...kids)=>{const n=document.createElement(tag);for(const k in attrs){if(attrs[k]==null)continue;if(k==="class")n.className=attrs[k];else if(k.startsWith("on"))n.addEventListener(k.slice(2),attrs[k]);else n.setAttribute(k,attrs[k]);}kids.flat().forEach(c=>c!=null&&n.append(c));return n;};
+let view={name:"home"};
+
+function render(){
+  app.replaceChildren();
+  if(view.name==="home") renderHome();
+  else if(view.name==="chapter") renderChapter(view.ci);
+  else renderFinal();
+}
+
+function renderHome(){
+  const total=ALL.length, done=ALL.filter(b=>filled(b.id)).length;
+  app.append(
+    el("header",{class:"hero"},
+      el("div",{class:"eyebrow"},"Wedding ad-libs · October 2026"),
+      el("h1",{},"Roan",el("span",{class:"amp"},"&"),"Anke"),
+      el("div",{class:"note"},
+        el("p",{},"Hi you two! As your MC, I need the good stuff — the real stories, the family names, the embarrassing bits. So I turned it into a game."),
+        el("p",{},"Each chapter is a little story with blanks. Tap a blank, fill it in, and watch your story write itself. Your answers save on this phone as you go, so you can do a chapter a night."),
+        el("p",{},"When you're done, tap ",el("strong",{},"Send to Malan"),"."),
+        el("div",{class:"sig"},"— Malan, your MC")
+      )
+    ),
+    el("div",{class:"meter"},
+      el("div",{},el("div",{class:"eyebrow"},"Story written"),el("strong",{},Math.round(done/total*100)+"%")),
+      el("div",{class:"saved"},`${done} of ${total} blanks`)
+    ),
+    el("div",{class:"bar"},el("i",{style:`width:${done/total*100}%`}))
+  );
+  const list=el("ol",{class:"chapters"});
+  CHAPTERS.forEach((ch,ci)=>{
+    const d=chDone(ch), n=ch.blanks.length, full=d===n;
+    list.append(el("li",{},el("button",{class:"ch"+(full?" done":""),onclick:()=>go({name:"chapter",ci})},
+      el("span",{class:"num","aria-hidden":"true"},full?"✓":String(ci+1)),
+      el("span",{},el("div",{class:"t"},ch.title, ch.turn!=="Together"?el("span",{class:"turn"},ch.turn):null),el("div",{class:"s"},ch.sub)),
+      el("span",{class:"p"},`${d}/${n}`)
+    )));
+  });
+  app.append(list,
+    el("div",{class:"cta"},
+      el("button",{class:"btn",onclick:()=>{const next=CHAPTERS.findIndex(c=>chDone(c)<c.blanks.length);go(next<0?{name:"final"}:{name:"chapter",ci:next});}}, done?"Continue the story":"Start chapter one"),
+      el("button",{class:"btn ghost",onclick:()=>go({name:"final"})},"Send to Malan")
+    )
+  );
+}
+
+function blankButton(b){
+  const has=filled(b.id);
+  const btn=el("button",{class:"blank"+(has?" filled":""),type:"button","data-id":b.id,
+    "aria-label":(has?"Edit: ":"Fill in: ")+fillRefs(b.hint),onclick:()=>openSheet(b.ci,b.idx)}, has?A[b.id].trim():fillRefs(b.hint));
+  return btn;
+}
+function paraNode(segs){
+  const p=el("p");
+  segs.forEach(s=>{
+    if(s.t==="text") p.append(s.v);
+    else if(s.t==="ref") p.append(el("span",{class:"ref"},(A[s.id]||"").trim()||s.fb));
+    else p.append(blankButton(s));
+  });
+  return p;
+}
+function renderChapter(ci){
+  const ch=CHAPTERS[ci], d=chDone(ch), n=ch.blanks.length;
+  app.append(
+    el("div",{class:"top"},
+      el("button",{class:"back",onclick:()=>go({name:"home"})},"← All chapters"),
+      el("span",{class:"eyebrow"},`Chapter ${ci+1} of ${CHAPTERS.length}`)
+    ),
+    el("div",{class:"chhead"},
+      el("div",{class:"eyebrow"},ch.turn),
+      el("h2",{},ch.title),
+      el("p",{class:"intro"},ch.intro),
+      ch.handoff?el("div",{class:"handoff"},ch.handoff):null
+    ),
+    el("article",{class:"story"},ch.parsed.map(paraNode)),
+    el("div",{class:"chfoot"},
+      el("span",{class:"count"},`${d} of ${n} blanks filled`),
+      el("div",{class:"cta",style:"margin:0"},
+        d<n?el("button",{class:"btn ghost small",onclick:()=>{const i=ch.blanks.findIndex(b=>!filled(b.id));openSheet(ci,i<0?0:i);}},"Next blank"):null,
+        ci<CHAPTERS.length-1
+          ?el("button",{class:"btn small",onclick:()=>go({name:"chapter",ci:ci+1})},"Next chapter →")
+          :el("button",{class:"btn small",onclick:()=>go({name:"final"})},"Finish & send →")
+      )
+    )
+  );
+}
+
+/* ---------- Finale / export ---------- */
+function chapterText(ch){
+  const lines=ch.parsed.map(segs=>segs.map(s=>{
+    if(s.t==="text") return s.v;
+    if(s.t==="ref") return (A[s.id]||"").trim()||s.fb;
+    return filled(s.id)?`*${A[s.id].trim().replace(/\*/g,"")}*`:"____";
+  }).join(""));
+  return `📖 ${ch.title.toUpperCase()}\n\n`+lines.join("\n\n");
+}
+function fullText(){
+  return "ROAN & ANKE — OUR STORY FOR THE MC\n\n"+CHAPTERS.map(chapterText).join("\n\n———\n\n");
+}
+const wa = t => "https://wa.me/?text="+encodeURIComponent(t);
+
+function renderFinal(){
+  const total=ALL.length, done=ALL.filter(b=>filled(b.id)).length;
+  const txt=fullText();
+  const ta=el("textarea",{id:"copyText",readonly:"",rows:"5","aria-label":"All answers as text"}); ta.value=txt;
+  const reset=el("button",{class:"danger",type:"button"},"Clear all answers on this phone");
+  reset.addEventListener("click",()=>{
+    if(reset.dataset.armed){ A={}; celebrated={}; persist(); toast("All answers cleared"); go({name:"home"}); }
+    else { reset.dataset.armed="1"; reset.textContent="Tap again to permanently clear everything"; }
+  });
+  app.append(
+    el("div",{class:"top"},el("button",{class:"back",onclick:()=>go({name:"home"})},"← All chapters"),el("span",{class:"eyebrow"},"The end")),
+    el("div",{class:"final"},
+      el("div",{class:"eyebrow"},`${done} of ${total} blanks filled`),
+      el("h2",{},done===total?"Your story is written.":"Ready when you are."),
+      el("p",{class:"lead"},done===total
+        ?"Thank you, you two. Send it over and leave the rest to me."
+        :"You can send what you have now and the rest later — I'll take whatever you've got.")
+    ),
+    el("div",{class:"sendbox"},
+      el("h3",{},"Send to Malan"),
+      el("p",{},"Opens WhatsApp with your whole story typed out. Pick Malan as the contact and hit send."),
+      el("div",{class:"cta",style:"margin:0"},
+        el("a",{class:"btn",href:wa(txt),target:"_blank",rel:"noopener"},"Send on WhatsApp"),
+        el("button",{class:"btn ghost",onclick:()=>copy(txt,ta)},"Copy everything")
+      ),
+      el("p",{},"Message too long for WhatsApp? Send it one chapter at a time:"),
+      el("div",{class:"parts"},CHAPTERS.map((ch,i)=>el("a",{href:wa(chapterText(ch)),target:"_blank",rel:"noopener"},`${i+1}. ${ch.title}`))),
+      el("p",{},"Or copy the text below and paste it into an email or message:"),
+      ta
+    ),
+    el("div",{class:"readback"},
+      el("div",{class:"eyebrow"},"Read it back"),
+      CHAPTERS.map(ch=>el("section",{},el("h4",{},ch.title),ch.parsed.map(segs=>{
+        const p=el("p");
+        segs.forEach(s=>{
+          if(s.t==="text") p.append(s.v);
+          else if(s.t==="ref") p.append((A[s.id]||"").trim()||s.fb);
+          else p.append(filled(s.id)?el("b",{},A[s.id].trim()):el("span",{class:"gap"},"____"));
+        });
+        return p;
+      })))
+    ),
+    el("div",{style:"margin-top:28px"},reset)
+  );
+}
+
+async function copy(t,ta){
+  try{ await navigator.clipboard.writeText(t); toast("Copied — paste it to Malan"); }
+  catch(e){ ta.focus(); ta.select(); toast("Selected — press copy on your keyboard"); }
+}
+let toastT;
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true,2200); }
+
+/* ---------- Sheet editor ---------- */
+const sheet=document.getElementById("sheet"), sheetIn=document.getElementById("sheetIn"), scrim=document.getElementById("scrim");
+let cur=null, lastFocus=null;
+
+function contextFor(b){
+  const segs=CHAPTERS[b.ci].parsed[b.pi];
+  let before="";
+  for(let i=0;i<b.si;i++){ const s=segs[i]; before+= s.t==="text"?s.v : s.t==="ref"?((A[s.id]||"").trim()||s.fb) : (filled(s.id)?A[s.id].trim():"___"); }
+  before=before.replace(/\s+/g," ").trimStart();
+  const cut=before.length>90?"…"+before.slice(-90).replace(/^\S*\s/,""):before;
+  let after=""; const nx=segs[b.si+1]; if(nx&&nx.t==="text") after=nx.v.slice(0,50);
+  return {cut,after};
+}
+
+function openSheet(ci,idx){
+  lastFocus=document.activeElement;
+  cur={ci,idx};
+  const ch=CHAPTERS[ci], b=ch.blanks[idx], {cut,after}=contextFor(b);
+  const hint=fillRefs(b.hint);
+  sheetIn.replaceChildren();
+  let input;
+  if(b.options){
+    input=el("div",{class:"opts",role:"group","aria-labelledby":"sheetLabel"},b.options.map(o=>{
+      const bt=el("button",{class:"opt",type:"button","aria-pressed":String(A[b.id]===o)},o);
+      bt.addEventListener("click",()=>{ setAnswer(b,o); input.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",String(x===bt))); setTimeout(()=>step(1),220); });
+      return bt;
+    }));
+  } else {
+    input=b.long?el("textarea",{class:"field",id:"f_"+b.id,rows:"4"}):el("input",{class:"field",id:"f_"+b.id,type:"text",autocomplete:"off",enterkeyhint:"next"});
+    input.value=A[b.id]||"";
+    input.addEventListener("input",()=>setAnswer(b,input.value));
+    if(!b.long) input.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); step(1);} });
+  }
+  const isLast = ci===CHAPTERS.length-1 && idx===ch.blanks.length-1;
+  sheetIn.append(
+    el("div",{class:"grab","aria-hidden":"true"}),
+    el("p",{class:"ctx"},cut," ",el("em",{},"   ?   ")," ",after),
+    el("label",{id:"sheetLabel",for:b.options?null:"f_"+b.id},hint.charAt(0).toUpperCase()+hint.slice(1)),
+    input,
+    el("div",{class:"sheetnav"},
+      el("button",{class:"btn ghost small",type:"button",onclick:()=>step(-1)},"← Back"),
+      el("span",{class:"pos"},`${idx+1} / ${ch.blanks.length}`),
+      el("button",{class:"btn small",type:"button",onclick:()=>step(1)}, idx===ch.blanks.length-1?"Done":"Next →")
+    )
+  );
+  if(idx===0) sheetIn.querySelector(".sheetnav button").style.visibility="hidden";
+  sheet.hidden=false; scrim.hidden=false;
+  fitSheet();
+  const f=sheetIn.querySelector(".field")||sheetIn.querySelector(".opt");
+  if(f) f.focus({preventScroll:true});
+}
+function setAnswer(b,v){
+  A[b.id]=v; persist();
+  // live-update chips and echoed refs in the page behind
+  if(view.name==="chapter"){
+    const btn=app.querySelector(`.blank[data-id="${b.id}"]`);
+    if(btn){ const has=filled(b.id); btn.className="blank"+(has?" filled":""); btn.textContent=has?v.trim():fillRefs(b.hint); }
+  }
+}
+function step(dir){
+  const {ci,idx}=cur, ch=CHAPTERS[ci], n=idx+dir;
+  if(n<0) return;
+  if(n>=ch.blanks.length){ closeSheet(); return; }
+  openSheet(ci,n);
+}
+function closeSheet(){
+  sheet.hidden=true; scrim.hidden=true;
+  const ci=cur&&cur.ci; cur=null;
+  if(view.name==="chapter"){ render(); const ch=CHAPTERS[ci];
+    if(chDone(ch)===ch.blanks.length && !celebrated[ci]){ celebrated[ci]=1; persist(); confetti(); toast(`Chapter ${ci+1} complete!`); } }
+  if(lastFocus && document.body.contains(lastFocus)) lastFocus.focus({preventScroll:true});
+}
+scrim.addEventListener("click",closeSheet);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!sheet.hidden) closeSheet(); });
+function fitSheet(){
+  const vv=window.visualViewport; if(!vv||sheet.hidden) return;
+  const off=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
+  sheet.style.bottom=off+"px"; sheet.style.maxHeight=(vv.height*0.85)+"px";
+}
+if(window.visualViewport){ visualViewport.addEventListener("resize",fitSheet); visualViewport.addEventListener("scroll",fitSheet); }
+
+function go(v){ view=v; render(); window.scrollTo(0,0); }
+
+/* ---------- Confetti ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=document.getElementById("confetti"), x=c.getContext("2d"); c.hidden=false;
+  const W=c.width=innerWidth*devicePixelRatio, H=c.height=innerHeight*devicePixelRatio;
+  const cs=getComputedStyle(document.documentElement), cols=["--accent","--rose","--pen","--ok"].map(k=>cs.getPropertyValue(k).trim());
+  const ps=Array.from({length:110},()=>({x:W/2,y:H*.35,vx:(Math.random()-.5)*W*.018,vy:-Math.random()*H*.018-H*.004,r:(4+Math.random()*6)*devicePixelRatio,a:Math.random()*6,c:cols[Math.random()*4|0]}));
+  let t=0; (function f(){ t++; x.clearRect(0,0,W,H);
+    ps.forEach(p=>{p.vy+=H*.0006;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
+    if(t<110) requestAnimationFrame(f); else { x.clearRect(0,0,W,H); c.hidden=true; } })();
+}
+
+render();
+</script>
+
+</body>
+</html>
